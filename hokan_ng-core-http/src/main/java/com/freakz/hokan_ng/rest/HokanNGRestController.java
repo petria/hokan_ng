@@ -1,0 +1,27 @@
+package com.freakz.hokan_ng;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ * Date: 29.5.2013
+ * Time: 09:31
+ *
+ * @author Petri Airio (petri.j.airio@gmail.com)
+ */
+
+@Controller
+public class HokanNGRestController {
+    public static final String JSON = "application/json";
+
+    @RequestMapping(value = "/ll/hello", consumes = JSON)
+    public
+    @ResponseBody
+    String helloHandler(@RequestBody String request) {
+        return "Kukkuu: " + request;
+    }
+
+
+}
