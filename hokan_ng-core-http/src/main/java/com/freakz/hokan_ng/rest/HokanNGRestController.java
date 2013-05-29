@@ -1,9 +1,14 @@
-package com.freakz.hokan_ng;
+package com.freakz.hokan_ng.rest;
 
+import org.jibble.pircbot.IrcException;
+import org.jibble.pircbot.NickAlreadyInUseException;
+import org.jibble.pircbot.PircBot;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
 
 /**
  * Date: 29.5.2013
@@ -16,12 +21,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HokanNGRestController {
     public static final String JSON = "application/json";
 
-    @RequestMapping(value = "/ll/hello", consumes = JSON)
+    @RequestMapping(value = "/hokan_ng/test")
     public
     @ResponseBody
-    String helloHandler(@RequestBody String request) {
-        return "Kukkuu: " + request;
-    }
+    String testHandler() throws Exception {
+        PircBot pircBot = new PircBot() {
 
+        };
+        pircBot.setAutoNickChange(true);
+        pircBot.setVerbose(true);
+        pircBot.connect("irc.tnnet.fi");
+        pircBot.joinChannel("#HokanDev");
+
+        return "foo";
+    }
 
 }
