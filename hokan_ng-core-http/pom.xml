@@ -5,6 +5,7 @@
 
     <name>HokanNG-core-http</name>
     <artifactId>hokan_ng-core-http</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <parent>
@@ -94,6 +95,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.freakz.hokan_ng</groupId>
+            <artifactId>hokan_ng-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
             <artifactId>hokan_ng-pircbot-custom</artifactId>

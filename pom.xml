@@ -10,6 +10,8 @@
 
     <modules>
         <module>hokan_ng-pircbot-custom</module>
+        <module>hokan_ng-common</module>
+        <module>hokan_ng-core</module>
         <module>hokan_ng-core-http</module>
     </modules>
     <properties>
