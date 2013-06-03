@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core;
+package com.freakz.hokan_ng.core.service;
 
 import org.jibble.pircbot.PircBot;
 
