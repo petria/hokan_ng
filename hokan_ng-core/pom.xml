@@ -20,6 +20,11 @@
     <dependencies>
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
+            <artifactId>hokan_ng-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.freakz.hokan_ng</groupId>
             <artifactId>hokan_ng-pircbot-custom</artifactId>
             <version>1.5.0-custom</version>
         </dependency>
