@@ -4,12 +4,9 @@
              http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="LaitosLaskuri" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.etk.app.entity.Company</class>
-        <class>com.etk.app.entity.CompanyCounterValues</class>
-        <class>com.etk.app.entity.CompanyType</class>
-        <class>com.etk.app.entity.YearlyCompanyCounters</class>
+        <class>com.freakz.hokan_ng.common.entity.IrcServer</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -17,9 +14,9 @@
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/etk_ll"/>
-            <!-- <property name="hibernate.connection.datasource" value="jdbc/etk_ll"/> -->
-                        <!-- WC: EI java:comp/env/   -->
+            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/hokan_ng-mysql"/>
+            <!-- <property name="hibernate.connection.datasource" value="jdbc/hokan_ng-mysql"/> -->
+            <!-- WC: EI java:comp/env/   -->
         </properties>
 
     </persistence-unit>
