@@ -17,66 +17,70 @@ import javax.persistence.Table;
 @Table(name = "IrcServer")
 public class IrcServer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
-    private long companyId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
+	private long id;
 
-    @Column(name = "SERVER")
-    private String server;
+	@Column(name = "SERVER")
+	private String server;
 
-    @Column(name = "SERVER_PASSWORD")
-    private String serverPassword;
+	@Column(name = "SERVER_PASSWORD")
+	private String serverPassword;
 
-    @Column(name = "SERVER_PORT")
-    private int port;
+	@Column(name = "SERVER_PORT")
+	private int port;
 
-    @Column(name = "USE_THROTTLE")
-    private int useThrottle;
+	@Column(name = "USE_THROTTLE")
+	private int useThrottle;
 
-    @Column(name = "CHANNELS")
-    private String channels;
+	@Column(name = "CHANNELS_TO_JOIN")
+	private String channelsToJoin;
 
-    public IrcServer() {
-    }
+	public IrcServer() {
+	}
 
-    public String getServer() {
-        return server;
-    }
+	public String getServer() {
+		return server;
+	}
 
-    public void setServer(String server) {
-        this.server = server;
-    }
+	public void setServer(String server) {
+		this.server = server;
+	}
 
-    public String getServerPassword() {
-        return serverPassword;
-    }
+	public String getServerPassword() {
+		return serverPassword;
+	}
 
-    public void setServerPassword(String serverPassword) {
-        this.serverPassword = serverPassword;
-    }
+	public void setServerPassword(String serverPassword) {
+		this.serverPassword = serverPassword;
+	}
 
-    public int getPort() {
-        return port;
-    }
+	public int getPort() {
+		return port;
+	}
 
-    public void setPort(int port) {
-        this.port = port;
-    }
+	public void setPort(int port) {
+		this.port = port;
+	}
 
-    public int getUseThrottle() {
-        return useThrottle;
-    }
+	public int getUseThrottle() {
+		return useThrottle;
+	}
 
-    public void setUseThrottle(int useThrottle) {
-        this.useThrottle = useThrottle;
-    }
+	public void setUseThrottle(int useThrottle) {
+		this.useThrottle = useThrottle;
+	}
 
-    public String getChannels() {
-        return channels;
-    }
+	public boolean throttleInUse() {
+		return this.useThrottle > 0;
+	}
 
-    public void setChannels(String channels) {
-        this.channels = channels;
-    }
+	public String getChannelsToJoin() {
+		return channelsToJoin;
+	}
+
+	public void setChannelsToJoin(String channels) {
+		this.channelsToJoin = channels;
+	}
 }

@@ -20,33 +20,51 @@ import java.util.List;
 @Repository(value = "ircServerDAO")
 public class IrcServerJPADAO implements IrcServerDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(IrcServerJPADAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(IrcServerJPADAO.class);
 
-    @PersistenceContext
-    private EntityManager entityManager;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    public IrcServerJPADAO() {
-    }
+	public IrcServerJPADAO() {
+	}
 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
-    @Override
-    public List<IrcServer> getIrcServers() throws HokanException {
-        try {
-            Query query = getEntityManager().createQuery("select is from IrcServer is");
-            List<IrcServer> resultList = query.getResultList();
-            return resultList;
+	@Override
+	public List<IrcServer> getIrcServers() throws HokanException {
+		try {
+			Query query = getEntityManager().createNativeQuery("select is from IrcServer is", IrcServer.class);
+			List<IrcServer> resultList = query.getResultList();
+			return resultList;
 
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new HokanException(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new HokanException(e.getMessage());
 
-        }
-    }
+		}
+	}
+
+	@Override
+	public IrcServer createIrcServer(String server, int port, String password, boolean useThrottle, String channelsToJoin) throws HokanException {
+		try {
+			IrcServer ircServer = new IrcServer();
+			ircServer.setServer(server);
+			ircServer.setPort(port);
+			ircServer.setServerPassword(password);
+			ircServer.setUseThrottle(useThrottle ? 1 : 0);
+			ircServer.setChannelsToJoin(channelsToJoin);
+			ircServer = entityManager.merge(ircServer);
+			return ircServer;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new HokanException(e.getMessage());
+		}
+	}
+
 }

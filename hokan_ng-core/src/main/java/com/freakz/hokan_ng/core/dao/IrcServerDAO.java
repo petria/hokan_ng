@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface IrcServerDAO {
 
-    List<IrcServer> getIrcServers() throws HokanException;
+	List<IrcServer> getIrcServers() throws HokanException;
 
+	IrcServer createIrcServer(String server, int port, String password, boolean useThrottle, String channelsToJoin) throws HokanException;
 }
