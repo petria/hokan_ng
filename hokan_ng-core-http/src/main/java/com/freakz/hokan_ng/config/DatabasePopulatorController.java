@@ -26,7 +26,7 @@ public class DatabasePopulatorController {
 	@ResponseBody
 	String populateDatabase() throws Exception {
 		List<IrcServer> servers = ircServerService.getIrcServers();
-		if (servers.size() > 0) {
+		if (servers.size() == 0) {
 			IrcServer ircServer = ircServerService.createIrcServer("localhost", 6669, "1234", false, "#HokanDEV,#HokanDEV2");
 			return ircServer.toString();
 		}

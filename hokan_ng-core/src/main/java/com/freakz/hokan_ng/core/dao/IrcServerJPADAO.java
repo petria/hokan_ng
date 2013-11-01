@@ -39,7 +39,7 @@ public class IrcServerJPADAO implements IrcServerDAO {
 	@Override
 	public List<IrcServer> getIrcServers() throws HokanException {
 		try {
-			Query query = getEntityManager().createNativeQuery("select is from IrcServer is", IrcServer.class);
+			Query query = getEntityManager().createNativeQuery("select * from IrcServer", IrcServer.class);
 			List<IrcServer> resultList = query.getResultList();
 			return resultList;
 
@@ -59,7 +59,7 @@ public class IrcServerJPADAO implements IrcServerDAO {
 			ircServer.setServerPassword(password);
 			ircServer.setUseThrottle(useThrottle ? 1 : 0);
 			ircServer.setChannelsToJoin(channelsToJoin);
-			ircServer = entityManager.merge(ircServer);
+			entityManager.persist(ircServer);
 			return ircServer;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
