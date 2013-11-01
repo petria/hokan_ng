@@ -22,6 +22,9 @@ public class IrcServer {
 	@Column(name = "ID")
 	private long id;
 
+	@Column(name = "NETWORK")
+	private String network;
+
 	@Column(name = "SERVER")
 	private String server;
 
@@ -38,6 +41,14 @@ public class IrcServer {
 	private String channelsToJoin;
 
 	public IrcServer() {
+	}
+
+	public String getNetwork() {
+		return network;
+	}
+
+	public void setNetwork(String network) {
+		this.network = network;
 	}
 
 	public String getServer() {

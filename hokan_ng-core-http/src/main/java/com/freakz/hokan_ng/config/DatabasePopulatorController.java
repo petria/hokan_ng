@@ -21,7 +21,7 @@ public class DatabasePopulatorController {
 	@Autowired
 	IrcServerService ircServerService;
 
-	@RequestMapping(value = "/hokan_ng/populateDatabase")
+	@RequestMapping(value = "/config/populateDatabase")
 	public
 	@ResponseBody
 	String populateDatabase() throws Exception {

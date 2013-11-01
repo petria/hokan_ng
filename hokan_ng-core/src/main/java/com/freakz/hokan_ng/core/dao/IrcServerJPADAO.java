@@ -51,9 +51,10 @@ public class IrcServerJPADAO implements IrcServerDAO {
 	}
 
 	@Override
-	public IrcServer createIrcServer(String server, int port, String password, boolean useThrottle, String channelsToJoin) throws HokanException {
+	public IrcServer createIrcServer(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin) throws HokanException {
 		try {
 			IrcServer ircServer = new IrcServer();
+			ircServer.setNetwork(network);
 			ircServer.setServer(server);
 			ircServer.setPort(port);
 			ircServer.setServerPassword(password);
