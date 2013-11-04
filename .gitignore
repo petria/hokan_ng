@@ -1,0 +1,11 @@
+target
+build
+buildNumber.properties
+.classpath
+.project
+.settings
+.struts-config.xml.strutsdia
+rebel.xml
+.idea
+*.iml
+out/
