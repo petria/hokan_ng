@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core.engine;
 
-import com.freakz.hokan_ng.common.entity.IrcServer;
+import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class HokanCore extends PircBot {
 
-	@Autowired
-	ConnectionManagerService connectionManager;
+  @Autowired
+  ConnectionManagerService connectionManager;
 
-	public HokanCore(IrcServer ircServer) {
-		super();
-	}
+  public HokanCore(IrcServerConfig ircServerConfig) {
+    super();
+  }
 
 }

@@ -6,7 +6,7 @@
 
     <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.freakz.hokan_ng.common.entity.IrcServer</class>
+        <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

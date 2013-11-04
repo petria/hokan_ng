@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core.service;
 
-import com.freakz.hokan_ng.common.entity.IrcServer;
+import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,33 +17,33 @@ import java.util.Map;
 @Service
 public class ConnectionManagerServiceImpl implements ConnectionManagerService {
 
-	@Autowired
-	IrcServerService ircServerService;
+  @Autowired
+  IrcServerConfigService ircServerService;
 
-	Map<String, IrcServer> configuredServers;
+  Map<String, IrcServerConfig> configuredServers;
 
-	public ConnectionManagerServiceImpl() {
-		List<IrcServer> servers = ircServerService.getIrcServers();
-		configuredServers = new HashMap<>();
-		for (IrcServer server : servers) {
-			configuredServers.put(server.getNetwork(), server);
-		}
-	}
+  public ConnectionManagerServiceImpl() {
+    List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
+    configuredServers = new HashMap<>();
+    for (IrcServerConfig server : servers) {
+      configuredServers.put(server.getNetwork(), server);
+    }
+  }
 
 
-	@Override
-	public void goOnline(String network) {
-		IrcServer server = configuredServers.get(network);
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
+  @Override
+  public void goOnline(String network) {
+    IrcServerConfig server = configuredServers.get(network);
+    //To change body of implemented methods use File | Settings | File Templates.
+  }
 
-	@Override
-	public void disconnect(String network) {
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
+  @Override
+  public void disconnect(String network) {
+    //To change body of implemented methods use File | Settings | File Templates.
+  }
 
-	@Override
-	public void disconnectAll() {
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
+  @Override
+  public void disconnectAll() {
+    //To change body of implemented methods use File | Settings | File Templates.
+  }
 }

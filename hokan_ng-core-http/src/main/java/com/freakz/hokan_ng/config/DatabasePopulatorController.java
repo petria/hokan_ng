@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.config;
 
-import com.freakz.hokan_ng.common.entity.IrcServer;
-import com.freakz.hokan_ng.core.service.IrcServerService;
+import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.core.service.IrcServerConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,19 +18,19 @@ import java.util.List;
 @Controller
 public class DatabasePopulatorController {
 
-	@Autowired
-	IrcServerService ircServerService;
+  @Autowired
+  IrcServerConfigService ircServerService;
 
-	@RequestMapping(value = "/config/populateDatabase")
-	public
-	@ResponseBody
-	String populateDatabase() throws Exception {
-		List<IrcServer> servers = ircServerService.getIrcServers();
-		if (servers.size() == 0) {
-			IrcServer ircServer = ircServerService.createIrcServer("localhost", 6669, "1234", false, "#HokanDEV,#HokanDEV2");
-			return ircServer.toString();
-		}
-		return "Servers already populated!";
-	}
+  @RequestMapping(value = "/config/populateDatabase")
+  public
+  @ResponseBody
+  String populateDatabase() throws Exception {
+    List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
+    if (servers.size() == 0) {
+      IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("localhost", "DevNET", 6669, "1234", false, "#HokanDEV,#HokanDEV2");
+      return ircServerConfig.toString();
+    }
+    return "Servers already populated!";
+  }
 
 }
