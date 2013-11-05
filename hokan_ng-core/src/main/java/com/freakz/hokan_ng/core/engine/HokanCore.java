@@ -1,9 +1,10 @@
 package com.freakz.hokan_ng.core.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.core.service.ConnectionManagerService;
+import com.freakz.hokan_ng.core.model.EngineConnector;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,28 +14,46 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Component
+@Scope("prototype")
 public class HokanCore extends PircBot {
 
-  @Autowired
-  ConnectionManagerService connectionManager;
+  private IrcServerConfig ircServerConfig;
 
-  private final IrcServerConfig ircServerConfig;
+  private EngineConnector engineConnector;
 
-  public HokanCore(String botName, IrcServerConfig ircServerConfig) {
+  public HokanCore() {
+  }
+
+  public void init(String botName, IrcServerConfig ircServerConfig) {
 
     this.ircServerConfig = ircServerConfig;
 
     setVerbose(true);
     setName(botName);
-    setVersion("Hokan NG"); // real name
-    setLogin("hokan_ng");
+    setVersion("Hokan NG");
+    setLogin("hokan");
 
     setMessageDelay(1100);
 
   }
 
+  @Autowired
+  public void setEngineConnector(EngineConnector engineConnector) {
+    this.engineConnector = engineConnector;
+  }
+
+
   public IrcServerConfig getIrcServerConfig() {
     return ircServerConfig;
+  }
+
+  @Override
+  protected void onDisconnect() {
+    this.engineConnector.engineConnectorDisconnected(this);
+  }
+
+  public String toString() {
+    return String.format("%s -> %s", this.getClass().toString(), this.ircServerConfig);
   }
 
 }

@@ -37,9 +37,9 @@ public class IrcServerConfigImpl implements IrcServerConfigService {
 
   @Override
   @Transactional
-  public IrcServerConfig createIrcServerConfig(String server, String network, int port, String password, boolean useThrottle, String channelsToJoin) {
+  public IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin) {
     try {
-      return ircServerConfigDAO.createIrcServerConfig(server, network, port, password, useThrottle, channelsToJoin);
+      return ircServerConfigDAO.createIrcServerConfig(network, server, port, password, useThrottle, channelsToJoin);
     } catch (HokanException e) {
       e.printStackTrace();
     }

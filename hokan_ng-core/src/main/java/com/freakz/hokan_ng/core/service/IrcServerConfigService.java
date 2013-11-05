@@ -14,6 +14,6 @@ public interface IrcServerConfigService {
 
   List<IrcServerConfig> getIrcServerConfigs();
 
-  IrcServerConfig createIrcServerConfig(String server, String network, int port, String password, boolean useThrottle, String channelsToJoin);
+  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin);
 
 }

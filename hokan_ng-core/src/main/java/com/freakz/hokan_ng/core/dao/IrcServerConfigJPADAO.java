@@ -2,8 +2,7 @@ package com.freakz.hokan_ng.core.dao;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.exception.HokanException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,9 +17,8 @@ import java.util.List;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Repository(value = "ircServerConfigDAO")
+@Slf4j
 public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
-
-  private static final Logger logger = LoggerFactory.getLogger(IrcServerConfigJPADAO.class);
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -45,7 +43,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
       return resultList;
 
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+//      log.error(e.getMessage(), e);
       throw new HokanException(e.getMessage());
 
     }
@@ -64,7 +62,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
       entityManager.persist(ircServerConfig);
       return ircServerConfig;
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+//      log.error(e.getMessage(), e);
       throw new HokanException(e.getMessage());
     }
   }

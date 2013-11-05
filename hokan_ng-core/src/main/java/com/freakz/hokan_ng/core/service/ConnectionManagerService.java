@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.core.service;
 
+import com.freakz.hokan_ng.core.exception.HokanException;
+
 /**
  * Date: 3.6.2013
  * Time: 10:39
@@ -8,10 +10,10 @@ package com.freakz.hokan_ng.core.service;
  */
 public interface ConnectionManagerService {
 
-	void goOnline(String network);
+  void goOnline(String network) throws HokanException;
 
-	void disconnect(String network);
+  void disconnect(String network);
 
-	void disconnectAll();
+  void disconnectAll();
 
 }

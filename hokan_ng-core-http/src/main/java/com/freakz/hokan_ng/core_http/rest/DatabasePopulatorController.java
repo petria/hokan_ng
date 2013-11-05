@@ -27,7 +27,7 @@ public class DatabasePopulatorController {
   String populateDatabase() throws Exception {
     List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
     if (servers.size() == 0) {
-      IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("localhost", "DevNET", 6669, "1234", false, "#HokanDEV,#HokanDEV2");
+      IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("DevNET", "localhost", 6669, "1111", false, "#HokanDEV,#HokanDEV2");
       return ircServerConfig.toString();
     }
     return "Servers already populated!";

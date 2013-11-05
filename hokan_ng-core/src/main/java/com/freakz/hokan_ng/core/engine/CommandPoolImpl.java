@@ -22,6 +22,9 @@ public class CommandPoolImpl implements CommandPool {
   private ExecutorService executor = Executors.newCachedThreadPool();
   private List<CommandRunner> activeRunners = new ArrayList<>();
 
+  public CommandPoolImpl() {
+  }
+
   @Override
   public void startRunnable(CommandRunnable runnable) {
     startRunnable(runnable, null);

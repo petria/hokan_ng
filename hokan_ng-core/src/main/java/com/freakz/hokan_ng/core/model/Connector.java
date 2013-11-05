@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.core.model;
 
+import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+
 /**
  * User: petria
  * Date: 11/4/13
@@ -9,7 +11,7 @@ package com.freakz.hokan_ng.core.model;
  */
 public interface Connector {
 
-  void connect();
+  void connect(String nick, EngineConnector engineConnector, IrcServerConfig configuredServer);
 
   void abortConnect();
 

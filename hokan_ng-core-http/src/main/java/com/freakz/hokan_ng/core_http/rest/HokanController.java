@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core_http.rest;
 
-import org.jibble.pircbot.PircBot;
+import com.freakz.hokan_ng.core.service.ConnectionManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,11 +16,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HokanController {
 
-	@RequestMapping(value = "/hokan_ng/goOnline")
-	public
-	@ResponseBody
-	String goOnline() throws Exception {
+  @Autowired
+  ConnectionManagerService connectionManager;
+
+  @RequestMapping(value = "/control/goOnline")
+  public
+  @ResponseBody
+  String goOnline() throws Exception {
+    connectionManager.goOnline("DevNET");
     return "ok";
-	}
+  }
+
+  @RequestMapping(value = "/control/disconnectAll")
+  public
+  @ResponseBody
+  String disconnectAll() throws Exception {
+    connectionManager.disconnectAll();
+    return "ok";
+  }
 
 }

@@ -6,6 +6,8 @@ import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,24 +16,29 @@ import org.springframework.stereotype.Component;
  *
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
-@Component
 @Slf4j
+@Component
+@Scope("prototype")
 public class AsyncConnector implements Connector, CommandRunnable {
 
   @Autowired
-  private CommandPool commandPool;
+  private ApplicationContext context;
 
-  private final String botNick;
-  private final EngineConnector engineConnector;
-  private final IrcServerConfig configuredServer;
+  private CommandPool commandPool;
+  private String botNick;
+  private EngineConnector engineConnector;
+  private IrcServerConfig configuredServer;
 
   private boolean aborted = false;
 
-  public AsyncConnector(String nick, EngineConnector engineConnector, IrcServerConfig configuredServer) {
-    this.botNick = nick;
-    this.engineConnector = engineConnector;
-    this.configuredServer = configuredServer;
+  public AsyncConnector() {
   }
+
+  @Autowired
+  public void setCommandPool(CommandPool commandPool) {
+    this.commandPool = commandPool;
+  }
+
 
   @Override
   public void abortConnect() {
@@ -39,7 +46,10 @@ public class AsyncConnector implements Connector, CommandRunnable {
   }
 
   @Override
-  public void connect() {
+  public void connect(String nick, EngineConnector engineConnector, IrcServerConfig configuredServer) {
+    this.botNick = nick;
+    this.engineConnector = engineConnector;
+    this.configuredServer = configuredServer;
     commandPool.startRunnable(this);
   }
 
@@ -55,8 +65,9 @@ public class AsyncConnector implements Connector, CommandRunnable {
     HokanCore engine = null;
     while (tryCount > 0 && aborted == false) {
       connectAttemps++;
+      engine = context.getBean(HokanCore.class);
       try {
-        engine = new HokanCore(this.botNick, this.configuredServer);
+        engine.init(this.botNick, this.configuredServer);
 
         if (serverPassword == null || serverPassword.length() == 0) {
           engine.connect(server, serverPort);
@@ -67,10 +78,15 @@ public class AsyncConnector implements Connector, CommandRunnable {
 
       } catch (NickAlreadyInUseException e) {
         engine.disconnect();
-        this.engineConnector.engineConnectorNickAlreadyInUse(this, this.configuredServer, this.botNick);
-        aborted = true;
+//        this.engineConnector.engineConnectorNickAlreadyInUse(this, this.configuredServer, this.botNick);
+//        aborted = true;
+        this.botNick = String.format("_%s_", botNick);
 
       } catch (Exception e) {
+        String message = e.getMessage();
+        if (message.contains("Nickname too long")) {
+          this.botNick = String.format("_%d_", tryCount);
+        }
         if (engine != null) {
           engine.disconnect();
         }
@@ -80,15 +96,24 @@ public class AsyncConnector implements Connector, CommandRunnable {
         this.engineConnector.engineConnectorGotOnline(this, engine);
       } else {
         tryCount--;
-        try {
-          int sleep = 5000 + ((connectAttemps - 1) * 5000);
-          log.info("[" + connectAttemps + "] Sleeping " + (sleep / 1000) + " seconds");
-          Thread.sleep(sleep);
-          log.info("Trying again: " + connectAttemps);
-        } catch (InterruptedException e) { /* do nothing */}
+        if (tryCount == 0) {
+          this.engineConnector.engineConnectorTooManyConnectAttempts(this, this.configuredServer);
+          aborted = true;
+        } else {
+          try {
+            int sleep = 1000 + ((connectAttemps - 1) * 1000);
+            log.info("[" + connectAttemps + "] Sleeping " + (sleep / 1000) + " seconds");
+            Thread.sleep(sleep);
+            log.info("Trying again: " + connectAttemps);
+          } catch (InterruptedException e) { /* do nothing */}
+        }
       }
     } // while
 
+  }
+
+  public String toString() {
+    return String.format("[%s] %s:%d", this.configuredServer.getNetwork(), this.configuredServer.getServer(), this.configuredServer.getPort());
   }
 
 }

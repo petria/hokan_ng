@@ -1,5 +1,5 @@
 #!/bin/sh
 
-echo "rm -rf webapps/hokan-*"
-rm -rf webapps/yel-*
+echo "rm -rf webapps/hokan*"
+rm -rf webapps/hokan*
 echo "..done"
