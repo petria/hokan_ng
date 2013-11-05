@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core.engine;
+package com.freakz.hokan_ng.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;

@@ -1,9 +1,13 @@
 package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.engine.AsyncConnector;
+import com.freakz.hokan_ng.engine.HokanCore;
+import com.freakz.hokan_ng.model.EngineConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +19,19 @@ import java.util.Map;
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Service
-public class ConnectionManagerServiceImpl implements ConnectionManagerService {
+public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector {
 
   @Autowired
   IrcServerConfigService ircServerService;
 
   Map<String, IrcServerConfig> configuredServers;
 
-  public ConnectionManagerServiceImpl() {
+  List<HokanCore> connectedEngines = new ArrayList<>();
+
+  List<AsyncConnector> connectors = new ArrayList<>();
+
+
+  public ConnectionServiceImpl() {
     List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
     configuredServers = new HashMap<>();
     for (IrcServerConfig server : servers) {
@@ -33,8 +42,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService {
 
   @Override
   public void goOnline(String network) {
-    IrcServerConfig server = configuredServers.get(network);
-    //To change body of implemented methods use File | Settings | File Templates.
+    IrcServerConfig configuredServer = configuredServers.get(network);
+    AsyncConnector connector = new AsyncConnector(configuredServer);
+    this.connectors.add(connector);
+    connector.connect();
   }
 
   @Override
@@ -45,5 +56,20 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService {
   @Override
   public void disconnectAll() {
     //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public void engineConnected(HokanCore engine) {
+    this.connectedEngines.add(engine);
+  }
+
+  @Override
+  public void engineDisconnected(HokanCore engine) {
+    this.connectedEngines.remove(engine);
+  }
+
+  @Override
+  public List<HokanCore> getConnectedEngines() {
+    return this.connectedEngines;
   }
 }

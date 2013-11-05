@@ -6,7 +6,6 @@ package com.freakz.hokan_ng.core.service;
  *
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
-
 public interface ConnectionManagerService {
 
 	void goOnline(String network);
