@@ -64,6 +64,7 @@ public class JMegaHal implements Serializable {
   /**
    * Adds a new sentence to the 'brain'
    */
+  @SuppressWarnings("unchecked")
   public void add(String sentence) {
     sentence = sentence.trim();
     ArrayList parts = new ArrayList();
@@ -153,6 +154,7 @@ public class JMegaHal implements Serializable {
   /**
    * Generate a sentence that includes (if possible) the specified word.
    */
+  @SuppressWarnings("unchecked")
   public String getSentence(String word) {
     LinkedList parts = new LinkedList();
 

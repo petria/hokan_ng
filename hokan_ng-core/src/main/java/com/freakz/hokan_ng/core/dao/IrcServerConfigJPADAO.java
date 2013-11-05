@@ -37,6 +37,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public List<IrcServerConfig> getIrcServerConfigs() throws HokanException {
     try {
       Query query = getEntityManager().createNativeQuery("select * from IrcServerConfig", IrcServerConfig.class);

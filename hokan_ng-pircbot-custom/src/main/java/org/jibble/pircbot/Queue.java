@@ -50,6 +50,7 @@ public class Queue {
    *
    * @param o The Object to be added to the Queue.
    */
+  @SuppressWarnings("unchecked")
   public void add(Object o) {
     synchronized (_queue) {
       _queue.addElement(o);
@@ -63,6 +64,7 @@ public class Queue {
    *
    * @param o The Object to be added to the Queue.
    */
+  @SuppressWarnings("unchecked")
   public void addFront(Object o) {
     synchronized (_queue) {
       _queue.insertElementAt(o, 0);

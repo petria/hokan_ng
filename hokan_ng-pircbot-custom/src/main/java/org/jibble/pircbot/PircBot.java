@@ -1073,6 +1073,7 @@ public abstract class PircBot implements ReplyConstants {
    * @param code     The three-digit numerical code for the response.
    * @param response The full response from the IRC server.
    */
+  @SuppressWarnings("unchecked")
   private final void processServerResponse(int code, String response) {
 
     if (code == RPL_LIST) {
@@ -2824,6 +2825,7 @@ public abstract class PircBot implements ReplyConstants {
    * Add a user to the specified channel in our memory.
    * Overwrite the existing entry if it exists.
    */
+  @SuppressWarnings("unchecked")
   private final void addUser(String channel, User user) {
     channel = channel.toLowerCase();
     synchronized (_channels) {
@@ -2910,7 +2912,7 @@ public abstract class PircBot implements ReplyConstants {
     }
   }
 
-
+  @SuppressWarnings("unchecked")
   private final void updateUser(String channel, int userMode, String nick) {
     channel = channel.toLowerCase();
     synchronized (_channels) {
