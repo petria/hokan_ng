@@ -42,7 +42,6 @@ public class HokanCore extends PircBot {
     this.engineConnector = engineConnector;
   }
 
-
   public IrcServerConfig getIrcServerConfig() {
     return ircServerConfig;
   }

@@ -99,5 +99,7 @@ public class IrcServerConfig {
     this.channelsToJoin = channels;
   }
 
-
+  public String toString() {
+    return String.format("[%s] %s:%d(%s) - %s ", this.network, this.server, this.port, this.serverPassword, this.channelsToJoin);
+  }
 }

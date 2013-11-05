@@ -62,8 +62,8 @@ public class AsyncConnector implements Connector, CommandRunnable {
 
     boolean connectOk = false;
     int connectAttemps = 0;
-    HokanCore engine = null;
-    while (tryCount > 0 && aborted == false) {
+    HokanCore engine;
+    while (tryCount > 0 && !aborted) {
       connectAttemps++;
       engine = context.getBean(HokanCore.class);
       try {

@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.core_http.rest;
 
+import com.freakz.hokan_ng.core.exception.HokanException;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,15 +23,19 @@ public class HokanController {
   @RequestMapping(value = "/control/goOnline")
   public
   @ResponseBody
-  String goOnline() throws Exception {
-    connectionManager.goOnline("DevNET");
+  String goOnline() {
+    try {
+      connectionManager.goOnline("DevNET");
+    } catch (HokanException e) {
+      return e.getMessage();
+    }
     return "ok";
   }
 
   @RequestMapping(value = "/control/disconnectAll")
   public
   @ResponseBody
-  String disconnectAll() throws Exception {
+  String disconnectAll() {
     connectionManager.disconnectAll();
     return "ok";
   }
