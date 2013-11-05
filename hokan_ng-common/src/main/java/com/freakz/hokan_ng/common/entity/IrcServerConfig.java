@@ -83,8 +83,8 @@ public class IrcServerConfig {
     this.useThrottle = useThrottle;
   }
 
-  public boolean throttleInUse() {
-    return this.useThrottle > 0;
+  public boolean isThrottleInUse() {
+    return getUseThrottle() > 0;
   }
 
   public String getChannelsToJoin() {
@@ -100,6 +100,11 @@ public class IrcServerConfig {
   }
 
   public String toString() {
-    return String.format("[%s] %s:%d(%s) - %s ", this.network, this.server, this.port, this.serverPassword, this.channelsToJoin);
+    return String.format("%s: [(%d) %s %s:%d(%s) throttle: %s - %s]",
+        this.getClass().toString(), getId(), this.network, this.server, this.port, this.serverPassword, isThrottleInUse(), this.channelsToJoin);
+  }
+
+  public long getId() {
+    return id;
   }
 }
