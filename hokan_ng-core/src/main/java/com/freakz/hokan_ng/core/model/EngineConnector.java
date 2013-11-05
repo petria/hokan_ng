@@ -1,7 +1,6 @@
-package com.freakz.hokan_ng.model;
+package com.freakz.hokan_ng.core.model;
 
-import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.engine.HokanCore;
+import com.freakz.hokan_ng.core.engine.HokanCore;
 
 import java.util.List;
 

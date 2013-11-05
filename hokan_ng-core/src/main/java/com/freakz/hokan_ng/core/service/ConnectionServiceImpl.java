@@ -1,9 +1,9 @@
 package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.engine.AsyncConnector;
-import com.freakz.hokan_ng.engine.HokanCore;
-import com.freakz.hokan_ng.model.EngineConnector;
+import com.freakz.hokan_ng.core.engine.AsyncConnector;
+import com.freakz.hokan_ng.core.engine.HokanCore;
+import com.freakz.hokan_ng.core.model.EngineConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

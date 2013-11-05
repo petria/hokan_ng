@@ -1,6 +1,4 @@
-package com.freakz.hokan_ng.model;
-
-import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+package com.freakz.hokan_ng.core.model;
 
 /**
  * User: petria

@@ -1,7 +1,7 @@
-package com.freakz.hokan_ng.engine;
+package com.freakz.hokan_ng.core.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.model.Connector;
+import com.freakz.hokan_ng.core.model.Connector;
 
 /**
  * Date: 11/1/13
