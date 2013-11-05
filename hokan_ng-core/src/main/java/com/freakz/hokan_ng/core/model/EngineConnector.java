@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.core.model;
 
+
+import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.engine.HokanCore;
 
 import java.util.List;
@@ -13,10 +15,8 @@ import java.util.List;
  */
 public interface EngineConnector {
 
-  void engineConnected(HokanCore engine);
+  void engineConnectorNickAlreadyInUse(Connector connector, IrcServerConfig configuredServer, String nickInUse);
 
-  void engineDisconnected(HokanCore engine);
-
-  List<HokanCore> getConnectedEngines();
+  void engineConnectorGotOnline(Connector connector, HokanCore engine);
 
 }

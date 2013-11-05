@@ -18,8 +18,23 @@ public class HokanCore extends PircBot {
   @Autowired
   ConnectionManagerService connectionManager;
 
-  public HokanCore(IrcServerConfig ircServerConfig) {
-    super();
+  private final IrcServerConfig ircServerConfig;
+
+  public HokanCore(String botName, IrcServerConfig ircServerConfig) {
+
+    this.ircServerConfig = ircServerConfig;
+
+    setVerbose(true);
+    setName(botName);
+    setVersion("Hokan NG"); // real name
+    setLogin("hokan_ng");
+
+    setMessageDelay(1100);
+
+  }
+
+  public IrcServerConfig getIrcServerConfig() {
+    return ircServerConfig;
   }
 
 }

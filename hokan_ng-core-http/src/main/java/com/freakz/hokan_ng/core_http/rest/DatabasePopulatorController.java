@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.config;
+package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.service.IrcServerConfigService;

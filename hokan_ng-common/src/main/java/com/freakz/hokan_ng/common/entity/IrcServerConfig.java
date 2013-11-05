@@ -91,7 +91,13 @@ public class IrcServerConfig {
     return channelsToJoin;
   }
 
+  public String[] getChannels() {
+    return this.getChannelsToJoin().split(",");
+  }
+
   public void setChannelsToJoin(String channels) {
     this.channelsToJoin = channels;
   }
+
+
 }
