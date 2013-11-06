@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.common.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -77,6 +78,20 @@ public class Uptime {
     ret[3] = dd;
 
     return ret;
+  }
+
+  public String toString() {
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    String[] format = {"00", "00", "00", "0"};
+    StringBuilder sb = new StringBuilder();
+    Integer[] ut = getTimeDiff();
+    sb.append(sdf.format(new Date()));
+    sb.append(" up %3 day");
+    if (ut[3] > 1) {
+      sb.append("s");
+    }
+    sb.append(" %2:%1:%0, ");
+    return StringStuff.fillTemplate(sb.toString(), ut, format);
   }
 
 }
