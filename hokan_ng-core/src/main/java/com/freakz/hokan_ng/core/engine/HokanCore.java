@@ -1,6 +1,8 @@
 package com.freakz.hokan_ng.core.engine;
 
+import com.freakz.hokan_ng.commmon.rest.EngineRequest;
 import com.freakz.hokan_ng.commmon.rest.EngineResponse;
+import com.freakz.hokan_ng.commmon.rest.IrcEvent;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 @Slf4j
-public class HokanCore extends PircBot {
+public class HokanCore extends PircBot implements EngineEventHandler {
 
   private IrcServerConfig ircServerConfig;
 
@@ -101,10 +103,18 @@ public class HokanCore extends PircBot {
 
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname, message);
+    EngineRequest request = new EngineRequest(ircEvent);
+
     if (message.startsWith("!")) {
-      EngineResponse response = this.engineCommunicator.sendEngineMessage(message);
-      sendMessage(channel, response.getResponse());
-      log.info("engine response: " + response.getResponse());
+      this.engineCommunicator.sendEngineMessage(request, this);
     }
   }
+
+  @Override
+  public void handleEngineResponse(EngineResponse response) {
+    sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
+    log.info("engine response: " + response.getResponseMessage());
+  }
+
 }

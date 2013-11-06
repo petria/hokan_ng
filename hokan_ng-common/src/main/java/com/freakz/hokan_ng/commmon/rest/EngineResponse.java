@@ -13,20 +13,35 @@ public class EngineResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private String response;
+  private int responseStatus;
+  private String responseMessage;
+  private EngineRequest request;
 
   public EngineResponse() {
   }
 
-  public EngineResponse(String response) {
-    this.response = response;
+  public EngineResponse(EngineRequest request) {
+    this.request = request;
   }
 
-  public String getResponse() {
-    return response;
+  public int getResponseStatus() {
+    return responseStatus;
   }
 
-  public void setResponse(String response) {
-    this.response = response;
+  public void setResponseStatus(int responseStatus) {
+    this.responseStatus = responseStatus;
   }
+
+  public String getResponseMessage() {
+    return responseMessage;
+  }
+
+  public void setResponseMessage(String responseMessage) {
+    this.responseMessage = responseMessage;
+  }
+
+  public EngineRequest getRequest() {
+    return request;
+  }
+
 }

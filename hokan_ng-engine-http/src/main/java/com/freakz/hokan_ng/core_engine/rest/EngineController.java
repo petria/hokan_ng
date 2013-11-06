@@ -21,7 +21,7 @@ public class EngineController {
 
   public static final String JSON = "application/json";
 
-  @RequestMapping(value = "/handle", produces = JSON, consumes = JSON)
+  @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
   @ResponseBody
   EngineResponse handleRequest(
@@ -29,7 +29,8 @@ public class EngineController {
   ) {
 
     log.info("Got request: " + request);
-    EngineResponse response = new EngineResponse("hello: " + request.getRequest());
+    EngineResponse response = new EngineResponse(request);
+    response.setResponseMessage("Hello " + request.getIrcEvent().getMessage());
     try {
       Thread.sleep(10 * 1000);
     } catch (InterruptedException e) {
@@ -39,7 +40,7 @@ public class EngineController {
 
   }
 
-  @RequestMapping(value = "/test", produces = JSON, consumes = JSON)
+  @RequestMapping(value = "/test")
   public
   @ResponseBody
   String handleTest(

@@ -122,6 +122,10 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     if (engine == null) {
       throw new HokanException("No connected engine found for network: " + network);
     }
+/*    IrcServerConfig config = engine.getIrcServerConfig();
+    config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
+    this.ircServerConfigService.updateIrcServerConfig(config);*/
+
     engine.disconnect();
     this.connectedEngines.remove(engine);
     log.info("Disconnected engine: " + engine);
@@ -133,6 +137,9 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     for (HokanCore engine : this.connectedEngines.values()) {
       msg += engine.toString();
       msg += "\n";
+/*      IrcServerConfig config = engine.getIrcServerConfig();
+      config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
+      this.ircServerConfigService.updateIrcServerConfig(config);*/
       engine.disconnect();
     }
     this.connectedEngines.clear();
@@ -187,8 +194,8 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   @Override
   public void engineConnectorDisconnected(HokanCore engine) {
     IrcServerConfig config = engine.getIrcServerConfig();
-    config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
-    this.ircServerConfigService.updateIrcServerConfig(config);
+//    config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
+//    this.ircServerConfigService.updateIrcServerConfig(config);
 
     String network = config.getNetwork();
     this.connectedEngines.remove(network);

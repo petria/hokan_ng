@@ -12,22 +12,20 @@ import java.io.Serializable;
 public class EngineRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  private String request;
+  private IrcEvent ircEvent;
 
   public EngineRequest() {
   }
 
-  public EngineRequest(String request) {
-    this.request = request;
+  public EngineRequest(IrcEvent ircEvent) {
+    this.ircEvent = ircEvent;
   }
 
-  public String getRequest() {
-    return request;
+  public IrcEvent getIrcEvent() {
+    return ircEvent;
   }
 
-  public void setRequest(String request) {
-    this.request = request;
+  public void setIrcEvent(IrcEvent ircEvent) {
+    this.ircEvent = ircEvent;
   }
-
 }

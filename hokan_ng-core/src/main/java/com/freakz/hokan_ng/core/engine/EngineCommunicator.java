@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core.engine;
 
-import com.freakz.hokan_ng.commmon.rest.EngineResponse;
+import com.freakz.hokan_ng.commmon.rest.EngineRequest;
 
 /**
  * User: petria
@@ -11,6 +11,6 @@ import com.freakz.hokan_ng.commmon.rest.EngineResponse;
  */
 public interface EngineCommunicator {
 
-  EngineResponse sendEngineMessage(String request);
+  void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler);
 
 }
