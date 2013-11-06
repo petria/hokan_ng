@@ -61,6 +61,10 @@ public class HokanCore extends PircBot {
     return ircServerConfig;
   }
 
+  public void setIrcServerConfig(IrcServerConfig ircServerConfig) {
+    this.ircServerConfig = ircServerConfig;
+  }
+
   public String toString() {
     return String.format("%s -> %s", this.getClass().toString(), this.ircServerConfig);
   }

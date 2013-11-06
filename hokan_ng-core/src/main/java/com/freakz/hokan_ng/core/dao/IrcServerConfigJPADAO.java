@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core.dao;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.core.exception.HokanException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -50,7 +51,13 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
   }
 
   @Override
-  public IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin) throws HokanException {
+  public IrcServerConfig createIrcServerConfig(String network,
+                                               String server,
+                                               int port,
+                                               String password,
+                                               boolean useThrottle,
+                                               String channelsToJoin,
+                                               IrcServerConfigState state) throws HokanException {
     try {
       IrcServerConfig ircServerConfig = new IrcServerConfig();
       ircServerConfig.setNetwork(network);
@@ -59,10 +66,20 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
       ircServerConfig.setServerPassword(password);
       ircServerConfig.setUseThrottle(useThrottle ? 1 : 0);
       ircServerConfig.setChannelsToJoin(channelsToJoin);
+      ircServerConfig.setIrcServerConfigState(state);
       entityManager.persist(ircServerConfig);
       return ircServerConfig;
     } catch (Exception e) {
 //      log.error(e.getMessage(), e);
+      throw new HokanException(e.getMessage());
+    }
+  }
+
+  @Override
+  public IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanException {
+    try {
+      return entityManager.merge(ircServerConfig);
+    } catch (Exception e) {
       throw new HokanException(e.getMessage());
     }
   }

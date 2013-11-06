@@ -2,6 +2,8 @@ package com.freakz.hokan_ng.common.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +42,12 @@ public class IrcServerConfig {
   @Column(name = "CHANNELS_TO_JOIN")
   private String channelsToJoin;
 
+  @Column(name = "STATE", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private IrcServerConfigState ircServerConfigState;
+
   public IrcServerConfig() {
+    this.ircServerConfigState = IrcServerConfigState.DISCONNECTED;
   }
 
   public String getNetwork() {
@@ -97,6 +104,14 @@ public class IrcServerConfig {
 
   public void setChannelsToJoin(String channels) {
     this.channelsToJoin = channels;
+  }
+
+  public IrcServerConfigState getIrcServerConfigState() {
+    return ircServerConfigState;
+  }
+
+  public void setIrcServerConfigState(IrcServerConfigState ircServerConfigState) {
+    this.ircServerConfigState = ircServerConfigState;
   }
 
   public String toString() {

@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.core.engine.AsyncConnector;
 import com.freakz.hokan_ng.core.engine.HokanCore;
 import com.freakz.hokan_ng.core.exception.HokanException;
@@ -51,7 +52,15 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     configuredServers = new HashMap<>();
     for (IrcServerConfig server : servers) {
       configuredServers.put(server.getNetwork(), server);
+      if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
+        try {
+          connect(server.getNetwork());
+        } catch (HokanException e) {
+          log.error("Couldn't get engine online: " + server.getNetwork(), e);
+        }
+      }
     }
+
   }
 
   @Override
@@ -73,6 +82,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @Override
   public void connect(String network) throws HokanException {
+//    initConfiguredServerMap();
 
     HokanCore engine = getConnectedEngine(network);
     if (engine != null) {
@@ -148,11 +158,16 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   @Override
   public void engineConnectorGotOnline(Connector connector, HokanCore engine) {
 
-    String network = engine.getIrcServerConfig().getNetwork();
+    IrcServerConfig config = engine.getIrcServerConfig();
+    config.setIrcServerConfigState(IrcServerConfigState.CONNECTED);
+    this.ircServerConfigService.updateIrcServerConfig(config);
+    engine.setIrcServerConfig(config);
+
+    String network = config.getNetwork();
     this.connectors.remove(network);
     this.connectedEngines.put(network, engine);
 
-    String[] channels = engine.getIrcServerConfig().getChannels();
+    String[] channels = config.getChannels();
     for (String channelToJoin : channels) {
       engine.joinChannel(channelToJoin);
     }
@@ -161,7 +176,11 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @Override
   public void engineConnectorDisconnected(HokanCore engine) {
-    String network = engine.getIrcServerConfig().getNetwork();
+    IrcServerConfig config = engine.getIrcServerConfig();
+    config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
+    this.ircServerConfigService.updateIrcServerConfig(config);
+
+    String network = config.getNetwork();
     this.connectedEngines.remove(network);
     log.info("Engine disconnected: " + engine);
   }
