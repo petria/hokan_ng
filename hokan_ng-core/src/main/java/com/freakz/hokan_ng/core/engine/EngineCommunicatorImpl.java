@@ -3,7 +3,6 @@ package com.freakz.hokan_ng.core.engine;
 import com.freakz.hokan_ng.commmon.rest.EngineRequest;
 import com.freakz.hokan_ng.commmon.rest.EngineResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 @Slf4j
-public class EngineCommunicatorImpl implements  EngineCommunicator {
+public class EngineCommunicatorImpl implements EngineCommunicator {
 
   public EngineCommunicatorImpl() {
   }
@@ -40,7 +39,7 @@ public class EngineCommunicatorImpl implements  EngineCommunicator {
     RestTemplate restTemplate = new RestTemplate();
     EngineRequest engineRequest = new EngineRequest(request);
     HttpEntity<EngineRequest> httpEntity = new HttpEntity<>(engineRequest, getRestHeaders());
-    String restUrl = getRestBaseUrl() + "/handle";
+    String restUrl = getRestBaseUrl() + "handle";
     log.info("Making request to: " + restUrl);
     ResponseEntity<EngineResponse> responseEnt
         = restTemplate.exchange(restUrl, HttpMethod.POST, httpEntity, EngineResponse.class);

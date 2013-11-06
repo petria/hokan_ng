@@ -99,6 +99,7 @@ public class HokanCore extends PircBot {
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     if (message.startsWith("!")) {
       EngineResponse response = this.engineCommunicator.sendEngineMessage(message);
+      sendMessage(channel, response.getResponse());
       log.info("engine response: " + response.getResponse());
     }
   }

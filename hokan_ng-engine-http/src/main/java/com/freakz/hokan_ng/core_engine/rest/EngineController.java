@@ -4,9 +4,7 @@ import com.freakz.hokan_ng.commmon.rest.EngineRequest;
 import com.freakz.hokan_ng.commmon.rest.EngineResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,6 +30,11 @@ public class EngineController {
 
     log.info("Got request: " + request);
     EngineResponse response = new EngineResponse("hello: " + request.getRequest());
+    try {
+      Thread.sleep(10 * 1000);
+    } catch (InterruptedException e) {
+      // ignore
+    }
     return response;
 
   }
