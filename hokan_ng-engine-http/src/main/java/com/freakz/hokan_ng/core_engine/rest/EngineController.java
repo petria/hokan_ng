@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.core_engine.rest;
 
-import com.freakz.hokan_ng.commmon.rest.EngineRequest;
-import com.freakz.hokan_ng.commmon.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.CommandBase;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class EngineController {
 
-  public static final String JSON = "application/json";
 
   @Autowired
   private CommandHandlerService commandHandler;

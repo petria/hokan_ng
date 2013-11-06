@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
-import com.freakz.hokan_ng.commmon.rest.IrcEvent;
+
+import com.freakz.hokan_ng.common.rest.IrcEvent;
 
 /**
  * User: petria
@@ -11,6 +12,9 @@ import com.freakz.hokan_ng.commmon.rest.IrcEvent;
  */
 public class CommandBase {
 
+  public String getName() {
+    return "Name";
+  }
 
   public String handleLine(IrcEvent ircEvent) {
     return "fdfsd";

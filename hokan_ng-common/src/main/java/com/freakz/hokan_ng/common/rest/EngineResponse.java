@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.commmon.rest;
+package com.freakz.hokan_ng.common.rest;
 
 import java.io.Serializable;
 

@@ -1,9 +1,9 @@
 package com.freakz.hokan_ng.core.engine;
 
-import com.freakz.hokan_ng.commmon.rest.EngineRequest;
-import com.freakz.hokan_ng.commmon.rest.EngineResponse;
-import com.freakz.hokan_ng.commmon.rest.IrcEvent;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;

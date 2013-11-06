@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
-import com.freakz.hokan_ng.commmon.rest.IrcEvent;
+
+import com.freakz.hokan_ng.common.rest.IrcEvent;
 import org.springframework.stereotype.Component;
 
 /**

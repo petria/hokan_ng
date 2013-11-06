@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core.engine;
 
-import com.freakz.hokan_ng.commmon.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
 
 /**
  * User: petria
