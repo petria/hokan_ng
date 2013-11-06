@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.core.engine;
 
+import com.freakz.hokan_ng.commmon.rest.EngineResponse;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ public class HokanCore extends PircBot {
 
   private EngineConnector engineConnector;
 
+  private EngineCommunicator engineCommunicator;
+
   private Map<String, String> serverProperties = new HashMap<>();
 
   public HokanCore() {
@@ -47,6 +50,11 @@ public class HokanCore extends PircBot {
   @Autowired
   public void setEngineConnector(EngineConnector engineConnector) {
     this.engineConnector = engineConnector;
+  }
+
+  @Autowired
+  public void setEngineCommunicator(EngineCommunicator engineCommunicator) {
+    this.engineCommunicator = engineCommunicator;
   }
 
   public IrcServerConfig getIrcServerConfig() {
@@ -84,6 +92,14 @@ public class HokanCore extends PircBot {
           log.info("--> {}: {}", keyValue[0], keyValue[1]);
         }
       }
+    }
+  }
+
+  @Override
+  protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+    if (message.startsWith("!")) {
+      EngineResponse response = this.engineCommunicator.sendEngineMessage(message);
+      log.info("engine response: " + response.getResponse());
     }
   }
 }
