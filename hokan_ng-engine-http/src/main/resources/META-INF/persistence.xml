@@ -1,0 +1,24 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/hokan_ng-mysql"/>
+            <!-- <property name="hibernate.connection.datasource" value="jdbc/hokan_ng-mysql"/> -->
+            <!-- WC: EI java:comp/env/   -->
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

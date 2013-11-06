@@ -13,6 +13,7 @@
         <module>hokan_ng-common</module>
         <module>hokan_ng-core</module>
         <module>hokan_ng-core-http</module>
+        <module>hokan_ng-engine-http</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

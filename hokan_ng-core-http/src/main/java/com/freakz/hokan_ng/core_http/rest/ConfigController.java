@@ -16,7 +16,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Controller
-public class DatabasePopulatorController {
+public class ConfigController {
 
   @Autowired
   IrcServerConfigService ircServerService;
