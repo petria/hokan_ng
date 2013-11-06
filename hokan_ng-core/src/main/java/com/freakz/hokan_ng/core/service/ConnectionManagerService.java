@@ -21,4 +21,5 @@ public interface ConnectionManagerService {
 
   Collection<Connector> getConnectors();
 
+  void updateServers();
 }

@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
+import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import com.freakz.hokan_ng.core.service.IrcServerConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,14 +23,22 @@ public class ConfigController {
   @Autowired
   IrcServerConfigService ircServerService;
 
+  @Autowired
+  ConnectionManagerService connectionManager;
+
   @RequestMapping(value = "/config/populateDatabase")
   public
   @ResponseBody
   String populateDatabase() throws Exception {
     List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
     if (servers.size() == 0) {
+      String rpl = "Adding IrcServerConfig\n";
       IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("DevNET", "localhost", 6669, "1111", false, "#HokanDEV,#HokanDEV2", IrcServerConfigState.DISCONNECTED);
-      return ircServerConfig.toString();
+      rpl += ircServerConfig + "\n";
+      ircServerConfig = ircServerService.createIrcServerConfig("IrcNET", "irc.elisa.fi", 6669, null, true, "#HokanDEV", IrcServerConfigState.DISCONNECTED);
+      rpl += ircServerConfig + "\n";
+      connectionManager.updateServers();
+      return rpl;
     }
     return "Servers already populated!";
   }

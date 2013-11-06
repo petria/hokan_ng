@@ -48,10 +48,8 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @PostConstruct
   public void initConfiguredServerMap() {
-    List<IrcServerConfig> servers = ircServerConfigService.getIrcServerConfigs();
-    configuredServers = new HashMap<>();
-    for (IrcServerConfig server : servers) {
-      configuredServers.put(server.getNetwork(), server);
+    updateServerMap();
+    for (IrcServerConfig server : this.configuredServers.values()) {
       if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
         try {
           connect(server.getNetwork());
@@ -60,7 +58,19 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
         }
       }
     }
+  }
 
+  private void updateServerMap() {
+    List<IrcServerConfig> servers = ircServerConfigService.getIrcServerConfigs();
+    configuredServers = new HashMap<>();
+    for (IrcServerConfig server : servers) {
+      configuredServers.put(server.getNetwork(), server);
+    }
+  }
+
+  @Override
+  public void updateServers() {
+    updateServerMap();
   }
 
   @Override
