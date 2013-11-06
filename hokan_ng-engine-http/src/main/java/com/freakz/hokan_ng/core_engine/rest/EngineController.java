@@ -2,7 +2,10 @@ package com.freakz.hokan_ng.core_engine.rest;
 
 import com.freakz.hokan_ng.commmon.rest.EngineRequest;
 import com.freakz.hokan_ng.commmon.rest.EngineResponse;
+import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
+import com.freakz.hokan_ng.core_engine.command.handlers.CommandBase;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,9 @@ public class EngineController {
 
   public static final String JSON = "application/json";
 
+  @Autowired
+  private CommandHandlerService commandHandler;
+
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
   @ResponseBody
@@ -30,14 +36,12 @@ public class EngineController {
 
     log.info("Got request: " + request);
     EngineResponse response = new EngineResponse(request);
-    response.setResponseMessage("Hello " + request.getIrcEvent().getMessage());
-    try {
-      Thread.sleep(10 * 1000);
-    } catch (InterruptedException e) {
-      // ignore
+    CommandBase handler = commandHandler.getCommandHandler(request.getIrcEvent().getMessage());
+    if (handler != null) {
+      String reply = handler.handleLine(request.getIrcEvent());
+      response.setResponseMessage(reply);
     }
     return response;
-
   }
 
   @RequestMapping(value = "/test")
