@@ -30,6 +30,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
@@ -81,6 +83,7 @@ public abstract class PircBot implements ReplyConstants {
   private static final int VOICE_ADD = 3;
   private static final int VOICE_REMOVE = 4;
 
+  protected ExecutorService executor = Executors.newCachedThreadPool();
 
   /**
    * Constructs a PircBot with the default settings.  Your own constructors
@@ -222,12 +225,13 @@ public abstract class PircBot implements ReplyConstants {
     socket.setSoTimeout(5 * 60 * 1000);
 
     // Now start the InputThread to read all other lines from the server.
-    _inputThread.start();
-
+//    _inputThread.start();
+    executor.execute(_inputThread);
     // Now start the outputThread that will be used to send all messages.
     if (_outputThread == null) {
       _outputThread = new OutputThread(this, _outQueue);
-      _outputThread.start();
+      executor.execute(_outputThread);
+//      _outputThread.start();
     }
 
     this.onConnect();

@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
 
-  private static final String BOT_NICK = "hokan_the_bootng";
+  private static final String BOT_NICK = "hokan_ng";
 
   @Autowired
   private IrcServerConfigService ircServerConfigService;

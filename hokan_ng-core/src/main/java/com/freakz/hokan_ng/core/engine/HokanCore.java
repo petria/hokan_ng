@@ -7,11 +7,13 @@ import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 @Slf4j
-public class HokanCore extends PircBot implements EngineEventHandler {
+public class HokanCore extends PircBot implements EngineEventHandler, DisposableBean {
 
   private IrcServerConfig ircServerConfig;
 
@@ -72,8 +74,17 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   public void log(String message) {
-    log.info(message);
+    if (!message.contains("PING") && !message.contains("PONG")) {
+      log.info(message);
+    }
   }
+
+  @Override
+  public void destroy() throws Exception {
+    List<Runnable> runnableList = executor.shutdownNow();
+    log.info("Runnables size: {}", runnableList.size());
+  }
+
 
   // --- PircBot
 

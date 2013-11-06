@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.core.engine;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +17,8 @@ import java.util.concurrent.Executors;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class CommandPoolImpl implements CommandPool {
+@Slf4j
+public class CommandPoolImpl implements CommandPool, DisposableBean {
 
   private static long pidCounter = 1;
 
@@ -47,4 +50,11 @@ public class CommandPoolImpl implements CommandPool {
   public List<CommandRunner> getActiveRunners() {
     return this.activeRunners;
   }
+
+  @Override
+  public void destroy() throws Exception {
+    List<Runnable> runnableList = executor.shutdownNow();
+    log.info("Runnables size: {}", runnableList.size());
+  }
+
 }

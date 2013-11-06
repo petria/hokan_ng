@@ -23,6 +23,7 @@ public class CommandRunner implements Runnable {
 
   @Override
   public void run() {
+    Thread.currentThread().setName("[" + myPid + "] CommandRunner: " + runnable);
     this.runnable.handleRun(myPid, args);
     this.commandPool.runnerFinished(this);
   }
