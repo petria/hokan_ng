@@ -1,6 +1,9 @@
 package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.core.model.Connector;
+
+import java.util.Collection;
 
 /**
  * Date: 3.6.2013
@@ -10,10 +13,12 @@ import com.freakz.hokan_ng.core.exception.HokanException;
  */
 public interface ConnectionManagerService {
 
-  void goOnline(String network) throws HokanException;
+  void connect(String network) throws HokanException;
 
-  void disconnect(String network);
+  void disconnect(String network) throws HokanException;
 
   void disconnectAll();
+
+  Collection<Connector> getConnectors();
 
 }

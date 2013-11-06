@@ -1,9 +1,11 @@
 package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.core.model.Connector;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,12 +22,28 @@ public class HokanController {
   @Autowired
   ConnectionManagerService connectionManager;
 
-  @RequestMapping(value = "/control/goOnline")
+  @RequestMapping(value = "/control/connect/{network}")
   public
   @ResponseBody
-  String goOnline() {
+  String connect(
+      @PathVariable("network") String network
+  ) {
     try {
-      connectionManager.goOnline("DevNET");
+      connectionManager.connect(network);
+    } catch (HokanException e) {
+      return e.getMessage();
+    }
+    return "ok";
+  }
+
+  @RequestMapping(value = "/control/disconnect/{network}")
+  public
+  @ResponseBody
+  String disconnect(
+      @PathVariable("network") String network
+  ) {
+    try {
+      connectionManager.disconnect(network);
     } catch (HokanException e) {
       return e.getMessage();
     }
@@ -39,5 +57,17 @@ public class HokanController {
     connectionManager.disconnectAll();
     return "ok";
   }
+
+  @RequestMapping(value = "/control/connectors")
+  public
+  @ResponseBody
+  String connectors() {
+    String ret = "Connectors\n";
+    for (Connector connector : connectionManager.getConnectors()) {
+      ret += connector.toString() + "\n";
+    }
+    return ret;
+  }
+
 
 }

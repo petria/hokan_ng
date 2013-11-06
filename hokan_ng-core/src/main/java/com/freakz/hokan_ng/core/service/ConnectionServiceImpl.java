@@ -7,11 +7,13 @@ import com.freakz.hokan_ng.core.exception.HokanException;
 import com.freakz.hokan_ng.core.model.Connector;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,9 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector {
+public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
+
+  private static final String BOT_NICK = "hokan_the_bootng";
 
   @Autowired
   private IrcServerConfigService ircServerConfigService;
@@ -50,10 +54,25 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     }
   }
 
+  @Override
+  public void destroy() throws Exception {
+    log.warn("Going to be destroyed!");
+    abortConnectors();
+    disconnectAll();
+  }
+
+
   // --- ConnectionManagerService
 
+  public void abortConnectors() {
+    for (Connector connector : getConnectors()) {
+      log.warn("Aborting connector: " + connector);
+      connector.abortConnect();
+    }
+  }
+
   @Override
-  public void goOnline(String network) throws HokanException {
+  public void connect(String network) throws HokanException {
 
     HokanCore engine = getConnectedEngine(network);
     if (engine != null) {
@@ -61,13 +80,16 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     }
 
     IrcServerConfig configuredServer = configuredServers.get(network);
+    if (configuredServer == null) {
+      throw new HokanException("IrcServerConfig not found for network: " + network);
+    }
 
     Connector connector;
     connector = this.connectors.get(configuredServer.getNetwork());
     if (connector == null) {
       connector = context.getBean(AsyncConnector.class);
       this.connectors.put(configuredServer.getNetwork(), connector);
-      connector.connect("hokan_ng", this, configuredServer);
+      connector.connect(BOT_NICK, this, configuredServer);
     } else {
       throw new HokanException("Going online attempt already going: " + configuredServer.getNetwork());
     }
@@ -75,8 +97,11 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   }
 
   @Override
-  public void disconnect(String network) {
+  public void disconnect(String network) throws HokanException {
     HokanCore engine = this.connectedEngines.get(network);
+    if (engine == null) {
+      throw new HokanException("No connected engine found for network: " + network);
+    }
     engine.disconnect();
     this.connectedEngines.remove(engine);
     log.info("Disconnected engine: " + engine);
@@ -84,17 +109,24 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @Override
   public void disconnectAll() {
+    String msg = "";
     for (HokanCore engine : this.connectedEngines.values()) {
+      msg += engine.toString();
+      msg += "\n";
       engine.disconnect();
     }
     this.connectedEngines.clear();
-    log.info("Disconnected all engines");
+    log.info("Disconnected all engines\n" + msg);
   }
 
   public HokanCore getConnectedEngine(String network) {
     return this.connectedEngines.get(network);
   }
 
+  @Override
+  public Collection<Connector> getConnectors() {
+    return this.connectors.values();
+  }
 
   // ---- EngineConnector
 

@@ -101,7 +101,7 @@ public class AsyncConnector implements Connector, CommandRunnable {
           aborted = true;
         } else {
           try {
-            int sleep = 1000 + ((connectAttemps - 1) * 1000);
+            int sleep = 5000 + ((connectAttemps - 1) * 1000);
             log.info("[" + connectAttemps + "] Sleeping " + (sleep / 1000) + " seconds");
             Thread.sleep(sleep);
             log.info("Trying again: " + connectAttemps);
@@ -113,7 +113,8 @@ public class AsyncConnector implements Connector, CommandRunnable {
   }
 
   public String toString() {
-    return String.format("[%s] %s:%d", this.configuredServer.getNetwork(), this.configuredServer.getServer(), this.configuredServer.getPort());
+    return String.format("%s: [%s %s:%d]",
+        this.getClass().toString(), this.configuredServer.getNetwork(), this.configuredServer.getServer(), this.configuredServer.getPort());
   }
 
 }
