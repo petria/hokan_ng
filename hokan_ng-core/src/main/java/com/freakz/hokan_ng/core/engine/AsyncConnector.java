@@ -54,7 +54,7 @@ public class AsyncConnector implements Connector, CommandRunnable {
   }
 
   @Override
-  public void handleRun(Object args) {
+  public void handleRun(long myPid, Object args) {
     int tryCount = 5; // TODO get from properties
     String server = this.configuredServer.getServer();
     int serverPort = this.configuredServer.getPort();

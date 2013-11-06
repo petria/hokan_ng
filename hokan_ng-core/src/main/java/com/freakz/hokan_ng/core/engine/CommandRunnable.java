@@ -9,5 +9,5 @@ package com.freakz.hokan_ng.core.engine;
  */
 public interface CommandRunnable {
 
-  public void handleRun(Object args);
+  public void handleRun(long myPid, Object args);
 }

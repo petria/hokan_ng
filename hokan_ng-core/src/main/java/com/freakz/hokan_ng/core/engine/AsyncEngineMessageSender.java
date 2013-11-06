@@ -54,8 +54,9 @@ public class AsyncEngineMessageSender implements CommandRunnable {
 
 
   @Override
-  public void handleRun(Object args) {
+  public void handleRun(long myPid, Object args) {
     EngineRequest request = (EngineRequest) args;
+    request.setMyPid(myPid);
 
     RestTemplate restTemplate = new RestTemplate();
     HttpEntity<EngineRequest> httpEntity = new HttpEntity<>(request, getRestHeaders());

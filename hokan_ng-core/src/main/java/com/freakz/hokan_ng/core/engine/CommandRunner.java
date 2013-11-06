@@ -23,7 +23,7 @@ public class CommandRunner implements Runnable {
 
   @Override
   public void run() {
-    this.runnable.handleRun(args);
+    this.runnable.handleRun(myPid, args);
     this.commandPool.runnerFinished(this);
   }
 }
