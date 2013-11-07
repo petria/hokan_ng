@@ -16,12 +16,12 @@ public class CommandBase {
     return "Name";
   }
 
-  public String handleLine(IrcEvent ircEvent) {
-    return "fdfsd";
-  }
-
   public String getMatchPattern() {
     return "";
+  }
+
+  public String handleLine(IrcEvent ircEvent) {
+    return "fdfsd";
   }
 
 }

@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,8 +26,9 @@ public class IrcServerConfig {
   @Column(name = "ID")
   private long id;
 
-  @Column(name = "NETWORK")
-  private String network;
+  @OneToOne
+  @JoinColumn(name = "NETWORK_NAME_FK", referencedColumnName = "NETWORK_NAME")
+  private Network network;
 
   @Column(name = "SERVER")
   private String server;
@@ -50,11 +53,11 @@ public class IrcServerConfig {
     this.ircServerConfigState = IrcServerConfigState.DISCONNECTED;
   }
 
-  public String getNetwork() {
+  public Network getNetwork() {
     return network;
   }
 
-  public void setNetwork(String network) {
+  public void setNetwork(Network network) {
     this.network = network;
   }
 

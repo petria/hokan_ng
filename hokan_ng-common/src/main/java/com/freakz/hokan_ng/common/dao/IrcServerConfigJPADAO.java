@@ -1,8 +1,9 @@
-package com.freakz.hokan_ng.core.dao;
+package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
-import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
-@Repository(value = "ircServerConfigDAO")
+@Repository(value = "IrcServerConfig")
 @Slf4j
 public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
 
@@ -51,7 +52,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
   }
 
   @Override
-  public IrcServerConfig createIrcServerConfig(String network,
+  public IrcServerConfig createIrcServerConfig(Network network,
                                                String server,
                                                int port,
                                                String password,

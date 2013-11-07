@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.core.model.Connector;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +94,11 @@ public class AsyncConnector implements Connector, CommandRunnable {
       }
       if (connectOk) {
         aborted = true;
-        this.engineConnector.engineConnectorGotOnline(this, engine);
+        try {
+          this.engineConnector.engineConnectorGotOnline(this, engine);
+        } catch (HokanException e) {
+          e.printStackTrace(); // TODO handle
+        }
       } else {
         tryCount--;
         if (tryCount == 0) {

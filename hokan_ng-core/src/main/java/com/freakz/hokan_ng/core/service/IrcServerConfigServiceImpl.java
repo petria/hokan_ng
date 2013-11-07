@@ -1,9 +1,11 @@
 package com.freakz.hokan_ng.core.service;
 
+import com.freakz.hokan_ng.common.dao.IrcServerConfigDAO;
+import com.freakz.hokan_ng.common.dao.NetworkDAO;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
-import com.freakz.hokan_ng.core.dao.IrcServerConfigDAO;
-import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,9 @@ public class IrcServerConfigServiceImpl implements IrcServerConfigService {
   @Autowired
   IrcServerConfigDAO ircServerConfigDAO;
 
+  @Autowired
+  NetworkDAO networkDAO;
+
   public IrcServerConfigServiceImpl() {
   }
 
@@ -38,19 +43,19 @@ public class IrcServerConfigServiceImpl implements IrcServerConfigService {
 
   @Override
   @Transactional
-  public IrcServerConfig createIrcServerConfig(String network,
+  public IrcServerConfig createIrcServerConfig(String networkName,
                                                String server,
                                                int port,
                                                String password,
                                                boolean useThrottle,
                                                String channelsToJoin,
-                                               IrcServerConfigState state) {
+                                               IrcServerConfigState state) throws HokanException {
     try {
+      Network network = networkDAO.getNetwork(networkName);
       return ircServerConfigDAO.createIrcServerConfig(network, server, port, password, useThrottle, channelsToJoin, state);
     } catch (HokanException e) {
-      e.printStackTrace();
+      throw new HokanException(e.getMessage());
     }
-    return null;
   }
 
   @Override

@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
+import com.freakz.hokan_ng.common.exception.HokanException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface IrcServerConfigService {
 
   List<IrcServerConfig> getIrcServerConfigs();
 
-  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState disconnected);
+  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState disconnected) throws HokanException;
 
   IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig);
 

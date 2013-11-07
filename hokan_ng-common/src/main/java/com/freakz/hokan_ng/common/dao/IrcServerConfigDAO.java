@@ -1,8 +1,9 @@
-package com.freakz.hokan_ng.core.dao;
+package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
-import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanException;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface IrcServerConfigDAO {
 
   List<IrcServerConfig> getIrcServerConfigs() throws HokanException;
 
-  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState state) throws HokanException;
+  IrcServerConfig createIrcServerConfig(Network network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState state) throws HokanException;
 
   IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanException;
 

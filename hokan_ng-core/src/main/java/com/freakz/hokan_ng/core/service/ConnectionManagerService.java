@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core.service;
 
-import com.freakz.hokan_ng.core.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.core.model.Connector;
 
 import java.util.Collection;
