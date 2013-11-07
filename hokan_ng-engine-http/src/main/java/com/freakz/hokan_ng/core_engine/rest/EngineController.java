@@ -41,8 +41,7 @@ public class EngineController {
     EngineResponse response = new EngineResponse(request);
     CommandBase handler = commandHandler.getCommandHandler(request.getIrcEvent().getMessage());
     if (handler != null) {
-      String reply = handler.handleLine(request);
-      response.setResponseMessage(reply);
+      handler.handleLine(request, response);
     }
     return response;
   }

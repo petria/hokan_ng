@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 
 import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.IDMap;
@@ -42,14 +43,14 @@ public abstract class CommandBase implements HokkanCommand {
     return this.getClass().toString();
   }
 
-  public String handleLine(EngineRequest request) {
+  public void handleLine(EngineRequest request, EngineResponse response) {
     IrcEvent ircEvent = request.getIrcEvent();
     JSAPResult results = jsap.parse(ircEvent.getMessage());
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
 
-      return "Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp();
+      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp());
 
     } else {
 
@@ -57,8 +58,9 @@ public abstract class CommandBase implements HokkanCommand {
 
       IDMap map = jsap.getIDMap();
       Iterator iterator = map.idIterator();
+      String argsLine = args.joinArgs(1);
       if (iterator.hasNext()) {
-        results = jsap.parse(ircEvent.getMessage());
+        results = jsap.parse(argsLine);
         parseRes = results.success();
       } else {
         parseRes = true;
@@ -66,15 +68,14 @@ public abstract class CommandBase implements HokkanCommand {
 
       if (!parseRes) {
 
-        return "Invalid arguments, usage: " + getName() + " " + jsap.getUsage();
+        response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
       }
-
-      return handleRequest(request, results);
+      handleRequest(request, response, results);
 
     }
 
   }
 
-  public abstract String handleRequest(EngineRequest request, JSAPResult results);
+  public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results);
 
 }

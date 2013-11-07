@@ -18,6 +18,7 @@ public class EngineResponse implements Serializable {
   private EngineRequest request;
 
   private String engineMethod;
+  private String[] engineMethodArgs;
 
 
   public EngineResponse() {
@@ -47,4 +48,19 @@ public class EngineResponse implements Serializable {
     return request;
   }
 
+  public String getEngineMethod() {
+    return engineMethod;
+  }
+
+  public void setEngineMethod(String engineMethod) {
+    this.engineMethod = engineMethod;
+  }
+
+  public String[] getEngineMethodArgs() {
+    return engineMethodArgs;
+  }
+
+  public void setEngineMethodArgs(String... engineMethodArgs) {
+    this.engineMethodArgs = engineMethodArgs;
+  }
 }

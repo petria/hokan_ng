@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 
 import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +30,8 @@ public class TestCmd extends CommandBase {
   }
 
   @Override
-  public String handleRequest(EngineRequest request, JSAPResult results) {
-    return "test command reply";
+  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
+    response.setResponseMessage("test command reply");
   }
 
 }

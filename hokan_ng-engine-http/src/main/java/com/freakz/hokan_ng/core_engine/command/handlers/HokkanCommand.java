@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
 
 /**
  * User: petria
@@ -15,6 +16,6 @@ public interface HokkanCommand {
 
   String getName();
 
-  String handleLine(EngineRequest request);
+  void handleLine(EngineRequest request, EngineResponse response);
 
 }
