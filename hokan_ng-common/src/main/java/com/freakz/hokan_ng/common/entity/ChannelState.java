@@ -9,9 +9,11 @@ package com.freakz.hokan_ng.common.entity;
  */
 public enum ChannelState {
 
+  NEW,
   NOT_JOINED,
   JOINED,
   KICKED_OUT,
-  BANNED
+  BANNED,
+  ALL
 
 }

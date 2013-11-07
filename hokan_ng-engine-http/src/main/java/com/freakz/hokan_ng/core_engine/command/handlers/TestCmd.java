@@ -1,7 +1,8 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 
-import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,14 +15,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestCmd extends CommandBase {
 
-
   @Override
   public String getMatchPattern() {
     return "!test.*";
   }
 
-  public String handleLine(IrcEvent ircEvent) {
-    return "TestCmd reply";
+  public String getName() {
+    return "Test";
+  }
+
+  @Override
+  public String handleRequest(EngineRequest request, JSAPResult results) {
+    return "test command reply";
   }
 
 }

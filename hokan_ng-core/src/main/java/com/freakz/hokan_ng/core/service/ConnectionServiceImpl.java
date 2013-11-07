@@ -150,9 +150,6 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     for (HokanCore engine : this.connectedEngines.values()) {
       msg += engine.toString();
       msg += "\n";
-/*      IrcServerConfig config = engine.getIrcServerConfig();
-      config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
-      this.ircServerConfigService.updateIrcServerConfig(config);*/
       engine.getIrcServerConfig().setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
       this.ircServerConfigService.updateIrcServerConfig(engine.getIrcServerConfig());
       engine.disconnect();
@@ -201,11 +198,11 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     this.connectedEngines.put(network.getName(), engine);
     this.networkService.updateNetwork(network);
 
-/*    String[] channels = config.getChannels();
+    String[] channels = {"#HokanDEV", "#HokanDEV2"};
     for (String channelToJoin : channels) {
       engine.joinChannel(channelToJoin);
     }
-    // TODO
+/*    // TODO
     */
 
   }

@@ -82,16 +82,14 @@ public class Channel implements Serializable {
   @Column(name = "COMMANDS_HANDLED")
   private int commandsHandled;
 
-  public Channel(Network network) {
+  public Channel(Network network, String name) {
     this.network = network;
-  }
-
-  public Channel(String name, Network network) {
     this.channelName = name;
-    this.network = network;
+    this.channelState = ChannelState.NEW;
   }
 
   public Channel() {
+    this.channelState = ChannelState.NEW;
   }
 
   public long getChannelId() {
