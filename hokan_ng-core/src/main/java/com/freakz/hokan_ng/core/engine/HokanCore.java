@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
@@ -128,7 +129,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
     if (response.getEngineMethod() != null) {
       log.info("Executing engine method : " + response.getEngineMethod());
-      log.info("Engine method args      : " + response.getEngineMethodArgs());
+      log.info("Engine method args      : " + StringStuff.arrayToString(response.getEngineMethodArgs(), ", "));
       Class clazz = this.getClass();
       Method[] methods = clazz.getMethods();
       for (Method method : methods) {

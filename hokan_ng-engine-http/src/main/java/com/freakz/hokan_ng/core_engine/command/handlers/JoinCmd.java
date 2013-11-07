@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class JoinCmd extends CommandBase {
 
   private static final String ARG_CHANNEL = "channel";
+  private static final String ARG_PASSWORD = "password";
 
   public JoinCmd() {
     super();
@@ -25,6 +26,10 @@ public class JoinCmd extends CommandBase {
         .setGreedy(false);
     registerParameter(uflg);
 
+    uflg = new UnflaggedOption(ARG_PASSWORD)
+        .setRequired(false)
+        .setGreedy(false);
+    registerParameter(uflg);
   }
 
   @Override
@@ -35,8 +40,14 @@ public class JoinCmd extends CommandBase {
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
     String channel = results.getString(ARG_CHANNEL);
+    String password = results.getString(ARG_PASSWORD);
+
     response.setResponseMessage("Trying to join to: " + channel);
     response.setEngineMethod("joinChannel");
-    response.setEngineMethodArgs(channel);
+    if (password != null) {
+      response.setEngineMethodArgs(channel, password);
+    } else {
+      response.setEngineMethodArgs(channel);
+    }
   }
 }

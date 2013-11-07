@@ -655,6 +655,17 @@ public class StringStuff {
     }
 
     return rightBoundary;
-
   }
+
+  public static String arrayToString(Object[] array, String delim) {
+    StringBuilder sb = new StringBuilder();
+    for (Object obj : array) {
+      if (sb.length() > 0) {
+        sb.append(delim);
+      }
+      sb.append(obj);
+    }
+    return sb.toString();
+  }
+
 }

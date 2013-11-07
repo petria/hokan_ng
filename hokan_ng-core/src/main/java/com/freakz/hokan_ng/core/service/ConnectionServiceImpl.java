@@ -150,8 +150,6 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     for (HokanCore engine : this.connectedEngines.values()) {
       msg += engine.toString();
       msg += "\n";
-      engine.getIrcServerConfig().setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
-      this.ircServerConfigService.updateIrcServerConfig(engine.getIrcServerConfig());
       engine.disconnect();
     }
     this.connectedEngines.clear();
