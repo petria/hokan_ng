@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UptimeCmd extends CommandBase {
 
+  public UptimeCmd() {
+    super();
+  }
+
   @Override
   public String getMatchPattern() {
     return "!uptime.*";

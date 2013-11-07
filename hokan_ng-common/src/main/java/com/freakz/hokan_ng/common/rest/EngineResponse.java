@@ -17,6 +17,9 @@ public class EngineResponse implements Serializable {
   private String responseMessage;
   private EngineRequest request;
 
+  private String engineMethod;
+
+
   public EngineResponse() {
   }
 

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,6 +127,24 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   @Override
   public void handleEngineResponse(EngineResponse response) {
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
+
+    Class clazz = this.getClass();
+    Method[] methods = clazz.getMethods();
+    for (Method method : methods) {
+      if (method.getName().equals("joinChannel")) {
+        try {
+          String[] params = {"#HokanDEV3"};
+          if (method.getParameterTypes().length == params.length) {
+            method.invoke(this, params);
+          }
+        } catch (IllegalAccessException e) {
+          e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+          e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+      }
+    }
+
     log.info("engine response: " + response.getResponseMessage());
   }
 

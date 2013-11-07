@@ -15,6 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestCmd extends CommandBase {
 
+  public TestCmd() {
+    super();
+  }
+
   @Override
   public String getMatchPattern() {
     return "!test.*";
