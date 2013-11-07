@@ -14,7 +14,7 @@ import java.util.Date;
  * Time: 1:31 PM
  */
 @Entity
-@Table(name = "NETWORK")
+@Table(name = "Network")
 public class Network implements Serializable {
 
   @Id
@@ -105,6 +105,10 @@ public class Network implements Serializable {
 
   public void addToChannelsJoined(int delta) {
     this.channelsJoined += delta;
+  }
+
+  public String toString() {
+    return String.format("[%s]", this.networkName);
   }
 
 }

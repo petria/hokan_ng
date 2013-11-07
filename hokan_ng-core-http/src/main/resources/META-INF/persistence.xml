@@ -6,9 +6,11 @@
 
     <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.freakz.hokan_ng.common.entity.Channel</class>
         <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
+        <class>com.freakz.hokan_ng.common.entity.Network</class>
 
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <!--        <exclude-unlisted-classes>true</exclude-unlisted-classes> -->
 
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>

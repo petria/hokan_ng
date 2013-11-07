@@ -57,7 +57,6 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
                                                int port,
                                                String password,
                                                boolean useThrottle,
-                                               String channelsToJoin,
                                                IrcServerConfigState state) throws HokanException {
     try {
       IrcServerConfig ircServerConfig = new IrcServerConfig();
@@ -66,7 +65,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
       ircServerConfig.setPort(port);
       ircServerConfig.setServerPassword(password);
       ircServerConfig.setUseThrottle(useThrottle ? 1 : 0);
-      ircServerConfig.setChannelsToJoin(channelsToJoin);
+
       ircServerConfig.setIrcServerConfigState(state);
       entityManager.persist(ircServerConfig);
       return ircServerConfig;

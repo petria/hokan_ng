@@ -33,9 +33,9 @@ public class ConfigController {
     List<IrcServerConfig> servers = ircServerService.getIrcServerConfigs();
     if (servers.size() == 0) {
       String rpl = "Adding IrcServerConfig\n";
-      IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("DevNET", "localhost", 6669, "1111", false, "#HokanDEV,#HokanDEV2", IrcServerConfigState.DISCONNECTED);
+      IrcServerConfig ircServerConfig = ircServerService.createIrcServerConfig("DevNET", "localhost", 6669, "1111", false, IrcServerConfigState.CONNECTED);
       rpl += ircServerConfig + "\n";
-      ircServerConfig = ircServerService.createIrcServerConfig("IrcNET", "irc.elisa.fi", 6669, null, true, "#HokanDEV", IrcServerConfigState.DISCONNECTED);
+      ircServerConfig = ircServerService.createIrcServerConfig("IrcNET", "irc.elisa.fi", 6669, null, true, IrcServerConfigState.DISCONNECTED);
       rpl += ircServerConfig + "\n";
       connectionManager.updateServers();
       return rpl;

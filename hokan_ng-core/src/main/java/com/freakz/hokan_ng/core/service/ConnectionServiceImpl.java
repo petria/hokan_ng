@@ -43,11 +43,11 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   @Autowired
   private ApplicationContext context;
 
-  private Map<Network, IrcServerConfig> configuredServers;
+  private Map<String, IrcServerConfig> configuredServers;
 
-  private Map<Network, HokanCore> connectedEngines = new HashMap<>();
+  private Map<String, HokanCore> connectedEngines = new HashMap<>();
 
-  private Map<Network, Connector> connectors = new HashMap<>();
+  private Map<String, Connector> connectors = new HashMap<>();
 
   public ConnectionServiceImpl() {
   }
@@ -70,7 +70,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     List<IrcServerConfig> servers = ircServerConfigService.getIrcServerConfigs();
     configuredServers = new HashMap<>();
     for (IrcServerConfig server : servers) {
-      configuredServers.put(server.getNetwork(), server);
+      configuredServers.put(server.getNetwork().getName(), server);
     }
   }
 
@@ -103,22 +103,22 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   }
 
   public void connect(Network network) throws HokanException {
-
+    updateServerMap();
     HokanCore engine = getConnectedEngine(network);
     if (engine != null) {
       throw new HokanException("Engine already connected to network: " + engine);
     }
 
-    IrcServerConfig configuredServer = configuredServers.get(network);
+    IrcServerConfig configuredServer = configuredServers.get(network.getName());
     if (configuredServer == null) {
       throw new HokanException("IrcServerConfig not found for network: " + network);
     }
 
     Connector connector;
-    connector = this.connectors.get(configuredServer.getNetwork());
+    connector = this.connectors.get(configuredServer.getNetwork().getName());
     if (connector == null) {
       connector = context.getBean(AsyncConnector.class);
-      this.connectors.put(configuredServer.getNetwork(), connector);
+      this.connectors.put(configuredServer.getNetwork().getName(), connector);
       connector.connect(BOT_NICK, this, configuredServer);
     } else {
       throw new HokanException("Going online attempt already going: " + configuredServer.getNetwork());
@@ -131,7 +131,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
     Network network = networkService.getNetwork(networkName);
 
-    HokanCore engine = this.connectedEngines.get(network);
+    HokanCore engine = this.connectedEngines.get(network.getName());
     if (engine == null) {
       throw new HokanException("No connected engine found for network: " + network);
     }
@@ -140,7 +140,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     this.ircServerConfigService.updateIrcServerConfig(config);*/
 
     engine.disconnect();
-    this.connectedEngines.remove(engine);
+    this.connectedEngines.remove(networkName);
     log.info("Disconnected engine: " + engine);
   }
 
@@ -160,7 +160,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   }
 
   public HokanCore getConnectedEngine(Network network) {
-    return this.connectedEngines.get(network);
+    return this.connectedEngines.get(network.getName());
   }
 
   @Override
@@ -177,7 +177,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @Override
   public void engineConnectorTooManyConnectAttempts(Connector connector, IrcServerConfig configuredServer) {
-    this.connectors.remove(configuredServer.getNetwork());
+    this.connectors.remove(configuredServer.getNetwork().getName());
     log.info("Too many connection attempts:" + connector);
   }
 
@@ -195,14 +195,16 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     }
     network.addToConnectCount(1);
 
-    this.connectors.remove(network);
-    this.connectedEngines.put(network, engine);
+    this.connectors.remove(network.getName());
+    this.connectedEngines.put(network.getName(), engine);
     this.networkService.updateNetwork(network);
 
-    String[] channels = config.getChannels();
+/*    String[] channels = config.getChannels();
     for (String channelToJoin : channels) {
       engine.joinChannel(channelToJoin);
     }
+    // TODO
+    */
 
   }
 
@@ -213,7 +215,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 //    this.ircServerConfigService.updateIrcServerConfig(config);
 
     Network network = config.getNetwork();
-    this.connectedEngines.remove(network);
+    this.connectedEngines.remove(network.getName());
     log.info("Engine disconnected: " + engine);
   }
 

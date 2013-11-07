@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.dao.NetworkDAO;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NetworkServiceImpl implements NetworkService {
 
+  @Autowired
   private NetworkDAO networkDAO;
 
   public NetworkServiceImpl() {

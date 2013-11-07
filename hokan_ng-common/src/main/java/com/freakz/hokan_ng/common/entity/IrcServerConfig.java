@@ -42,9 +42,6 @@ public class IrcServerConfig {
   @Column(name = "USE_THROTTLE")
   private int useThrottle;
 
-  @Column(name = "CHANNELS_TO_JOIN")
-  private String channelsToJoin;
-
   @Column(name = "STATE", nullable = false)
   @Enumerated(EnumType.STRING)
   private IrcServerConfigState ircServerConfigState;
@@ -97,18 +94,6 @@ public class IrcServerConfig {
     return getUseThrottle() > 0;
   }
 
-  public String getChannelsToJoin() {
-    return channelsToJoin;
-  }
-
-  public String[] getChannels() {
-    return this.getChannelsToJoin().split(",");
-  }
-
-  public void setChannelsToJoin(String channels) {
-    this.channelsToJoin = channels;
-  }
-
   public IrcServerConfigState getIrcServerConfigState() {
     return ircServerConfigState;
   }
@@ -118,8 +103,8 @@ public class IrcServerConfig {
   }
 
   public String toString() {
-    return String.format("%s: [(%d) %s %s:%d(%s) throttle: %s - %s]",
-        this.getClass().toString(), getId(), this.network, this.server, this.port, this.serverPassword, isThrottleInUse(), this.channelsToJoin);
+    return String.format("%s: [(%d) %s %s:%d(%s) throttle: %s]",
+        this.getClass().toString(), getId(), this.network, this.server, this.port, this.serverPassword, isThrottleInUse());
   }
 
   public long getId() {

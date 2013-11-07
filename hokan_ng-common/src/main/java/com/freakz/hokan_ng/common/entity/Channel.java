@@ -2,6 +2,8 @@ package com.freakz.hokan_ng.common.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,12 +22,10 @@ import java.util.Date;
  * Time: 10:02 AM
  */
 @Entity
-@Table(name = "CHANNEL")
+@Table(name = "Channel")
 @NamedQueries({
     @NamedQuery(name = "CHANNEL.findChannel", query = "SELECT ch FROM Channel ch WHERE ch.network = ?1 AND ch.channelName = ?2"),
-    @NamedQuery(name = "CHANNEL.getActiveChannels", query = "SELECT ch FROM Channel ch WHERE ch.active > 0"),
     @NamedQuery(name = "CHANNEL.getReportChannels", query = "SELECT ch FROM Channel ch WHERE ch.reportChannel > 0"),
-    @NamedQuery(name = "CHANNEL.resetActiveChannels", query = "UPDATE Channel ch SET ch.active = 0")
 })
 public class Channel implements Serializable {
 
@@ -56,8 +56,9 @@ public class Channel implements Serializable {
   @Column(name = "LINES_RECEIVED")
   private int linesReceived;
 
-  @Column(name = "ACTIVE")
-  private int active;
+  @Column(name = "CHANNEL_STATE", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private ChannelState channelState;
 
   @Column(name = "LAST_ACTIVE")
   private Date lastActive;
@@ -165,16 +166,12 @@ public class Channel implements Serializable {
     this.linesReceived += delta;
   }
 
-  public boolean isActive() {
-    return active > 0;
+  public ChannelState getChannelState() {
+    return channelState;
   }
 
-  public void setActive(boolean active) {
-    if (active) {
-      this.active = 1;
-    } else {
-      this.active = 0;
-    }
+  public void setChannelState(ChannelState channelState) {
+    this.channelState = channelState;
   }
 
   public long getId() {

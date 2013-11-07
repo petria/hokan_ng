@@ -17,7 +17,7 @@ public interface IrcServerConfigDAO {
 
   List<IrcServerConfig> getIrcServerConfigs() throws HokanException;
 
-  IrcServerConfig createIrcServerConfig(Network network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState state) throws HokanException;
+  IrcServerConfig createIrcServerConfig(Network network, String server, int port, String password, boolean useThrottle, IrcServerConfigState state) throws HokanException;
 
   IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanException;
 

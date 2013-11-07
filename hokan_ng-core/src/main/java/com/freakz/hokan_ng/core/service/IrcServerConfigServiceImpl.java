@@ -48,11 +48,20 @@ public class IrcServerConfigServiceImpl implements IrcServerConfigService {
                                                int port,
                                                String password,
                                                boolean useThrottle,
-                                               String channelsToJoin,
                                                IrcServerConfigState state) throws HokanException {
+
+    Network network = null;
     try {
-      Network network = networkDAO.getNetwork(networkName);
-      return ircServerConfigDAO.createIrcServerConfig(network, server, port, password, useThrottle, channelsToJoin, state);
+      network = networkDAO.getNetwork(networkName);
+    } catch (HokanException e) {
+      // ignore
+    }
+    if (network == null) {
+      network = networkDAO.createNetwork(networkName);
+    }
+
+    try {
+      return ircServerConfigDAO.createIrcServerConfig(network, server, port, password, useThrottle, state);
     } catch (HokanException e) {
       throw new HokanException(e.getMessage());
     }

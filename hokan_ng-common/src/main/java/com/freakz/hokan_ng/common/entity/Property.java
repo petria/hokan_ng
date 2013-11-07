@@ -1,7 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +12,7 @@ import java.io.Serializable;
  * Date: 2/19/12
  * Time: 4:35 PM
  */
-@Entity
+//@Entity
 @Table(name = "PROPERTIES")
 /*@NamedQueries({
     @NamedQuery(name = "PROPERTY.findProperty", query = "SELECT prop FROM Property prop WHERE prop.property = ?1"),

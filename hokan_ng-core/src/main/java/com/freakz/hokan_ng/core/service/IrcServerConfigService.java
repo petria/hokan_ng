@@ -16,7 +16,7 @@ public interface IrcServerConfigService {
 
   List<IrcServerConfig> getIrcServerConfigs();
 
-  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, String channelsToJoin, IrcServerConfigState disconnected) throws HokanException;
+  IrcServerConfig createIrcServerConfig(String network, String server, int port, String password, boolean useThrottle, IrcServerConfigState disconnected) throws HokanException;
 
   IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig);
 
