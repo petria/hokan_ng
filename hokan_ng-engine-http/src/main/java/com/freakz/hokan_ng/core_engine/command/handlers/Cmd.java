@@ -20,11 +20,11 @@ import java.util.Iterator;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public abstract class CommandBase implements HokkanCommand {
+public abstract class Cmd implements HokkanCommand {
 
   protected JSAP jsap;
 
-  public CommandBase() {
+  public Cmd() {
     jsap = new JSAP();
     jsap.setHelp("Help not set!");
   }
@@ -40,12 +40,11 @@ public abstract class CommandBase implements HokkanCommand {
   abstract public String getMatchPattern();
 
   public String getName() {
-    return this.getClass().toString();
+    return this.getClass().getSimpleName();
   }
 
   public void handleLine(EngineRequest request, EngineResponse response) {
     IrcEvent ircEvent = request.getIrcEvent();
-    JSAPResult results = jsap.parse(ircEvent.getMessage());
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
@@ -55,7 +54,7 @@ public abstract class CommandBase implements HokkanCommand {
     } else {
 
       boolean parseRes;
-
+      JSAPResult results = null;
       IDMap map = jsap.getIDMap();
       Iterator iterator = map.idIterator();
       String argsLine = args.joinArgs(1);
@@ -67,10 +66,10 @@ public abstract class CommandBase implements HokkanCommand {
       }
 
       if (!parseRes) {
-
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
+      } else {
+        handleRequest(request, response, results);
       }
-      handleRequest(request, response, results);
 
     }
 

@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core_engine.command;
 
-import com.freakz.hokan_ng.core_engine.command.handlers.CommandBase;
+import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -21,19 +21,19 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
   @Autowired
   private ApplicationContext context;
 
-  private Map<String, CommandBase> handlers;
+  private Map<String, Cmd> handlers;
 
   public CommandHandlerServiceImpl() {
   }
 
   @PostConstruct
   public void refreshHandlers() {
-    handlers = context.getBeansOfType(CommandBase.class);
+    handlers = context.getBeansOfType(Cmd.class);
   }
 
   @Override
-  public CommandBase getCommandHandler(String line) {
-    for (CommandBase base : this.handlers.values()) {
+  public Cmd getCommandHandler(String line) {
+    for (Cmd base : this.handlers.values()) {
       if (line.matches(base.getMatchPattern())) {
         return base;
       }

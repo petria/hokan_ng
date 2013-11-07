@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core_engine.command;
 
-import com.freakz.hokan_ng.core_engine.command.handlers.CommandBase;
+import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
 
 /**
  * User: petria
@@ -11,6 +11,6 @@ import com.freakz.hokan_ng.core_engine.command.handlers.CommandBase;
  */
 public interface CommandHandlerService {
 
-  CommandBase getCommandHandler(String line);
+  Cmd getCommandHandler(String line);
 
 }

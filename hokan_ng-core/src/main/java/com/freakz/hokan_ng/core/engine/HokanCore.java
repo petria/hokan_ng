@@ -125,6 +125,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   }
 
   @Override
+  @SuppressWarnings({"unchecked", "varargs"})
   public void handleEngineResponse(EngineResponse response) {
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
     if (response.getEngineMethod() != null) {
@@ -138,6 +139,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
             if (method.getParameterTypes().length == response.getEngineMethodArgs().length) {
               log.info("Invoking method         : " + method);
               method.invoke(this, response.getEngineMethodArgs());
+              break;
             }
           } catch (Exception e) {
             log.error("Couldn't do engine method!", e);

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class TestCmd extends CommandBase {
+public class TestCmd extends Cmd {
 
   public TestCmd() {
     super();

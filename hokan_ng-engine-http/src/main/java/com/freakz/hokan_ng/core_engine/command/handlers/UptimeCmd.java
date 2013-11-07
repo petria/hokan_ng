@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class UptimeCmd extends CommandBase {
+public class UptimeCmd extends Cmd {
 
   public UptimeCmd() {
     super();

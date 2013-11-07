@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class JoinCmd extends CommandBase {
+public class JoinCmd extends Cmd {
 
   private static final String ARG_CHANNEL = "channel";
   private static final String ARG_PASSWORD = "password";
