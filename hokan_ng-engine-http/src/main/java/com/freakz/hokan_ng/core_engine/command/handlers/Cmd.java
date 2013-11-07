@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 
+import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
@@ -43,7 +44,7 @@ public abstract class Cmd implements HokkanCommand {
     return this.getClass().getSimpleName();
   }
 
-  public void handleLine(EngineRequest request, EngineResponse response) {
+  public void handleLine(EngineRequest request, EngineResponse response) throws HokanException {
     IrcEvent ircEvent = request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
@@ -75,6 +76,6 @@ public abstract class Cmd implements HokkanCommand {
 
   }
 
-  public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results);
+  public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
 }
