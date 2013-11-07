@@ -1,6 +1,8 @@
 package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.entity.Property;
+import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.exception.HokanException;
 
 /**
  * User: petria
@@ -11,8 +13,8 @@ import com.freakz.hokan_ng.common.entity.Property;
  */
 public interface PropertyService {
 
-  Property getProperty(String key);
+  Property findProperty(PropertyName name) throws HokanException;
 
-  Property setProperty(String key, String value);
+  Property setProperty(PropertyName name, String value) throws HokanException;
 
 }

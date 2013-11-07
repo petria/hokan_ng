@@ -1,8 +1,9 @@
 package com.freakz.hokan_ng.common.entity;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -12,8 +13,8 @@ import java.io.Serializable;
  * Date: 2/19/12
  * Time: 4:35 PM
  */
-//@Entity
-@Table(name = "PROPERTIES")
+@Entity
+@Table(name = "Properties")
 /*@NamedQueries({
     @NamedQuery(name = "PROPERTY.findProperty", query = "SELECT prop FROM Property prop WHERE prop.property = ?1"),
     @NamedQuery(name = "PROPERTY.getAllProperties", query = "SELECT prop FROM Property prop ORDER BY prop.property"),
@@ -22,12 +23,9 @@ import java.io.Serializable;
 public class Property implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "ID")
-  private long propertyId;
-
   @Column(name = "PROPERTY")
-  private String property;
+  @Enumerated(EnumType.STRING)
+  private PropertyName property;
 
   @Column(name = "VALUE")
   private String value;
@@ -36,22 +34,20 @@ public class Property implements Serializable {
   private String flags;
 
   public Property() {
-    this.property = "";
-    this.value = "";
-    this.flags = "";
   }
 
-  public Property(String property, String value, String flags) {
+  public Property(PropertyName property, String value, String flags) {
     this.property = property;
     this.value = value;
     this.flags = flags;
   }
 
-  public String getProperty() {
+
+  public PropertyName getProperty() {
     return property;
   }
 
-  public void setProperty(String property) {
+  public void setProperty(PropertyName property) {
     this.property = property;
   }
 
@@ -71,11 +67,4 @@ public class Property implements Serializable {
     this.flags = flags;
   }
 
-  public long getId() {
-    return propertyId;
-  }
-
-  public void setId(long id) {
-    this.propertyId = id;
-  }
 }

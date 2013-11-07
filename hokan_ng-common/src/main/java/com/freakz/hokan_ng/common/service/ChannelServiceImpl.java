@@ -7,6 +7,7 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class ChannelServiceImpl implements ChannelService {
   }
 
   @Override
+  @Transactional
   public Channel createChannel(Network network, String name) throws HokanException {
     return channelDAO.createChannel(network, name);
   }

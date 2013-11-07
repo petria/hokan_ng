@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.core.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,11 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     setLogin("hokan");
 
     setMessageDelay(1100);
+
+  }
+
+  @PostConstruct
+  public void postInit() throws HokanException {
 
   }
 

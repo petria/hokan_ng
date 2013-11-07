@@ -9,6 +9,7 @@
         <class>com.freakz.hokan_ng.common.entity.Channel</class>
         <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
         <class>com.freakz.hokan_ng.common.entity.Network</class>
+        <class>com.freakz.hokan_ng.common.entity.Property</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

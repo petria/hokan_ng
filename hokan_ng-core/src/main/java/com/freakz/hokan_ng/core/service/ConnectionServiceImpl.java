@@ -3,8 +3,10 @@ package com.freakz.hokan_ng.core.service;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.service.NetworkService;
+import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.core.engine.AsyncConnector;
 import com.freakz.hokan_ng.core.engine.HokanCore;
 import com.freakz.hokan_ng.core.model.Connector;
@@ -41,6 +43,9 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   private NetworkService networkService;
 
   @Autowired
+  private PropertyService propertyService;
+
+  @Autowired
   private ApplicationContext context;
 
   private Map<String, IrcServerConfig> configuredServers;
@@ -53,7 +58,8 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   }
 
   @PostConstruct
-  public void initConfiguredServerMap() {
+  public void postInit() throws HokanException {
+    propertyService.setProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME, "" + new Date().getTime());
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {
       if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {

@@ -2,8 +2,11 @@ package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.dao.PropertyDAO;
 import com.freakz.hokan_ng.common.entity.Property;
+import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User: petria
@@ -18,14 +21,15 @@ public class PropertyServiceImpl implements PropertyService {
   @Autowired
   private PropertyDAO propertyDAO;
 
-
   @Override
-  public Property getProperty(String key) {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  public Property findProperty(PropertyName name) throws HokanException {
+    return propertyDAO.findProperty(name);
   }
 
+  @Transactional
   @Override
-  public Property setProperty(String key, String value) {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  public Property setProperty(PropertyName name, String value) throws HokanException {
+    return propertyDAO.setProperty(name, value);
   }
+
 }
