@@ -25,10 +25,6 @@ public class TestCmd extends Cmd {
     return "!test.*";
   }
 
-  public String getName() {
-    return "Test";
-  }
-
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
     response.setResponseMessage("test command reply");

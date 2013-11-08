@@ -41,7 +41,11 @@ public abstract class Cmd implements HokkanCommand {
   abstract public String getMatchPattern();
 
   public String getName() {
-    return this.getClass().getSimpleName();
+    String name = this.getClass().getSimpleName();
+    if (name.endsWith("Cmd")) {
+      name = name.replaceAll("Cmd", "");
+    }
+    return name;
   }
 
   public void handleLine(EngineRequest request, EngineResponse response) throws HokanException {

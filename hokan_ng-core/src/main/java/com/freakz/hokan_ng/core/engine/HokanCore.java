@@ -208,4 +208,13 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     this.channelService.updateChannel(ch);
   }
 
+  @Override
+  protected void onPart(String channel, String sender, String login, String hostname) {
+    Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
+    log.info("{} part channel: {}", sender, channel);
+    if (sender.equalsIgnoreCase(getNick())) {
+      ch.setChannelState(ChannelState.NOT_JOINED);
+    }
+    this.channelService.updateChannel(ch);
+  }
 }
