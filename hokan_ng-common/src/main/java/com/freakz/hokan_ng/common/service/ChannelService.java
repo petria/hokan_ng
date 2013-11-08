@@ -3,7 +3,6 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
 
 import java.util.List;
 
@@ -16,11 +15,12 @@ import java.util.List;
  */
 public interface ChannelService {
 
-  List<Channel> findChannels(Network network, ChannelState state) throws HokanException;
+  List<Channel> findChannels(Network network, ChannelState state);
 
-  Channel findChannelByName(Network network, String name) throws HokanException;
+  Channel findChannelByName(Network network, String name);
 
-  Channel createChannel(Network network, String name) throws HokanException;
+  Channel createChannel(Network network, String name);
 
+  Channel updateChannel(Channel channel);
 
 }

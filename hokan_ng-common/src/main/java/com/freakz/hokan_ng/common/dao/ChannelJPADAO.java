@@ -69,4 +69,13 @@ public class ChannelJPADAO implements ChannelDAO {
     return channel;
   }
 
+  @Override
+  public Channel updateChannel(Channel channel) throws HokanException {
+    try {
+      return entityManager.merge(channel);
+    } catch (Exception e) {
+      throw new HokanException(e.getMessage());
+    }
+  }
+
 }

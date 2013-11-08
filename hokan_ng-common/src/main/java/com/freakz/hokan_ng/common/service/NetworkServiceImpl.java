@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Service
+@Transactional
 public class NetworkServiceImpl implements NetworkService {
 
   @Autowired
@@ -35,7 +36,6 @@ public class NetworkServiceImpl implements NetworkService {
   }
 
   @Override
-  @Transactional
   public Network updateNetwork(Network network) throws HokanException {
     return networkDAO.updateNetwork(network);
   }

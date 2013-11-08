@@ -73,4 +73,9 @@ public class IrcEvent implements Serializable {
   public static IrcEvent create(String channel, String sender, String login, String hostname, String message) {
     return new IrcEvent(channel, sender, login, hostname, message);
   }
+
+  public static IrcEvent create(String channel, String sender, String login, String hostname) {
+    return new IrcEvent(channel, sender, login, hostname, "");
+  }
+
 }

@@ -5,6 +5,7 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,26 +19,51 @@ import java.util.List;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
+@Slf4j
 @Service
+@Transactional
 public class ChannelServiceImpl implements ChannelService {
 
   @Autowired
   private ChannelDAO channelDAO;
 
   @Override
-  public List<Channel> findChannels(Network network, ChannelState state) throws HokanException {
-    return channelDAO.findChannels(network, state);
+  public List<Channel> findChannels(Network network, ChannelState state) {
+    try {
+      return channelDAO.findChannels(network, state);
+    } catch (HokanException e) {
+      log.error("Couldn't get Channel entity", e);
+    }
+    return null;
   }
 
   @Override
-  public Channel findChannelByName(Network network, String name) throws HokanException {
-    return channelDAO.findChannelByName(network, name);
+  public Channel findChannelByName(Network network, String name) {
+    try {
+      return channelDAO.findChannelByName(network, name);
+    } catch (HokanException e) {
+      log.error("Couldn't get Channel entity", e);
+    }
+    return null;
   }
 
   @Override
-  @Transactional
-  public Channel createChannel(Network network, String name) throws HokanException {
-    return channelDAO.createChannel(network, name);
+  public Channel createChannel(Network network, String name) {
+    try {
+      return channelDAO.createChannel(network, name);
+    } catch (HokanException e) {
+      log.error("Couldn't get Channel entity", e);
+    }
+    return null;
   }
 
+  @Override
+  public Channel updateChannel(Channel channel) {
+    try {
+      channel = channelDAO.updateChannel(channel);
+    } catch (HokanException e) {
+      log.error("Couldn't not update Channel entity", e);
+    }
+    return channel;
+  }
 }

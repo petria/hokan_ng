@@ -22,4 +22,5 @@ public interface ChannelDAO {
 
   Channel createChannel(Network network, String name) throws HokanException;
 
+  Channel updateChannel(Channel channel) throws HokanException;
 }

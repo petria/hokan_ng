@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Service
+@Transactional
 public class PropertyServiceImpl implements PropertyService {
 
   @Autowired
@@ -26,7 +27,6 @@ public class PropertyServiceImpl implements PropertyService {
     return propertyDAO.findProperty(name);
   }
 
-  @Transactional
   @Override
   public Property setProperty(PropertyName name, String value) throws HokanException {
     return propertyDAO.setProperty(name, value);

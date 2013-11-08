@@ -1,8 +1,6 @@
 package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.service.UptimeService;
-import com.freakz.hokan_ng.common.util.Uptime;
 import com.freakz.hokan_ng.core.model.Connector;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,6 @@ public class HokanController {
 
   @Autowired
   private ConnectionManagerService connectionManager;
-
-  @Autowired
-  private UptimeService uptimeService;
 
   @RequestMapping(value = "/control/connect/{network}")
   public
@@ -72,13 +67,6 @@ public class HokanController {
       ret += connector.toString() + "\n";
     }
     return ret;
-  }
-
-  @RequestMapping(value = "/uptime")
-  public
-  @ResponseBody
-  Uptime uptime() {
-    return this.uptimeService.getUptime();
   }
 
 }

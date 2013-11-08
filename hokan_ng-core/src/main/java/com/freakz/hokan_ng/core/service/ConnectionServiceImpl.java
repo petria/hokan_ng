@@ -162,6 +162,8 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     log.info("Disconnected all engines\n" + msg);
   }
 
+  // -------
+
   public HokanCore getConnectedEngine(Network network) {
     return this.connectedEngines.get(network.getName());
   }
@@ -170,6 +172,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   public Collection<Connector> getConnectors() {
     return this.connectors.values();
   }
+
 
   // ---- EngineConnector
 

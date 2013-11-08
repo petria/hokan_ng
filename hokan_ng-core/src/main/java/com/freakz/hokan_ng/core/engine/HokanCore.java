@@ -1,10 +1,14 @@
 package com.freakz.hokan_ng.core.engine;
 
+import com.freakz.hokan_ng.common.entity.Channel;
+import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
+import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,9 @@ import java.util.Map;
 @Slf4j
 public class HokanCore extends PircBot implements EngineEventHandler, DisposableBean {
 
+  @Autowired
+  private ChannelService channelService;
+
   private IrcServerConfig ircServerConfig;
 
   private EngineConnector engineConnector;
@@ -38,8 +46,15 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   private EngineCommunicator engineCommunicator;
 
   private Map<String, String> serverProperties = new HashMap<>();
+  private Map<String, Method> methodMap = new HashMap<>();
 
   public HokanCore() {
+    Class clazz = this.getClass();
+    Method[] methods = clazz.getMethods();
+    for (Method method : methods) {
+      methodMap.put(method.getName(), method);
+    }
+    log.info("Built method map, size {}", methodMap.size());
   }
 
   public void init(String botName, IrcServerConfig ircServerConfig) {
@@ -93,7 +108,20 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     List<Runnable> runnableList = executor.shutdownNow();
     log.info("Runnables size: {}", runnableList.size());
   }
+  // ---
 
+  public Network getNetwork() {
+    return this.getIrcServerConfig().getNetwork();
+  }
+
+  public Channel getChannel(IrcEvent ircEvent) {
+    Channel channel = channelService.findChannelByName(getNetwork(), ircEvent.getChannel());
+    if (channel == null) {
+      channel = channelService.createChannel(getNetwork(), ircEvent.getChannel());
+    }
+    channel.setLastActive(new Date());
+    return channel;
+  }
 
   // --- PircBot
 
@@ -124,43 +152,60 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname, message);
+    Channel ch = getChannel(ircEvent);
+    ch.setLastWriter(sender);
+    ch.addToLinesReceived(1);
+
     EngineRequest request = new EngineRequest(ircEvent);
-
-    if (message.startsWith("!")) {
-      this.engineCommunicator.sendEngineMessage(request, this);
-    }
+    this.engineCommunicator.sendEngineMessage(request, this);
+    this.channelService.updateChannel(ch);
   }
 
   @Override
-  protected void onJoin(String channel, String sender, String login, String hostname) {
-    super.onJoin(channel, sender, login, hostname);    //To change body of overridden methods use File | Settings | File Templates.
+  protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+    log.info("Message: {}", message);
   }
 
   @Override
-  @SuppressWarnings({"unchecked", "varargs"})
+  @SuppressWarnings({"varargs"})
   public void handleEngineResponse(EngineResponse response) {
+
+    Channel ch = getChannel(response.getRequest().getIrcEvent());
+    ch.addCommandsHandled(1);
+
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
     if (response.getEngineMethod() != null) {
       log.info("Executing engine method : " + response.getEngineMethod());
       log.info("Engine method args      : " + StringStuff.arrayToString(response.getEngineMethodArgs(), ", "));
-      Class clazz = this.getClass();
-      Method[] methods = clazz.getMethods();
-      for (Method method : methods) {
-        if (method.getName().equals(response.getEngineMethod())) {
-          try {
-            if (method.getParameterTypes().length == response.getEngineMethodArgs().length) {
-              log.info("Invoking method         : " + method);
-              method.invoke(this, response.getEngineMethodArgs());
-              break;
-            }
-          } catch (Exception e) {
-            log.error("Couldn't do engine method!", e);
+      Method method = this.methodMap.get(response.getEngineMethod());
+      if (method != null) {
+        try {
+          if (method.getParameterTypes().length == response.getEngineMethodArgs().length) {
+            log.info("Invoking method         : " + method);
+            method.invoke(this, response.getEngineMethodArgs());
           }
+        } catch (Exception e) {
+          log.error("Couldn't do engine method!", e);
         }
+      } else {
+        log.error("Couldn't find method for: " + response.getEngineMethod());
       }
     }
 
     log.info("engine response: " + response.getResponseMessage());
+  }
+
+  @Override
+  protected void onJoin(String channel, String sender, String login, String hostname) {
+    Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
+    log.info("{} joined channel: {}", sender, channel);
+    if (sender.equalsIgnoreCase(getNick())) {
+      ch.setChannelState(ChannelState.JOINED);
+      if (ch.getFirstJoined() == null) {
+        ch.setFirstJoined(new Date());
+      }
+    }
+    this.channelService.updateChannel(ch);
   }
 
 }
