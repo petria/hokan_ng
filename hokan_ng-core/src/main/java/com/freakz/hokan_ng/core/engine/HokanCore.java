@@ -132,6 +132,11 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   }
 
   @Override
+  protected void onJoin(String channel, String sender, String login, String hostname) {
+    super.onJoin(channel, sender, login, hostname);    //To change body of overridden methods use File | Settings | File Templates.
+  }
+
+  @Override
   @SuppressWarnings({"unchecked", "varargs"})
   public void handleEngineResponse(EngineResponse response) {
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());

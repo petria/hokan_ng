@@ -51,7 +51,7 @@ public class UptimeCmd extends Cmd {
     Long coreEngine = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME).getValue());
     Uptime ut1 = new Uptime(coreHttp);
     Uptime ut2 = new Uptime(coreEngine);
-    response.setResponseMessage("core-http: " + ut1.toString() + " core-engine: " + ut2.toString());
+    response.setResponseMessage("core-io: " + ut1.toString() + " core-engine: " + ut2.toString());
   }
 
 }
