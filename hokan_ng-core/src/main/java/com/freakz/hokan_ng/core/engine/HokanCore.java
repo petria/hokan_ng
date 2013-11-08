@@ -5,6 +5,7 @@ import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
@@ -68,6 +69,15 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
     setMessageDelay(1100);
 
+  }
+
+  private Method getEngineMethod(String name, int args) {
+    for (Method method : methodMap.values()) {
+      if (method.getName().equals(name) && method.getGenericParameterTypes().length == args) {
+        return method;
+      }
+    }
+    return null;
   }
 
   @PostConstruct
@@ -174,22 +184,26 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     ch.addCommandsHandled(1);
 
     sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
-    if (response.getEngineMethod() != null) {
-      log.info("Executing engine method : " + response.getEngineMethod());
-      log.info("Engine method args      : " + StringStuff.arrayToString(response.getEngineMethodArgs(), ", "));
-      Method method = this.methodMap.get(response.getEngineMethod());
+    for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
+      String methodName = methodCall.getMethodName();
+      String[] methodArgs = methodCall.getMethodArgs();
+
+      log.info("Executing engine method : " + methodName);
+      log.info("Engine method args      : " + StringStuff.arrayToString(methodArgs, ", "));
+      Method method = getEngineMethod(methodName, methodArgs.length);
       if (method != null) {
         try {
-          if (method.getParameterTypes().length == response.getEngineMethodArgs().length) {
+          if (method.getParameterTypes().length == methodArgs.length) {
             log.info("Invoking method         : " + method);
-            method.invoke(this, response.getEngineMethodArgs());
+            method.invoke(this, methodArgs);
           }
         } catch (Exception e) {
           log.error("Couldn't do engine method!", e);
         }
       } else {
-        log.error("Couldn't find method for: " + response.getEngineMethod());
+        log.error("Couldn't find method for: " + methodName);
       }
+
     }
 
     log.info("engine response: " + response.getResponseMessage());

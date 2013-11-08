@@ -43,11 +43,10 @@ public class JoinCmd extends Cmd {
     String password = results.getString(ARG_PASSWORD);
 
     response.setResponseMessage("Trying to join to: " + channel);
-    response.setEngineMethod("joinChannel");
     if (password != null) {
-      response.setEngineMethodArgs(channel, password);
+      response.addEngineMethodCall("joinChannel", channel, password);
     } else {
-      response.setEngineMethodArgs(channel);
+      response.addEngineMethodCall("joinChannel", channel);
     }
   }
 }

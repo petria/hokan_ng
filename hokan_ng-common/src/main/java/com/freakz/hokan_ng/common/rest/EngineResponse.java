@@ -1,6 +1,8 @@
 package com.freakz.hokan_ng.common.rest;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: petria
@@ -17,9 +19,7 @@ public class EngineResponse implements Serializable {
   private String responseMessage;
   private EngineRequest request;
 
-  private String engineMethod;
-  private String[] engineMethodArgs;
-
+  private List<EngineMethodCall> engineMethodCalls = new ArrayList<>();
 
   public EngineResponse() {
   }
@@ -48,19 +48,15 @@ public class EngineResponse implements Serializable {
     return request;
   }
 
-  public String getEngineMethod() {
-    return engineMethod;
+  public void addEngineMethodCall(String methodName, String... methodArgs) {
+    this.engineMethodCalls.add(new EngineMethodCall(methodName, methodArgs));
   }
 
-  public void setEngineMethod(String engineMethod) {
-    this.engineMethod = engineMethod;
+  public List<EngineMethodCall> getEngineMethodCalls() {
+    return engineMethodCalls;
   }
 
-  public String[] getEngineMethodArgs() {
-    return engineMethodArgs;
-  }
-
-  public void setEngineMethodArgs(String... engineMethodArgs) {
-    this.engineMethodArgs = engineMethodArgs;
+  public void setEngineMethodCalls(List<EngineMethodCall> engineMethodCalls) {
+    this.engineMethodCalls = engineMethodCalls;
   }
 }
