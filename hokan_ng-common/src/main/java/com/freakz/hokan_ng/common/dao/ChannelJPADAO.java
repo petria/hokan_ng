@@ -29,12 +29,12 @@ public class ChannelJPADAO implements ChannelDAO {
     TypedQuery<Channel> query;
     if (state == ChannelState.ALL) {
       query = entityManager.createQuery(
+          "SELECT ch FROM Channel ch WHERE ch.network = :network", Channel.class);
+    } else {
+      query = entityManager.createQuery(
           "SELECT ch FROM Channel ch WHERE ch.network = :network AND ch.channelState = :state", Channel.class
       );
       query.setParameter("state", state);
-    } else {
-      query = entityManager.createQuery(
-          "SELECT ch FROM Channel ch WHERE ch.network = :network", Channel.class);
     }
     query.setParameter("network", network);
     try {

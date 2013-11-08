@@ -1,10 +1,13 @@
 package com.freakz.hokan_ng.core.service;
 
+import com.freakz.hokan_ng.common.entity.Channel;
+import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.core.engine.AsyncConnector;
@@ -35,6 +38,9 @@ import java.util.Map;
 public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
 
   private static final String BOT_NICK = "hokan_ng";
+
+  @Autowired
+  private ChannelService channelService;
 
   @Autowired
   private IrcServerConfigService ircServerConfigService;
@@ -205,12 +211,10 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     this.connectedEngines.put(network.getName(), engine);
     this.networkService.updateNetwork(network);
 
-    String[] channels = {"#HokanDEV", "#HokanDEV2"};
-    for (String channelToJoin : channels) {
-      engine.joinChannel(channelToJoin);
+    List<Channel> channels = this.channelService.findChannels(network, ChannelState.JOINED);
+    for (Channel channelToJoin : channels) {
+      engine.joinChannel(channelToJoin.getChannelName());
     }
-/*    // TODO
-    */
 
   }
 
