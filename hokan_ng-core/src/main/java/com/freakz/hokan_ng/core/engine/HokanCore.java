@@ -4,7 +4,6 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
@@ -14,13 +13,14 @@ import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
+import org.jibble.pircbot.User;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +48,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   private Map<String, String> serverProperties = new HashMap<>();
   private Map<String, Method> methodMap = new HashMap<>();
+  private Map<String, List<String>> whoQueries = new HashMap<>();
 
   public HokanCore() {
     Class clazz = this.getClass();
@@ -78,11 +79,6 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       }
     }
     return null;
-  }
-
-  @PostConstruct
-  public void postInit() throws HokanException {
-
   }
 
   @Autowired
@@ -146,7 +142,33 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   }
 
   @Override
+  protected void onUserList(String channel, User[] users) {
+    log.info("Sending WHO query to: " + channel);
+    List<String> whoReplies = new ArrayList<>();
+    whoQueries.put(channel.toLowerCase(), whoReplies);
+    sendRawLineViaQueue("WHO " + channel);
+  }
+
+  @Override
   protected void onServerResponse(int code, String line) {
+    if (code == RPL_WHOREPLY) {
+      String[] split = line.split(" ");
+      if (split.length >= 6) {
+        String channel = split[1];
+        List<String> whoReplies = whoQueries.get(channel.toLowerCase());
+        whoReplies.add(line);
+      } else {
+        log.info("SKIPPED WHO REPLY: {}", line);
+      }
+
+    } else if (code == RPL_ENDOFWHO) {
+      String[] split = line.split(" ");
+      String channel = split[1];
+      List<String> whoReplies = this.whoQueries.remove(channel.toLowerCase());
+//      UserManager.getInstance().onWhoList(this, channel, whoReplies);
+      log.info("Handled {} WHO lines!", whoReplies.size());
+
+    }
     if (code == 5) {
       String[] split = line.split(" ");
       for (String str : split) {
