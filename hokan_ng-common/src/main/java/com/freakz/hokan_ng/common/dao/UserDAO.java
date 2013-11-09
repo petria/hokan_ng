@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.exception.HokanException;
 
 import java.util.List;
 
@@ -13,14 +14,16 @@ import java.util.List;
  */
 public interface UserDAO {
 
-  User findUser(String nick);
+  User findUser(String nick) throws HokanException;
 
-  List<User> findUsers(int limit);
+  List<User> findUsers() throws HokanException;
 
-  List<User> getLoggedInUsers();
+  List<User> getLoggedInUsers() throws HokanException;
 
-  void resetLoggedInUsers();
+  void resetLoggedInUsers() throws HokanException;
 
-  void resetOlpos();
+  void resetOlpos() throws HokanException;
+
+  User updateUser(User user) throws HokanException;
 
 }

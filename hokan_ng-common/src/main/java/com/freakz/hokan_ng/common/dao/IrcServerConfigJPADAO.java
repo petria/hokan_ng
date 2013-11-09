@@ -6,6 +6,7 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Repository(value = "IrcServerConfig")
 @Slf4j
+@Transactional
 public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
 
   @PersistenceContext

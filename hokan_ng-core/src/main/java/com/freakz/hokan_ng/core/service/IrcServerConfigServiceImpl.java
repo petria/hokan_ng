@@ -8,7 +8,6 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class IrcServerConfigServiceImpl implements IrcServerConfigService {
   }
 
   @Override
-  @Transactional
   public IrcServerConfig createIrcServerConfig(String networkName,
                                                String server,
                                                int port,
@@ -68,7 +66,6 @@ public class IrcServerConfigServiceImpl implements IrcServerConfigService {
   }
 
   @Override
-  @Transactional
   public IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) {
     try {
       return ircServerConfigDAO.updateIrcServerConfig(ircServerConfig);

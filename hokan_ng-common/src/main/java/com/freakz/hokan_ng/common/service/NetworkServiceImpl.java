@@ -5,7 +5,6 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User: petria
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Service
-@Transactional
 public class NetworkServiceImpl implements NetworkService {
 
   @Autowired
@@ -30,7 +28,6 @@ public class NetworkServiceImpl implements NetworkService {
   }
 
   @Override
-  @Transactional
   public Network createNetwork(String name) throws HokanException {
     return networkDAO.createNetwork(name);
   }

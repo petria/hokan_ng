@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository(value = "Properties")
+@Transactional
 public class PropertyJPADAO implements PropertyDAO {
 
   @PersistenceContext

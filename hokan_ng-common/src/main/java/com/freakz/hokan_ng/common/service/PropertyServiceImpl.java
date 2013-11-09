@@ -6,7 +6,6 @@ import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User: petria
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Service
-@Transactional
 public class PropertyServiceImpl implements PropertyService {
 
   @Autowired

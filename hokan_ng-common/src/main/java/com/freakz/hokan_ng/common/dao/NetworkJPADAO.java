@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Repository(value = "Network")
+@Transactional
 public class NetworkJPADAO implements NetworkDAO {
 
   @PersistenceContext
