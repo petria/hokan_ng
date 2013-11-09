@@ -4,16 +4,20 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.entity.UserChannel;
+import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.service.ChannelService;
+import com.freakz.hokan_ng.common.service.UserChannelService;
+import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
-import org.jibble.pircbot.User;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -39,6 +43,12 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   @Autowired
   private ChannelService channelService;
+
+  @Autowired
+  private UserChannelService userChannelService;
+
+  @Autowired
+  private UserService userService;
 
   private IrcServerConfig ircServerConfig;
 
@@ -120,13 +130,17 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     return this.getIrcServerConfig().getNetwork();
   }
 
-  public Channel getChannel(IrcEvent ircEvent) {
-    Channel channel = channelService.findChannelByName(getNetwork(), ircEvent.getChannel());
+  public Channel getChannel(String channelName) {
+    Channel channel = channelService.findChannelByName(getNetwork(), channelName);
     if (channel == null) {
-      channel = channelService.createChannel(getNetwork(), ircEvent.getChannel());
+      channel = channelService.createChannel(getNetwork(), channelName);
     }
-    channel.setLastActive(new Date());
+//    channel.setLastActive(new Date());
     return channel;
+  }
+
+  public Channel getChannel(IrcEvent ircEvent) {
+    return getChannel(ircEvent.getChannel());
   }
 
   // --- PircBot
@@ -142,12 +156,38 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   }
 
   @Override
-  protected void onUserList(String channel, User[] users) {
+  protected void onUserList(String channel, org.jibble.pircbot.User[] users) {
     log.info("Sending WHO query to: " + channel);
     List<String> whoReplies = new ArrayList<>();
     whoQueries.put(channel.toLowerCase(), whoReplies);
     sendRawLineViaQueue("WHO " + channel);
   }
+
+  private void handleWhoList(String channelName, List<String> whoReplies) throws HokanException {
+    Channel channel = getChannel(channelName);
+
+    for (String whoLine : whoReplies) {
+      String[] split = whoLine.split(" ");
+      String nick = split[5];
+      String mask = split[5] + "!" + split[2] + "@" + split[3];
+      String fullName = StringStuff.joinStringArray(split, 8);
+      User user = this.userService.findUser(nick);
+      if (user == null) {
+        user = new User();
+        user.setNick(split[5]);
+        user.setMask(StringStuff.quoteRegExp(mask));
+        user.setPassword("1234");
+        user.setFullName(fullName);
+        user = this.userService.updateUser(user);
+      }
+      UserChannel userChannel = userChannelService.getUserChannel(user, channel);
+      if (userChannel == null) {
+        userChannelService.createUserChannel(user, channel);
+      }
+
+    }
+  }
+
 
   @Override
   protected void onServerResponse(int code, String line) {
@@ -165,7 +205,11 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       String[] split = line.split(" ");
       String channel = split[1];
       List<String> whoReplies = this.whoQueries.remove(channel.toLowerCase());
-//      UserManager.getInstance().onWhoList(this, channel, whoReplies);
+      try {
+        handleWhoList(channel, whoReplies);
+      } catch (HokanException e) {
+        coreExceptionHandler(e);
+      }
       log.info("Handled {} WHO lines!", whoReplies.size());
 
     }
@@ -179,6 +223,12 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
         }
       }
     }
+  }
+
+  private void coreExceptionHandler(HokanException e) {
+    log.error("---------------------------");
+    log.error("Exception", e);
+    log.error("---------------------------");
   }
 
   @Override

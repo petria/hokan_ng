@@ -25,6 +25,9 @@ public class UserJPADAO implements UserDAO {
   @PersistenceContext
   private EntityManager entityManager;
 
+  public UserJPADAO() {
+  }
+
   @Override
   public User findUser(String nick) throws HokanException {
     try {
