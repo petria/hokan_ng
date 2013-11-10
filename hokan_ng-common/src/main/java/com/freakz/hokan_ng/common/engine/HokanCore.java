@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core.engine;
+package com.freakz.hokan_ng.common.engine;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
@@ -15,7 +15,6 @@ import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.StringStuff;
-import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.DisposableBean;
@@ -187,7 +186,6 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
     }
   }
-
 
   @Override
   protected void onServerResponse(int code, String line) {

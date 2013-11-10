@@ -1,9 +1,8 @@
-package com.freakz.hokan_ng.core.model;
+package com.freakz.hokan_ng.common.engine;
 
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.core.engine.HokanCore;
 
 /**
  * User: petria

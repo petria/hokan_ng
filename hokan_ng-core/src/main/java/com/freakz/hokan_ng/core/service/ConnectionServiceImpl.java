@@ -1,5 +1,9 @@
 package com.freakz.hokan_ng.core.service;
 
+import com.freakz.hokan_ng.common.engine.AsyncConnector;
+import com.freakz.hokan_ng.common.engine.Connector;
+import com.freakz.hokan_ng.common.engine.EngineConnector;
+import com.freakz.hokan_ng.common.engine.HokanCore;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
@@ -10,10 +14,6 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
-import com.freakz.hokan_ng.core.engine.AsyncConnector;
-import com.freakz.hokan_ng.core.engine.HokanCore;
-import com.freakz.hokan_ng.core.model.Connector;
-import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +96,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     log.warn("Going to be destroyed!");
     abortConnectors();
     disconnectAll();
+    Thread.sleep(3 * 1000);
   }
 
 

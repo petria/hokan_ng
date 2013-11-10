@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.core_http.rest;
 
+import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.core.model.Connector;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

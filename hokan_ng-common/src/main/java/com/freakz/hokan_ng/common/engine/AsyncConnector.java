@@ -1,9 +1,7 @@
-package com.freakz.hokan_ng.core.engine;
+package com.freakz.hokan_ng.common.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.core.model.Connector;
-import com.freakz.hokan_ng.core.model.EngineConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.springframework.beans.factory.annotation.Autowired;

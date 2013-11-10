@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core.engine;
+package com.freakz.hokan_ng.common.engine;
 
 import java.util.List;
 
