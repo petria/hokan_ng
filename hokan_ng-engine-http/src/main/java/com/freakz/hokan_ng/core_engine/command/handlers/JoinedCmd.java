@@ -25,8 +25,10 @@ public class JoinedCmd extends Cmd {
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-/*    StringBuilder sb = new StringBuilder();
-    HokanCore[] engines = NewConnectionManager.getInstance().getPircBotEngines();
+
+//    HokanCore[] engines = NewConnectionManager.getInstance().getPircBotEngines();
+    /*    StringBuilder sb = new StringBuilder();
+
 
     int count = 0;
     for (PircBotEngine engine : engines) {
