@@ -17,17 +17,15 @@ public class IrcEvent implements Serializable {
   private String sender;
   private String login;
   private String hostname;
-  private String message;
 
   public IrcEvent() {
   }
 
-  public IrcEvent(String channel, String sender, String login, String hostname, String message) {
+  public IrcEvent(String channel, String sender, String login, String hostname) {
     this.channel = channel;
     this.sender = sender;
     this.login = login;
     this.hostname = hostname;
-    this.message = message;
   }
 
   public String getChannel() {
@@ -60,22 +58,6 @@ public class IrcEvent implements Serializable {
 
   public void setHostname(String hostname) {
     this.hostname = hostname;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public static IrcEvent create(String channel, String sender, String login, String hostname, String message) {
-    return new IrcEvent(channel, sender, login, hostname, message);
-  }
-
-  public static IrcEvent create(String channel, String sender, String login, String hostname) {
-    return new IrcEvent(channel, sender, login, hostname, "");
   }
 
 }

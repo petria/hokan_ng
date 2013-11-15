@@ -7,9 +7,12 @@
     <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>com.freakz.hokan_ng.common.entity.Channel</class>
+        <class>com.freakz.hokan_ng.common.entity.ChannelUser</class>
         <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
         <class>com.freakz.hokan_ng.common.entity.Network</class>
         <class>com.freakz.hokan_ng.common.entity.Property</class>
+        <class>com.freakz.hokan_ng.common.entity.User</class>
+        <class>com.freakz.hokan_ng.common.entity.UserChannel</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -18,8 +21,6 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/hokan_ng-mysql"/>
-            <!-- <property name="hibernate.connection.datasource" value="jdbc/hokan_ng-mysql"/> -->
-            <!-- WC: EI java:comp/env/   -->
         </properties>
 
     </persistence-unit>

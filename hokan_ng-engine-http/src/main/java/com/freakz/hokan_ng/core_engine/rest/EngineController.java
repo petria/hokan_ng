@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.core_engine.rest;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,8 @@ public class EngineController {
 
     log.info("Got request: " + request);
     EngineResponse response = new EngineResponse(request);
-    Cmd handler = commandHandler.getCommandHandler(request.getIrcEvent().getMessage());
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    Cmd handler = commandHandler.getCommandHandler(ircMessageEvent.getMessage());
     if (handler != null) {
       try {
         handler.handleLine(request, response);

@@ -11,7 +11,10 @@ import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.rest.IrcEventFactory;
+import com.freakz.hokan_ng.common.rest.IrcPrivateMessageEvent;
 import com.freakz.hokan_ng.common.service.ChannelService;
+import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.StringStuff;
@@ -48,6 +51,11 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private ChannelUsersService channelUsersService;
+
+  //--------
 
   private IrcServerConfig ircServerConfig;
 
@@ -142,6 +150,24 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     return getChannel(ircEvent.getChannel());
   }
 
+  public User getUser(IrcEvent ircEvent) {
+    try {
+      User user = this.userService.findUser(ircEvent.getSender());
+      return user;
+    } catch (HokanException e) {
+      coreExceptionHandler(e);
+    }
+/*    if (user == null) {
+      user = new User();
+      user.setNick(split[5]);
+      user.setMask(StringStuff.quoteRegExp(mask));
+      user.setPassword("1234");
+      user.setFullName(fullName);
+      user = this.userService.updateUser(user);
+    }*/
+    return null;
+  }
+
   // --- PircBot
 
   @Override
@@ -154,17 +180,21 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     log.info("UNKNOWN: {}", line);
   }
 
-  @Override
-  protected void onUserList(String channel, org.jibble.pircbot.User[] users) {
+  private void sendWhoQuery(String channel) {
     log.info("Sending WHO query to: " + channel);
     List<String> whoReplies = new ArrayList<>();
     whoQueries.put(channel.toLowerCase(), whoReplies);
     sendRawLineViaQueue("WHO " + channel);
   }
 
+  @Override
+  protected void onUserList(String channel, org.jibble.pircbot.User[] users) {
+    sendWhoQuery(channel);
+  }
+
   private void handleWhoList(String channelName, List<String> whoReplies) throws HokanException {
     Channel channel = getChannel(channelName);
-
+    this.channelUsersService.clearChannelUsers(channel);
     for (String whoLine : whoReplies) {
       String[] split = whoLine.split(" ");
       String nick = split[5];
@@ -183,7 +213,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);
       }
-
+      this.channelUsersService.createChannelUser(channel, user);
     }
   }
 
@@ -231,7 +261,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname, message);
+    IrcEvent ircEvent = IrcEventFactory.createIrcMessageEvent(channel, sender, login, hostname, message);
     Channel ch = getChannel(ircEvent);
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
@@ -243,7 +273,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
-    log.info("Message: {}", message);
+    IrcPrivateMessageEvent ircEvent = (IrcPrivateMessageEvent) IrcEventFactory.createIrcPrivateMessageEvent(sender, login, hostname, message);
+    log.info("Message: {}", ircEvent.getMessage());
   }
 
   @Override
@@ -275,30 +306,64 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       }
 
     }
-
     log.info("engine response: " + response.getResponseMessage());
   }
 
   @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {
-    Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(channel, sender, login, hostname);
+    Channel ch = getChannel(ircEvent);
     log.info("{} joined channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {
       ch.setChannelState(ChannelState.JOINED);
       if (ch.getFirstJoined() == null) {
         ch.setFirstJoined(new Date());
       }
+    } else {
+      this.channelUsersService.createChannelUser(ch, getUser(ircEvent));
     }
     this.channelService.updateChannel(ch);
   }
 
   @Override
-  protected void onPart(String channel, String sender, String login, String hostname) {
+  protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
+    sendWhoQuery(channel);
+/*    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname);
     Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
+    super.onKick(channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason);    //To change body of overridden methods use File | Settings | File Templates.*/
+  }
+
+  @Override
+  protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason, String[] fromChannels) {
+    for (String channel : fromChannels) {
+      sendWhoQuery(channel);
+    }
+  }
+
+  @Override
+  protected void onPart(String channel, String sender, String login, String hostname) {
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(channel, sender, login, hostname);
+    Channel ch = getChannel(ircEvent);
     log.info("{} part channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {
       ch.setChannelState(ChannelState.NOT_JOINED);
+      this.channelUsersService.clearChannelUsers(ch);
+    } else {
+      this.channelUsersService.removeChannelUser(ch, getUser(ircEvent));
     }
     this.channelService.updateChannel(ch);
+  }
+
+  @Override
+  protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
+    for (String joined : getChannels()) {
+      sendWhoQuery(joined);
+    }
+
+/*    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname);
+    Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
+    this.channelUsersService.removeChannelUser(getUser(ircEvent))
+    TODO
+    */
   }
 }

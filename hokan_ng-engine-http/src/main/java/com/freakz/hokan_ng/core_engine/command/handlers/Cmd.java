@@ -4,7 +4,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.IDMap;
 import com.martiansoftware.jsap.JSAP;
@@ -49,7 +49,7 @@ public abstract class Cmd implements HokkanCommand {
   }
 
   public void handleLine(EngineRequest request, EngineResponse response) throws HokanException {
-    IrcEvent ircEvent = request.getIrcEvent();
+    IrcMessageEvent ircEvent = (IrcMessageEvent) request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
