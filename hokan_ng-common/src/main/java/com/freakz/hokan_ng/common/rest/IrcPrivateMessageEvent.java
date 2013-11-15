@@ -14,7 +14,7 @@ public class IrcPrivateMessageEvent extends IrcMessageEvent implements Serializa
   private static final long serialVersionUID = 1L;
 
   public IrcPrivateMessageEvent(String sender, String login, String hostname, String message) {
-    super("private", sender, login, hostname, message);
+    super(sender, sender, login, hostname, message);
   }
 
 }

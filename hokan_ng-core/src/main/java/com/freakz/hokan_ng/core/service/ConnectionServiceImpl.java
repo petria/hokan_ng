@@ -99,6 +99,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   @Override
   public void destroy() throws Exception {
     log.warn("Going to be destroyed!");
+    channelUsersService.clearChannelUsers();
     abortConnectors();
     disconnectAll();
     Thread.sleep(3 * 1000);

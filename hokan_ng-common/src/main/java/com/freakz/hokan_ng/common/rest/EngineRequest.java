@@ -12,13 +12,13 @@ import java.io.Serializable;
 public class EngineRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
-  private IrcEvent ircEvent;
+  private IrcMessageEvent ircEvent;
   private long myPid;
 
   public EngineRequest() {
   }
 
-  public EngineRequest(IrcEvent ircEvent) {
+  public EngineRequest(IrcMessageEvent ircEvent) {
     this.ircEvent = ircEvent;
   }
 
@@ -26,7 +26,7 @@ public class EngineRequest implements Serializable {
     return ircEvent;
   }
 
-  public void setIrcEvent(IrcEvent ircEvent) {
+  public void setIrcEvent(IrcMessageEvent ircEvent) {
     this.ircEvent = ircEvent;
   }
 

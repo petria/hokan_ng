@@ -12,6 +12,7 @@ import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.rest.IrcEventFactory;
+import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.IrcPrivateMessageEvent;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
@@ -261,7 +262,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-    IrcEvent ircEvent = IrcEventFactory.createIrcMessageEvent(channel, sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(channel, sender, login, hostname, message);
     Channel ch = getChannel(ircEvent);
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
@@ -274,6 +275,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
     IrcPrivateMessageEvent ircEvent = (IrcPrivateMessageEvent) IrcEventFactory.createIrcPrivateMessageEvent(sender, login, hostname, message);
+    EngineRequest request = new EngineRequest(ircEvent);
+    this.engineCommunicator.sendEngineMessage(request, this);
     log.info("Message: {}", ircEvent.getMessage());
   }
 
