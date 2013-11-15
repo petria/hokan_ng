@@ -25,4 +25,6 @@ public interface ChannelUsersDAO {
 
   void clearChannelUsers(Channel channel);
 
+  void clearChannelUsers();
+
 }

@@ -23,4 +23,6 @@ public interface ChannelUsersService {
 
   void clearChannelUsers(Channel channel);
 
+  void clearChannelUsers();
+
 }

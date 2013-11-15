@@ -44,4 +44,10 @@ public class ChannelUsersServiceImpl implements ChannelUsersService {
   public void clearChannelUsers(Channel channel) {
     dao.clearChannelUsers(channel);
   }
+
+  @Override
+  public void clearChannelUsers() {
+    dao.clearChannelUsers();
+  }
+
 }

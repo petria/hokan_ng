@@ -67,4 +67,12 @@ public class ChannelUsersJPADAO implements ChannelUsersDAO {
     int res = query.executeUpdate();
     log.info("Removed {} ChannelUser", res);
   }
+
+  @Override
+  public void clearChannelUsers() {
+    Query query = this.entityManager.createQuery("DELETE FROM ChannelUser cu");
+    int res = query.executeUpdate();
+    log.info("Removed {} ChannelUser", res);
+  }
+
 }

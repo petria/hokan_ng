@@ -12,6 +12,7 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.service.ChannelService;
+import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,9 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   private PropertyService propertyService;
 
   @Autowired
+  private ChannelUsersService channelUsersService;
+
+  @Autowired
   private ApplicationContext context;
 
   private Map<String, IrcServerConfig> configuredServers;
@@ -65,6 +69,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @PostConstruct
   public void postInit() throws HokanException {
+    channelUsersService.clearChannelUsers();
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME, "" + new Date().getTime());
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {
