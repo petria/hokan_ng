@@ -3,6 +3,8 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 
+import java.util.List;
+
 /**
  * User: petria
  * Date: 11/7/13
@@ -13,6 +15,8 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 public interface NetworkService {
 
   Network getNetwork(String name) throws HokanException;
+
+  List<Network> getNetworks() throws HokanException;
 
   Network createNetwork(String name) throws HokanException;
 

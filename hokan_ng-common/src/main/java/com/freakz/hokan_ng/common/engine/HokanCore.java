@@ -18,11 +18,13 @@ import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
+import com.freakz.hokan_ng.common.util.IRCUtility;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +58,9 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   @Autowired
   private ChannelUsersService channelUsersService;
 
+  @Autowired
+  private ApplicationContext context;
+
   //--------
 
   private IrcServerConfig ircServerConfig;
@@ -67,6 +72,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   private Map<String, String> serverProperties = new HashMap<>();
   private Map<String, Method> methodMap = new HashMap<>();
   private Map<String, List<String>> whoQueries = new HashMap<>();
+  private OutputQueue outputQueue;
 
   public HokanCore() {
     Class clazz = this.getClass();
@@ -287,7 +293,9 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     Channel ch = getChannel(response.getRequest().getIrcEvent());
     ch.addCommandsHandled(1);
 
-    sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
+//    sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
+    handleSendMessage(response);
+
     for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
       String methodName = methodCall.getMethodName();
       String[] methodArgs = methodCall.getMethodArgs();
@@ -311,6 +319,26 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     }
     log.info("engine response: " + response.getResponseMessage());
   }
+
+  public void startOutputQueue() {
+    this.outputQueue = this.context.getBean(OutputQueue.class);
+    this.outputQueue.init(this, getIrcServerConfig().isThrottleInUse());
+  }
+
+  private void handleSendMessage(EngineResponse response) {
+    String channel = response.getRequest().getIrcEvent().getChannel();
+    String message = response.getResponseMessage();
+    String[] lines = message.split("\n");
+    for (String line : lines) {
+      String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
+      for (String l : split) {
+        String raw = "PRIVMSG " + channel + " :" + l;
+        this.outputQueue.addLine(raw);
+      }
+    }
+
+  }
+
 
   @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {

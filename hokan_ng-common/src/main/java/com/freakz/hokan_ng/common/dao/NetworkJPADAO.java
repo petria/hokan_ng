@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 /**
  * User: petria
@@ -29,6 +31,16 @@ public class NetworkJPADAO implements NetworkDAO {
       throw new HokanException("Network not found: " + name);
     }
     return network;
+  }
+
+  @Override
+  public List<Network> getNetworks() throws HokanException {
+    try {
+      TypedQuery<Network> query = entityManager.createQuery("SELECT n FROM Network n ORDER BY n.networkName", Network.class);
+      return query.getResultList();
+    } catch (Exception e) {
+      throw new HokanException(e.getMessage());
+    }
   }
 
   @Override

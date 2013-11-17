@@ -47,6 +47,25 @@ public class ChannelJPADAO implements ChannelDAO {
   }
 
   @Override
+  public List<Channel> findChannels(ChannelState state) throws HokanException {
+    TypedQuery<Channel> query;
+    if (state == ChannelState.ALL) {
+      query = entityManager.createQuery(
+          "SELECT ch FROM Channel ch ORDER BY ch.network.networkName,ch.channelName", Channel.class);
+    } else {
+      query = entityManager.createQuery(
+          "SELECT ch FROM Channel ch WHERE ch.channelState = :state ORDER BY ch.network.networkName,ch.channelName", Channel.class
+      );
+      query.setParameter("state", state);
+    }
+    try {
+      return query.getResultList();
+    } catch (Exception e) {
+      throw new HokanException(e.getMessage());
+    }
+  }
+
+  @Override
   public Channel findChannelByName(Network network, String name) throws HokanException {
     TypedQuery<Channel> query = entityManager.createQuery(
         "SELECT ch FROM Channel ch WHERE ch.network = :network AND ch.channelName= :name", Channel.class

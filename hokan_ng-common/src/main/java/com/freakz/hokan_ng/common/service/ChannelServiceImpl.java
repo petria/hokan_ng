@@ -36,6 +36,16 @@ public class ChannelServiceImpl implements ChannelService {
   }
 
   @Override
+  public List<Channel> findChannels(ChannelState state) {
+    try {
+      return channelDAO.findChannels(state);
+    } catch (HokanException e) {
+      log.error("Couldn't get Channel entity", e);
+    }
+    return null;
+  }
+
+  @Override
   public Channel findChannelByName(Network network, String name) {
     try {
       return channelDAO.findChannelByName(network, name);

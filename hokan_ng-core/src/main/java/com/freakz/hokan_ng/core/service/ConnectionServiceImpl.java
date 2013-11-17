@@ -214,6 +214,8 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     }
     network.addToConnectCount(1);
 
+    engine.startOutputQueue();
+
     this.connectors.remove(network.getName());
     this.connectedEngines.put(network.getName(), engine);
     this.networkService.updateNetwork(network);

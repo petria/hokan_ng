@@ -17,6 +17,8 @@ public interface ChannelService {
 
   List<Channel> findChannels(Network network, ChannelState state);
 
+  List<Channel> findChannels(ChannelState state);
+
   Channel findChannelByName(Network network, String name);
 
   Channel createChannel(Network network, String name);

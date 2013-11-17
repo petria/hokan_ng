@@ -6,6 +6,8 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * User: petria
  * Date: 11/7/13
@@ -25,6 +27,11 @@ public class NetworkServiceImpl implements NetworkService {
   @Override
   public Network getNetwork(String name) throws HokanException {
     return networkDAO.getNetwork(name);
+  }
+
+  @Override
+  public List<Network> getNetworks() throws HokanException {
+    return networkDAO.getNetworks();
   }
 
   @Override

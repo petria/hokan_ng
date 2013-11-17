@@ -18,6 +18,8 @@ public interface ChannelDAO {
 
   List<Channel> findChannels(Network network, ChannelState state) throws HokanException;
 
+  List<Channel> findChannels(ChannelState state) throws HokanException;
+
   Channel findChannelByName(Network network, String name) throws HokanException;
 
   Channel createChannel(Network network, String name) throws HokanException;
