@@ -5,12 +5,14 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.service.PropertyService;
+import com.freakz.hokan_ng.common.util.TimeUtil;
 import com.freakz.hokan_ng.common.util.Uptime;
 import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -51,7 +53,9 @@ public class UptimeCmd extends Cmd {
     Long coreEngine = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME).getValue());
     Uptime ut1 = new Uptime(coreHttp);
     Uptime ut2 = new Uptime(coreEngine);
-    response.setResponseMessage("core-io: " + ut1.toString() + " core-engine: " + ut2.toString());
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    Date time = TimeUtil.getDate();
+    response.setResponseMessage(" " + sdf.format(time) + " core-io: " + ut1.toString() + ", core-engine: " + ut2.toString());
   }
 
 }

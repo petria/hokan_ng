@@ -14,11 +14,12 @@
         <class>com.freakz.hokan_ng.common.entity.User</class>
         <class>com.freakz.hokan_ng.common.entity.UserChannel</class>
 
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <!--        <exclude-unlisted-classes>true</exclude-unlisted-classes> -->
 
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/hokan_ng-mysql"/>
         </properties>
