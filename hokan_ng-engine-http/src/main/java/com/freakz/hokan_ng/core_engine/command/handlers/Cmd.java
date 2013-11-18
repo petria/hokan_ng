@@ -48,7 +48,7 @@ public abstract class Cmd implements HokkanCommand {
     return name;
   }
 
-  public void handleLine(EngineRequest request, EngineResponse response) throws HokanException {
+  public void handleLine(EngineRequest request, EngineResponse response) throws Exception {
     IrcMessageEvent ircEvent = (IrcMessageEvent) request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 

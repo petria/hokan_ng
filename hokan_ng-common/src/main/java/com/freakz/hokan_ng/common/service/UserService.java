@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.entity.User;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 
 import java.util.List;
 
@@ -14,16 +14,16 @@ import java.util.List;
  */
 public interface UserService {
 
-  User findUser(String nick) throws HokanException;
+  User findUser(String nick) throws HokanServiceException;
 
-  List<User> findUsers() throws HokanException;
+  List<User> findUsers() throws HokanServiceException;
 
-  List<User> getLoggedInUsers() throws HokanException;
+  List<User> getLoggedInUsers() throws HokanServiceException;
 
-  void resetLoggedInUsers() throws HokanException;
+  void resetLoggedInUsers() throws HokanServiceException;
 
-  void resetOlpos() throws HokanException;
+  void resetOlpos() throws HokanServiceException;
 
-  User updateUser(User user) throws HokanException;
+  User updateUser(User user) throws HokanServiceException;
 
 }

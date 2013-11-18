@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.rest;
 
+import com.freakz.hokan_ng.common.exception.HokanEngineException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ public class EngineResponse implements Serializable {
 
   private int responseStatus;
   private String responseMessage;
+  private HokanEngineException exception;
+
   private EngineRequest request;
 
   private List<EngineMethodCall> engineMethodCalls = new ArrayList<>();
@@ -58,5 +62,13 @@ public class EngineResponse implements Serializable {
 
   public void setEngineMethodCalls(List<EngineMethodCall> engineMethodCalls) {
     this.engineMethodCalls = engineMethodCalls;
+  }
+
+  public HokanEngineException getException() {
+    return exception;
+  }
+
+  public void setException(HokanEngineException exception) {
+    this.exception = exception;
   }
 }

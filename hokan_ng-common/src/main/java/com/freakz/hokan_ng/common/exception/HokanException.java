@@ -1,13 +1,19 @@
 package com.freakz.hokan_ng.common.exception;
 
+import java.io.Serializable;
+
 /**
  * Date: 3.6.2013
  * Time: 13:25
  *
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
-public class HokanException extends Exception {
+public class HokanException extends Exception implements Serializable {
+
   private static final long serialVersionUID = 1L;
+
+  public HokanException() {
+  }
 
   public HokanException(Exception t) {
     super(t);

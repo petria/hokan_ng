@@ -74,9 +74,8 @@ public class AsyncEngineMessageSender implements CommandRunnable {
       response.setResponseStatus(-100);
       response.setResponseMessage(e.getClass() + " -> " + e.getMessage());
     }
-    if (response.getResponseMessage() != null) {
-      this.engineEventHandler.handleEngineResponse(response);
-    }
+
+    this.engineEventHandler.handleEngineResponse(response);
 
   }
 }

@@ -15,6 +15,7 @@ import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.rest.IrcEventFactory;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.IrcPrivateMessageEvent;
+import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
@@ -48,19 +49,22 @@ import java.util.Map;
 public class HokanCore extends PircBot implements EngineEventHandler, DisposableBean {
 
   @Autowired
+  private ApplicationContext context;
+
+  @Autowired
+  private AccessControlService accessControlService;
+
+  @Autowired
   private ChannelService channelService;
+
+  @Autowired
+  private ChannelUsersService channelUsersService;
 
   @Autowired
   private UserChannelService userChannelService;
 
   @Autowired
   private UserService userService;
-
-  @Autowired
-  private ChannelUsersService channelUsersService;
-
-  @Autowired
-  private ApplicationContext context;
 
   //--------
 
@@ -160,8 +164,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   public User getUser(IrcEvent ircEvent) {
     try {
-      User user = this.userService.findUser(ircEvent.getSender());
-      return user;
+      return this.userService.findUser(ircEvent.getSender());
     } catch (HokanException e) {
       coreExceptionHandler(e);
     }
@@ -265,6 +268,15 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     log.error("---------------------------");
     log.error("Exception", e);
     log.error("---------------------------");
+    try {
+      List<User> masterUsers = accessControlService.getMasterUsers();
+      String message = "Exception caught: " + e;
+      for (User user : masterUsers) {
+        sendMessage(user.getNick(), message);
+      }
+    } catch (HokanException e1) {
+      e1.printStackTrace();  //ToDO epic fail?
+    }
   }
 
   @Override
@@ -293,8 +305,12 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
     Channel ch = getChannel(response.getRequest().getIrcEvent());
     ch.addCommandsHandled(1);
+    if (response.getException() != null) {
+      coreExceptionHandler(response.getException());
+      sendMessage(response.getRequest().getIrcEvent().getSender(), "Command failed: " + response.getException().getMessage());
+      return;
+    }
 
-//    sendMessage(response.getRequest().getIrcEvent().getChannel(), response.getResponseMessage());
     handleSendMessage(response);
 
     for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
@@ -329,6 +345,12 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
   private void handleSendMessage(EngineResponse response) {
     String channel = response.getRequest().getIrcEvent().getChannel();
     String message = response.getResponseMessage();
+    if (message != null) {
+      handleSendMessage(channel, message);
+    }
+  }
+
+  private void handleSendMessage(String channel, String message) {
     String[] lines = message.split("\n");
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
@@ -337,9 +359,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
         this.outputQueue.addLine(raw);
       }
     }
-
   }
-
 
   @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {

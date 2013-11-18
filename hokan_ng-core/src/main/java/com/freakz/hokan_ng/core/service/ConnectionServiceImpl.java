@@ -69,7 +69,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @PostConstruct
   public void postInit() throws HokanException {
-    channelUsersService.clearChannelUsers();
+//    channelUsersService.clearChannelUsers();
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME, "" + new Date().getTime());
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {

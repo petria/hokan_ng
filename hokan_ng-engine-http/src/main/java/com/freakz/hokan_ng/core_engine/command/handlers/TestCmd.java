@@ -27,6 +27,8 @@ public class TestCmd extends Cmd {
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
+    int a = 100;
+    a = 1 / 0;
     response.setResponseMessage("test command reply");
   }
 

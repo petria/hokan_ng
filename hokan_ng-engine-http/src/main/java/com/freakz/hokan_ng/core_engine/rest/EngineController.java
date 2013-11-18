@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.core_engine.rest;
 
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
@@ -42,8 +42,10 @@ public class EngineController {
     if (handler != null) {
       try {
         handler.handleLine(request, response);
-      } catch (HokanException e) {
-        e.printStackTrace(); // TODO
+      } catch (Exception e) {
+        HokanEngineException engineException = new HokanEngineException(handler.getClass());
+        response.setException(engineException);
+        log.warn("Command handler returned exception {}", e.getMessage());
       }
     }
     return response;
