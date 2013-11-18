@@ -19,9 +19,19 @@ public class HokanEngineException extends HokanException implements Serializable
     super();
   }
 
-  public HokanEngineException(Class exceptionClass) {
-    super();
-    this.exceptionClassName = exceptionClass.getName();
+  public HokanEngineException(Exception t, String exceptionClassName) {
+    super(t);
+    this.exceptionClassName = exceptionClassName;
+  }
+
+  public HokanEngineException(String message, String exceptionClassName) {
+    super(message);
+    this.exceptionClassName = exceptionClassName;
+  }
+
+  public HokanEngineException(String message, Throwable cause, String exceptionClassName) {
+    super(message, cause);
+    this.exceptionClassName = exceptionClassName;
   }
 
   public String getExceptionClassName() {

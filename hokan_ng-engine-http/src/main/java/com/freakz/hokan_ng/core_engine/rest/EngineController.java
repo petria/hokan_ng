@@ -43,7 +43,7 @@ public class EngineController {
       try {
         handler.handleLine(request, response);
       } catch (Exception e) {
-        HokanEngineException engineException = new HokanEngineException(handler.getClass());
+        HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
         response.setException(engineException);
         log.warn("Command handler returned exception {}", e.getMessage());
       }

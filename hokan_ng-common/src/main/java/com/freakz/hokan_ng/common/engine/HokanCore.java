@@ -307,7 +307,17 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     ch.addCommandsHandled(1);
     if (response.getException() != null) {
       coreExceptionHandler(response.getException());
-      sendMessage(response.getRequest().getIrcEvent().getSender(), "Command failed: " + response.getException().getMessage());
+      String error = response.getException().getExceptionClassName() + " failed: " + response.getException().getCause();
+      String message;
+      String target;
+      if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {
+        message = response.getRequest().getIrcEvent().getSender() + ": " + error;
+        target = response.getRequest().getIrcEvent().getChannel();
+      } else {
+        message = error;
+        target = response.getRequest().getIrcEvent().getSender();
+      }
+      sendMessage(target, message);
       return;
     }
 
