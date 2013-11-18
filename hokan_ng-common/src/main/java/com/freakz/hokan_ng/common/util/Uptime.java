@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * Calculates time difference between two time objects.
- * This time is usually called uptime.
  * <p/>
  * Date: 11/6/13
  * Time: 6:52 PM
