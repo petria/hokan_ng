@@ -1,7 +1,5 @@
 package com.freakz.hokan_ng.common.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -15,31 +13,10 @@ import java.util.Date;
  */
 public class Uptime {
 
-//~ Instance/static variables ..............................................
+  private long time;
 
-  private long _time;
-
-//~ Constructors ...........................................................
-
-  public Uptime() {
-    _time = new Date().getTime();
-  }
-
-  public Uptime(Calendar cal) {
-    this(cal.getTime());
-  }
-
-  public Uptime(Date d) {
-    this(d.getTime());
-  }
-
-  /**
-   * startup time. uptime is calculated against this time.
-   */
   public Uptime(long time) {
-    _time = time;
-    //    System.out.println("Target time: " + new Date(time) +
-    //		       " (" + _time + ")");
+    this.time = time;
   }
 
   //~ Methods ................................................................
@@ -48,17 +25,8 @@ public class Uptime {
     return getTimeDiff(new Date().getTime());
   }
 
-  public Integer[] getTimeDiff(Calendar cal) {
-    return getTimeDiff(cal.getTime());
-  }
-
-  public Integer[] getTimeDiff(Date d) {
-    return getTimeDiff(d.getTime());
-  }
-
-
   public Integer[] getTimeDiff(long time2) {
-    long utime = Math.abs(_time - time2);
+    long utime = Math.abs(this.time - time2);
 
     if (utime == 0) {
       return new Integer[]{0, 0, 0, 0};
@@ -81,11 +49,10 @@ public class Uptime {
   }
 
   public String toString() {
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     String[] format = {"00", "00", "00", "0"};
     StringBuilder sb = new StringBuilder();
     Integer[] ut = getTimeDiff();
-//    sb.append(sdf.format(new Date()));
+
     sb.append("up %3 day");
     if (ut[3] > 1) {
       sb.append("s");
