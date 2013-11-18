@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.updaters;
 
+import java.util.Collection;
+
 /**
  * User: petria
  * Date: 11/18/13
@@ -7,8 +9,10 @@ package com.freakz.hokan_ng.common.updaters;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public interface UpdaterManager {
+public interface UpdaterManagerService {
 
-  DataUpdater getUpdaterList();
+  Collection<Updater> getUpdaterList();
+
+  void stop();
 
 }

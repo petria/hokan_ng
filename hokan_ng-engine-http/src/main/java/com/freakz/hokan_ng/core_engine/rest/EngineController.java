@@ -4,9 +4,11 @@ import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
+import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
-public class EngineController {
+public class EngineController implements DisposableBean {
 
   @Autowired
   private CommandHandlerService commandHandler;
 
+  @Autowired
+  private UpdaterManagerService updaterManagerService;
 
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
@@ -49,6 +53,13 @@ public class EngineController {
       }
     }
     return response;
+  }
+
+  @Override
+  public void destroy() throws Exception {
+    log.info("Destroying!");
+    updaterManagerService.stop();
+    Thread.sleep(3 * 1000);
   }
 
 }

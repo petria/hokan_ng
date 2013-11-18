@@ -1,11 +1,12 @@
 package com.freakz.hokan_ng.common.updaters;
 
+import com.freakz.hokan_ng.common.engine.CommandPool;
+import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * User: petria
@@ -16,12 +17,13 @@ import java.util.Date;
  */
 @Component
 @Slf4j
-public abstract class AbstractDataUpdater implements DataUpdater {
+public abstract class Updater implements DataUpdater, CommandRunnable {
 
   private long updateCount;
+  private Calendar nextUpdate = TimeUtil.getCalendar();
   protected UpdaterStatus status;
 
-  protected AbstractDataUpdater() {
+  protected Updater() {
   }
 
   @Override
@@ -30,23 +32,36 @@ public abstract class AbstractDataUpdater implements DataUpdater {
   }
 
   @Override
-  public Date getNextUpdateTime() {
-    Calendar cal = TimeUtil.getCalendar();
-    cal.add(Calendar.MINUTE, 5);
-    return cal.getTime();
+  public Calendar getNextUpdateTime() {
+    return nextUpdate;
   }
 
   @Override
-  public void updateData() {
+  public Calendar calculateNextUpdate() {
+    Calendar cal = TimeUtil.getCalendar();
+    cal.add(Calendar.MINUTE, 5);
+    return cal;
+  }
+
+  @Override
+  public void updateData(CommandPool commandPool) {
+    commandPool.startRunnable(this);
+  }
+
+  @Override
+  public void handleRun(long myPid, Object args) {
     try {
       status = UpdaterStatus.UPDATING;
       doUpdateData();
       updateCount++;
       status = UpdaterStatus.IDLE;
+      nextUpdate = calculateNextUpdate();
+
     } catch (Exception e) {
       log.error("Updater failed", e);
     }
   }
+
 
   public abstract void doUpdateData();
 

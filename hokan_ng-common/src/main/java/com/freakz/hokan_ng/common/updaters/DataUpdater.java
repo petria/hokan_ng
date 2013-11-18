@@ -1,6 +1,8 @@
 package com.freakz.hokan_ng.common.updaters;
 
-import java.util.Date;
+import com.freakz.hokan_ng.common.engine.CommandPool;
+
+import java.util.Calendar;
 
 /**
  * User: petria
@@ -11,9 +13,11 @@ import java.util.Date;
  */
 public interface DataUpdater {
 
-  Date getNextUpdateTime();
+  Calendar getNextUpdateTime();
 
-  void updateData();
+  Calendar calculateNextUpdate();
+
+  void updateData(CommandPool commandPool);
 
   void getData(UpdaterData updaterData);
 
