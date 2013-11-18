@@ -22,6 +22,21 @@ public class HokanController {
   @Autowired
   private ConnectionManagerService connectionManager;
 
+  @RequestMapping(value = "/control/joinChannels/{network}")
+  public
+  @ResponseBody
+  String joinChannels(
+      @PathVariable("network") String network
+  ) {
+    try {
+      connectionManager.joinChannels(network);
+    } catch (HokanException e) {
+      return e.getMessage();
+    }
+    return "ok";
+  }
+
+
   @RequestMapping(value = "/control/connect/{network}")
   public
   @ResponseBody

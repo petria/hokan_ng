@@ -11,6 +11,7 @@ import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.NetworkService;
@@ -116,21 +117,42 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
   }
 
   @Override
-  public void connect(String networkName) throws HokanException {
-    Network network = networkService.getNetwork(networkName);
-    connect(network);
+  public void joinChannels(String networkName) throws HokanServiceException {
+    Network network = null;
+    try {
+      network = networkService.getNetwork(networkName);
+      HokanCore engine = this.connectedEngines.get(networkName);
+      if (engine == null) {
+        throw new HokanServiceException("Engine not online: " + networkName);
+      }
+      joinChannels(engine, network);
+
+    } catch (HokanException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
-  public void connect(Network network) throws HokanException {
+  @Override
+  public void connect(String networkName) throws HokanServiceException {
+    Network network = null;
+    try {
+      network = networkService.getNetwork(networkName);
+      connect(network);
+    } catch (HokanException e) {
+      throw new HokanServiceException(e);
+    }
+  }
+
+  public void connect(Network network) throws HokanServiceException {
     updateServerMap();
     HokanCore engine = getConnectedEngine(network);
     if (engine != null) {
-      throw new HokanException("Engine already connected to network: " + engine);
+      throw new HokanServiceException("Engine already connected to network: " + engine);
     }
 
     IrcServerConfig configuredServer = configuredServers.get(network.getName());
     if (configuredServer == null) {
-      throw new HokanException("IrcServerConfig not found for network: " + network);
+      throw new HokanServiceException("IrcServerConfig not found for network: " + network);
     }
     configuredServer.setIrcServerConfigState(IrcServerConfigState.CONNECTED);
     this.ircServerConfigService.updateIrcServerConfig(configuredServer);
@@ -142,19 +164,25 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
       this.connectors.put(configuredServer.getNetwork().getName(), connector);
       connector.connect(BOT_NICK, this, configuredServer);
     } else {
-      throw new HokanException("Going online attempt already going: " + configuredServer.getNetwork());
+      throw new HokanServiceException("Going online attempt already going: " + configuredServer.getNetwork());
     }
 
   }
 
   @Override
-  public void disconnect(String networkName) throws HokanException {
+  public void disconnect(String networkName) throws HokanServiceException {
 
-    Network network = networkService.getNetwork(networkName);
+
+    Network network = null;
+    try {
+      network = networkService.getNetwork(networkName);
+    } catch (HokanException e) {
+      throw new HokanServiceException(e);
+    }
 
     HokanCore engine = this.connectedEngines.get(network.getName());
     if (engine == null) {
-      throw new HokanException("No connected engine found for network: " + network);
+      throw new HokanServiceException("No connected engine found for network: " + network);
     }
     engine.getIrcServerConfig().setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
     this.ircServerConfigService.updateIrcServerConfig(engine.getIrcServerConfig());
@@ -220,11 +248,15 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
     this.connectedEngines.put(network.getName(), engine);
     this.networkService.updateNetwork(network);
 
+    joinChannels(engine, network);
+
+  }
+
+  private void joinChannels(HokanCore engine, Network network) {
     List<Channel> channels = this.channelService.findChannels(network, ChannelState.JOINED);
     for (Channel channelToJoin : channels) {
       engine.joinChannel(channelToJoin.getChannelName());
     }
-
   }
 
   @Override

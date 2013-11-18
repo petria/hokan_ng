@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.engine.Connector;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 
 import java.util.Collection;
 
@@ -13,9 +13,11 @@ import java.util.Collection;
  */
 public interface ConnectionManagerService {
 
-  void connect(String network) throws HokanException;
+  void joinChannels(String network) throws HokanServiceException;
 
-  void disconnect(String network) throws HokanException;
+  void connect(String network) throws HokanServiceException;
+
+  void disconnect(String network) throws HokanServiceException;
 
   void disconnectAll();
 

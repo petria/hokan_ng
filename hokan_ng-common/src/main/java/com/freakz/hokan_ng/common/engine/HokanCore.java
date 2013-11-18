@@ -103,7 +103,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
 
   private Method getEngineMethod(String name, int args) {
     for (Method method : methodMap.values()) {
-      if (method.getName().equals(name) && method.getGenericParameterTypes().length == args) {
+      if (method.getName().equals(name)) { // && method.getGenericParameterTypes().length == args) {
         return method;
       }
     }
@@ -332,10 +332,9 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       Method method = getEngineMethod(methodName, methodArgs.length);
       if (method != null) {
         try {
-          if (method.getParameterTypes().length == methodArgs.length) {
-            log.info("Invoking method         : " + method);
-            method.invoke(this, methodArgs);
-          }
+          log.info("Invoking method         : {}", method);
+          Object result = method.invoke(this, methodArgs);
+          log.info("Invoke   result         : {}", result);
         } catch (Exception e) {
           log.error("Couldn't do engine method!", e);
         }
@@ -344,7 +343,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
       }
 
     }
-    log.info("engine response: " + response.getResponseMessage());
+    log.info("engine response: \n" + response.getResponseMessage());
   }
 
   public void startOutputQueue() {
