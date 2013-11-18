@@ -13,8 +13,6 @@ import com.freakz.hokan_ng.common.exception.HokanException;
  */
 public interface EngineConnector {
 
-  void engineConnectorNickAlreadyInUse(Connector connector, IrcServerConfig configuredServer, String nickInUse);
-
   void engineConnectorGotOnline(Connector connector, HokanCore engine) throws HokanException;
 
   void engineConnectorTooManyConnectAttempts(Connector connector, IrcServerConfig configuredServer);

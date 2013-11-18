@@ -134,7 +134,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @Override
   public void connect(String networkName) throws HokanServiceException {
-    Network network = null;
+    Network network;
     try {
       network = networkService.getNetwork(networkName);
       connect(network);
@@ -171,9 +171,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   @Override
   public void disconnect(String networkName) throws HokanServiceException {
-
-
-    Network network = null;
+    Network network;
     try {
       network = networkService.getNetwork(networkName);
     } catch (HokanException e) {
@@ -217,10 +215,6 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
 
   // ---- EngineConnector
 
-  @Override
-  public void engineConnectorNickAlreadyInUse(Connector connector, IrcServerConfig configuredServer, String nickInUse) {
-    // TODO remove?
-  }
 
   @Override
   public void engineConnectorTooManyConnectAttempts(Connector connector, IrcServerConfig configuredServer) {
