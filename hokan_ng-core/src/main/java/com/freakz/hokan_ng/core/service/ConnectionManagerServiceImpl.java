@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class ConnectionServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
+public class ConnectionManagerServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
 
   private static final String BOT_NICK = "hokan_ng";
 
@@ -65,7 +65,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   private Map<String, Connector> connectors = new HashMap<>();
 
-  public ConnectionServiceImpl() {
+  public ConnectionManagerServiceImpl() {
   }
 
   @PostConstruct
@@ -118,7 +118,7 @@ public class ConnectionServiceImpl implements ConnectionManagerService, EngineCo
 
   @Override
   public void joinChannels(String networkName) throws HokanServiceException {
-    Network network = null;
+    Network network;
     try {
       network = networkService.getNetwork(networkName);
       HokanCore engine = this.connectedEngines.get(networkName);
