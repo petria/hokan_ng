@@ -55,11 +55,11 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
       doUpdateData();
       updateCount++;
       status = UpdaterStatus.IDLE;
-      nextUpdate = calculateNextUpdate();
 
     } catch (Exception e) {
       log.error("Updater failed", e);
     }
+    nextUpdate = calculateNextUpdate();
   }
 
 

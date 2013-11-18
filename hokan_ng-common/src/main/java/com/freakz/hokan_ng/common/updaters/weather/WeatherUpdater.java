@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.updaters.Updater;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.StringTokenizer;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
 public class WeatherUpdater extends Updater {
 
@@ -34,7 +36,7 @@ public class WeatherUpdater extends Updater {
 
   @Override
   public Object doGetData() {
-    return data;
+    return sortData(data, true);
   }
 
   @Override
@@ -46,7 +48,7 @@ public class WeatherUpdater extends Updater {
       try {
         pf = new HttpPageFetcher(url, "8859_1");
       } catch (Exception e) {
-        log.info("INVALID URL: {}", url);
+        log.info("\nINVALID URL: {} -> {}", url, e.getCause());
         continue;
       }
       while (pf.hasMoreLines()) {
@@ -81,7 +83,7 @@ public class WeatherUpdater extends Updater {
         }
       }
     } // for
-    this.data = sortData(data, true);
+    this.data = data;
   }
 
   @SuppressWarnings("unchecked")
@@ -104,14 +106,10 @@ public class WeatherUpdater extends Updater {
   }
 
   public static class WeatherComparator implements Comparator {
-    private static boolean reverse;
+    private boolean reverse;
 
     public WeatherComparator(boolean reverse) {
-      reverse = reverse;
-    }
-
-    public static void setReverse(boolean b) {
-      reverse = b;
+      this.reverse = reverse;
     }
 
     public int compare(Object o1, Object o2) {

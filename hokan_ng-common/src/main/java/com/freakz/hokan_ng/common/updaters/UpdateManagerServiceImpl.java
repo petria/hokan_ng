@@ -52,20 +52,28 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
     return handlers.values();
   }
 
+  public Updater getUpdater(String updaterName) {
+    return handlers.get(updaterName);
+  }
+
   @Override
   public void handleRun(long myPid, Object args) {
     doRun = true;
     log.info("<< Starting update service: {} >>", myPid);
     while (doRun) {
+//      log.info("ping");
       for (Updater updater : getUpdaterList()) {
         Calendar now = TimeUtil.getCalendar();
-        if (firstRun || updater.getNextUpdateTime().after(now)) {
-          updater.updateData(this.commandPool);
+        Calendar next = updater.getNextUpdateTime();
+        if (firstRun || now.after(next)) {
+          if (updater.getStatus() != UpdaterStatus.UPDATING) {
+            updater.updateData(this.commandPool);
+          }
         }
       }
       firstRun = false;
       try {
-        Thread.sleep(1000 * 2);
+        Thread.sleep(5000 * 2);
       } catch (InterruptedException e) {
         // ignore
       }

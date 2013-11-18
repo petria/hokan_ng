@@ -13,6 +13,8 @@ public interface UpdaterManagerService {
 
   Collection<Updater> getUpdaterList();
 
+  Updater getUpdater(String updaterName);
+
   void stop();
 
 }
