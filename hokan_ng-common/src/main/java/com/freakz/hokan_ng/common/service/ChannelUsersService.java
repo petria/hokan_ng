@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelUser;
 import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 
 import java.util.List;
 
@@ -15,14 +16,14 @@ import java.util.List;
  */
 public interface ChannelUsersService {
 
-  ChannelUser createChannelUser(Channel channel, User user);
+  ChannelUser createChannelUser(Channel channel, User user) throws HokanServiceException;
 
-  void removeChannelUser(Channel channel, User user);
+  void removeChannelUser(Channel channel, User user) throws HokanServiceException;
 
-  List<ChannelUser> findChannelUsers(Channel channel);
+  List<ChannelUser> findChannelUsers(Channel channel) throws HokanServiceException;
 
-  void clearChannelUsers(Channel channel);
+  void clearChannelUsers(Channel channel) throws HokanServiceException;
 
-  void clearChannelUsers();
+  void clearChannelUsers() throws HokanServiceException;
 
 }

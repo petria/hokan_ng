@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import java.util.List;
  */
 public interface NetworkDAO {
 
-  Network getNetwork(String name) throws HokanException;
+  Network getNetwork(String name) throws HokanDAOException;
 
-  List<Network> getNetworks() throws HokanException;
+  List<Network> getNetworks() throws HokanDAOException;
 
-  Network createNetwork(String name) throws HokanException;
+  Network createNetwork(String name) throws HokanDAOException;
 
-  Network updateNetwork(Network network) throws HokanException;
+  Network updateNetwork(Network network) throws HokanDAOException;
 }

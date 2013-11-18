@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ import java.util.List;
  */
 public interface ChannelDAO {
 
-  List<Channel> findChannels(Network network, ChannelState state) throws HokanException;
+  List<Channel> findChannels(Network network, ChannelState state) throws HokanDAOException;
 
-  List<Channel> findChannels(ChannelState state) throws HokanException;
+  List<Channel> findChannels(ChannelState state) throws HokanDAOException;
 
-  Channel findChannelByName(Network network, String name) throws HokanException;
+  Channel findChannelByName(Network network, String name) throws HokanDAOException;
 
-  Channel createChannel(Network network, String name) throws HokanException;
+  Channel createChannel(Network network, String name) throws HokanDAOException;
 
-  Channel updateChannel(Channel channel) throws HokanException;
+  Channel updateChannel(Channel channel) throws HokanDAOException;
 }

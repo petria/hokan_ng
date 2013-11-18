@@ -2,7 +2,7 @@ package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 /**
  * User: petria
@@ -13,8 +13,8 @@ import com.freakz.hokan_ng.common.exception.HokanException;
  */
 public interface PropertyDAO {
 
-  Property findProperty(PropertyName name) throws HokanException;
+  Property findProperty(PropertyName name) throws HokanDAOException;
 
-  Property setProperty(PropertyName name, String value) throws HokanException;
+  Property setProperty(PropertyName name, String value) throws HokanDAOException;
 
 }

@@ -4,6 +4,9 @@ import com.freakz.hokan_ng.common.dao.ChannelUsersDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelUser;
 import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.List;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
+@Slf4j
 @Service
 public class ChannelUsersServiceImpl implements ChannelUsersService {
 
@@ -26,28 +30,48 @@ public class ChannelUsersServiceImpl implements ChannelUsersService {
   }
 
   @Override
-  public ChannelUser createChannelUser(Channel channel, User user) {
-    return dao.createChannelUser(channel, user);
+  public ChannelUser createChannelUser(Channel channel, User user) throws HokanServiceException {
+    try {
+      return dao.createChannelUser(channel, user);
+    } catch (HokanDAOException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
   @Override
-  public void removeChannelUser(Channel channel, User user) {
-    dao.removeChannelUser(channel, user);
+  public void removeChannelUser(Channel channel, User user) throws HokanServiceException {
+    try {
+      dao.removeChannelUser(channel, user);
+    } catch (HokanDAOException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
   @Override
-  public List<ChannelUser> findChannelUsers(Channel channel) {
-    return dao.findChannelUsers(channel);
+  public List<ChannelUser> findChannelUsers(Channel channel) throws HokanServiceException {
+    try {
+      return dao.findChannelUsers(channel);
+    } catch (HokanDAOException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
   @Override
-  public void clearChannelUsers(Channel channel) {
-    dao.clearChannelUsers(channel);
+  public void clearChannelUsers(Channel channel) throws HokanServiceException {
+    try {
+      dao.clearChannelUsers(channel);
+    } catch (HokanDAOException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
   @Override
-  public void clearChannelUsers() {
-    dao.clearChannelUsers();
+  public void clearChannelUsers() throws HokanServiceException {
+    try {
+      dao.clearChannelUsers();
+    } catch (HokanDAOException e) {
+      throw new HokanServiceException(e);
+    }
   }
 
 }

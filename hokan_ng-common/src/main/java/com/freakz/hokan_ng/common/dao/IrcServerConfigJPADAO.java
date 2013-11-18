@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<IrcServerConfig> getIrcServerConfigs() throws HokanException {
+  public List<IrcServerConfig> getIrcServerConfigs() throws HokanDAOException {
     try {
       Query query = getEntityManager().createNativeQuery("select * from IrcServerConfig", IrcServerConfig.class);
       List<IrcServerConfig> resultList = query.getResultList();
@@ -48,7 +48,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
 
     } catch (Exception e) {
 //      log.error(e.getMessage(), e);
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
 
     }
   }
@@ -59,7 +59,7 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
                                                int port,
                                                String password,
                                                boolean useThrottle,
-                                               IrcServerConfigState state) throws HokanException {
+                                               IrcServerConfigState state) throws HokanDAOException {
     try {
       IrcServerConfig ircServerConfig = new IrcServerConfig();
       ircServerConfig.setNetwork(network);
@@ -73,16 +73,16 @@ public class IrcServerConfigJPADAO implements IrcServerConfigDAO {
       return ircServerConfig;
     } catch (Exception e) {
 //      log.error(e.getMessage(), e);
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanException {
+  public IrcServerConfig updateIrcServerConfig(IrcServerConfig ircServerConfig) throws HokanDAOException {
     try {
       return entityManager.merge(ircServerConfig);
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 

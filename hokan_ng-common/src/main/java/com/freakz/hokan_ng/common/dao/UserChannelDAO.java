@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public interface UserChannelDAO {
 
-  UserChannel createUserChannel(User user, Channel channel) throws HokanException;
+  UserChannel createUserChannel(User user, Channel channel) throws HokanDAOException;
 
-  UserChannel getUserChannel(User user, Channel channel) throws HokanException;
+  UserChannel getUserChannel(User user, Channel channel) throws HokanDAOException;
 
-  List<UserChannel> findUserChannels(User user) throws HokanException;
+  List<UserChannel> findUserChannels(User user) throws HokanDAOException;
 
 }

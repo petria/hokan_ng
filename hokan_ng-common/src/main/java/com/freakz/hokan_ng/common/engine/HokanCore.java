@@ -7,6 +7,7 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
@@ -351,7 +352,11 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
         ch.setFirstJoined(new Date());
       }
     } else {
-      this.channelUsersService.createChannelUser(ch, getUser(ircEvent));
+      try {
+        this.channelUsersService.createChannelUser(ch, getUser(ircEvent));
+      } catch (HokanServiceException e) {
+        coreExceptionHandler(e);
+      }
     }
     this.channelService.updateChannel(ch);
   }
@@ -378,9 +383,17 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     log.info("{} part channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {
       ch.setChannelState(ChannelState.NOT_JOINED);
-      this.channelUsersService.clearChannelUsers(ch);
+      try {
+        this.channelUsersService.clearChannelUsers(ch);
+      } catch (HokanServiceException e) {
+        coreExceptionHandler(e);
+      }
     } else {
-      this.channelUsersService.removeChannelUser(ch, getUser(ircEvent));
+      try {
+        this.channelUsersService.removeChannelUser(ch, getUser(ircEvent));
+      } catch (HokanServiceException e) {
+        coreExceptionHandler(e);
+      }
     }
     this.channelService.updateChannel(ch);
   }

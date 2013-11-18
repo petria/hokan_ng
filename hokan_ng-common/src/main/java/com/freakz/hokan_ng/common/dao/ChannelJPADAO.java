@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,7 @@ public class ChannelJPADAO implements ChannelDAO {
   private EntityManager entityManager;
 
   @Override
-  public List<Channel> findChannels(Network network, ChannelState state) throws HokanException {
+  public List<Channel> findChannels(Network network, ChannelState state) throws HokanDAOException {
     TypedQuery<Channel> query;
     if (state == ChannelState.ALL) {
       query = entityManager.createQuery(
@@ -42,12 +42,12 @@ public class ChannelJPADAO implements ChannelDAO {
     try {
       return query.getResultList();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public List<Channel> findChannels(ChannelState state) throws HokanException {
+  public List<Channel> findChannels(ChannelState state) throws HokanDAOException {
     TypedQuery<Channel> query;
     if (state == ChannelState.ALL) {
       query = entityManager.createQuery(
@@ -61,12 +61,12 @@ public class ChannelJPADAO implements ChannelDAO {
     try {
       return query.getResultList();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public Channel findChannelByName(Network network, String name) throws HokanException {
+  public Channel findChannelByName(Network network, String name) throws HokanDAOException {
     TypedQuery<Channel> query = entityManager.createQuery(
         "SELECT ch FROM Channel ch WHERE ch.network = :network AND ch.channelName= :name", Channel.class
     );
@@ -75,27 +75,27 @@ public class ChannelJPADAO implements ChannelDAO {
     try {
       return query.getSingleResult();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public Channel createChannel(Network network, String name) throws HokanException {
+  public Channel createChannel(Network network, String name) throws HokanDAOException {
     Channel channel = new Channel(network, name);
     try {
       entityManager.persist(channel);
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
     return channel;
   }
 
   @Override
-  public Channel updateChannel(Channel channel) throws HokanException {
+  public Channel updateChannel(Channel channel) throws HokanDAOException {
     try {
       return entityManager.merge(channel);
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 

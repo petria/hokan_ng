@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,41 +25,41 @@ public class NetworkJPADAO implements NetworkDAO {
   private EntityManager entityManager;
 
   @Override
-  public Network getNetwork(String name) throws HokanException {
+  public Network getNetwork(String name) throws HokanDAOException {
     Network network = entityManager.find(Network.class, name);
     if (network == null) {
-      throw new HokanException("Network not found: " + name);
+      throw new HokanDAOException("Network not found: " + name);
     }
     return network;
   }
 
   @Override
-  public List<Network> getNetworks() throws HokanException {
+  public List<Network> getNetworks() throws HokanDAOException {
     try {
       TypedQuery<Network> query = entityManager.createQuery("SELECT n FROM Network n ORDER BY n.networkName", Network.class);
       return query.getResultList();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public Network createNetwork(String name) throws HokanException {
+  public Network createNetwork(String name) throws HokanDAOException {
     try {
       Network network = new Network(name);
       entityManager.persist(network);
       return network;
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public Network updateNetwork(Network network) throws HokanException {
+  public Network updateNetwork(Network network) throws HokanDAOException {
     try {
       return entityManager.merge(network);
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 

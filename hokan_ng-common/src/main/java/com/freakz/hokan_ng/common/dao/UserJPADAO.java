@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.User;
-import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,65 +29,65 @@ public class UserJPADAO implements UserDAO {
   }
 
   @Override
-  public User findUser(String nick) throws HokanException {
+  public User findUser(String nick) throws HokanDAOException {
     try {
       TypedQuery<User> query
           = entityManager.createQuery("SELECT ude FROM User ude WHERE ude.nick = :nick", User.class);
       query.setParameter("nick", nick);
       return query.getSingleResult();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public List<User> findUsers() throws HokanException {
+  public List<User> findUsers() throws HokanDAOException {
     try {
       TypedQuery<User> query
           = entityManager.createQuery("SELECT ude FROM User ude", User.class);
       return query.getResultList();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public List<User> getLoggedInUsers() throws HokanException {
+  public List<User> getLoggedInUsers() throws HokanDAOException {
     try {
       TypedQuery<User> query
           = entityManager.createQuery("SELECT ude FROM User ude WHERE ude.loggedIn > 0", User.class);
       return query.getResultList();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public void resetLoggedInUsers() throws HokanException {
+  public void resetLoggedInUsers() throws HokanDAOException {
     try {
       Query query = entityManager.createQuery("UPDATE User ude SET ude.loggedIn = 0");
       query.executeUpdate();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public void resetOlpos() throws HokanException {
+  public void resetOlpos() throws HokanDAOException {
     try {
       Query query = entityManager.createQuery("UPDATE User ude SET ude.olpo= 0");
       query.executeUpdate();
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 
   @Override
-  public User updateUser(User user) throws HokanException {
+  public User updateUser(User user) throws HokanDAOException {
     try {
       return entityManager.merge(user);
     } catch (Exception e) {
-      throw new HokanException(e.getMessage());
+      throw new HokanDAOException(e.getMessage());
     }
   }
 }
