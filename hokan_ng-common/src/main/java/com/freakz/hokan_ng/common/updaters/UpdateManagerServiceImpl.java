@@ -35,6 +35,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   private boolean firstRun = true;
 
   public UpdateManagerServiceImpl() {
+    log.info("START!");
   }
 
   @PostConstruct

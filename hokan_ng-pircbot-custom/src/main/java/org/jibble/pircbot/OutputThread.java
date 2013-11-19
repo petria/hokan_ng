@@ -78,13 +78,12 @@ public class OutputThread extends Thread {
    */
   public void run() {
     try {
-      boolean running = true;
       while (running) {
         // Small delay to prevent spamming of the channel
         Thread.sleep(_bot.getMessageDelay());
 
         String line = (String) _outQueue.next();
-        if (line != null) {
+        if (running && line != null) {
           _bot.sendRawLine(line);
         } else {
           running = false;
@@ -93,9 +92,16 @@ public class OutputThread extends Thread {
     } catch (InterruptedException e) {
       // Just let the method return naturally...
     }
+    _bot.log("End OutputThread!");
   }
 
   private PircBot _bot = null;
   private Queue _outQueue = null;
+  private boolean running = true;
+
+  public void stopIt() {
+    running = false;
+    _outQueue.add("stopIt");
+  }
 
 }

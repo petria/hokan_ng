@@ -2834,9 +2834,12 @@ public abstract class PircBot implements ReplyConstants {
    * @since 1.2.2
    */
   public synchronized void dispose() {
-    //System.out.println("disposing...");
-    _outputThread.interrupt();
-    _inputThread.dispose();
+    System.out.println("disposing...");
+    _outputThread.stopIt();
+    _inputThread.stopIt();
+    System.out.println("... disposing done");
+//    _outputThread.interrupt();
+//    _inputThread.dispose();
   }
 
 

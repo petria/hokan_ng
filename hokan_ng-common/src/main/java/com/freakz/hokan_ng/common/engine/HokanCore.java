@@ -24,7 +24,6 @@ import com.freakz.hokan_ng.common.util.IRCUtility;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.jibble.pircbot.PircBot;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -46,7 +45,7 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 @Slf4j
-public class HokanCore extends PircBot implements EngineEventHandler, DisposableBean {
+public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Autowired
   private ApplicationContext context;
@@ -138,12 +137,15 @@ public class HokanCore extends PircBot implements EngineEventHandler, Disposable
     }
   }
 
+  // ---
+
   @Override
-  public void destroy() throws Exception {
+  public synchronized void dispose() {
+    outputQueue.stop();
     List<Runnable> runnableList = executor.shutdownNow();
     log.info("Runnables size: {}", runnableList.size());
+    super.dispose();
   }
-  // ---
 
   public Network getNetwork() {
     return this.getIrcServerConfig().getNetwork();

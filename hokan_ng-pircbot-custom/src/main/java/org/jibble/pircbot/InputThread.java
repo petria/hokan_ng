@@ -87,10 +87,10 @@ public class InputThread extends Thread {
    */
   public void run() {
     try {
-      boolean running = true;
+      running = true;
       while (running) {
         try {
-          String line = null;
+          String line;
           while ((line = _breader.readLine()) != null) {
             try {
               _bot.handleLine(line);
@@ -164,7 +164,12 @@ public class InputThread extends Thread {
   private BufferedWriter _bwriter = null;
   private boolean _isConnected = true;
   private boolean _disposed = false;
+  private boolean running = true;
 
   public static final int MAX_LINE_LENGTH = 512;
 
+  public void stopIt() {
+    running = false;
+    dispose();
+  }
 }

@@ -33,6 +33,7 @@ public class OutputQueue implements CommandRunnable {
   public int defThrottleBaseSleepTime = 2000;
 
   private boolean useThrottle;
+  private boolean stop = false;
 
   public OutputQueue() {
   }
@@ -57,7 +58,7 @@ public class OutputQueue implements CommandRunnable {
 
       while (!outQueue.isEmpty()) {
         String rawLine = outQueue.poll();
-        if (!core.isConnected()) {
+        if (stop) {
           break;
         }
         int length = rawLine.length();
@@ -100,6 +101,11 @@ public class OutputQueue implements CommandRunnable {
 
   public void addLine(String raw) {
     this.outQueue.add(raw);
+  }
+
+  public void stop() {
+    this.stop = true;
+    addLine("stop");
   }
 
 /*  public void clearOutQueue() {

@@ -100,12 +100,24 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   @Override
   public void destroy() throws Exception {
     log.warn("Going to be destroyed!");
-    channelUsersService.clearChannelUsers();
     abortConnectors();
     disconnectAll();
     Thread.sleep(3 * 1000);
+    stopEngines();
+    Thread.sleep(3 * 1000);
+    log.warn("Destroy phase done!");
   }
 
+
+  public void stopEngines() {
+    for (HokanCore core : this.connectedEngines.values()) {
+      try {
+        core.dispose();
+      } catch (Exception e) {
+        log.error("Error stopping engines: {}", e);
+      }
+    }
+  }
 
   // --- ConnectionManagerService
 
@@ -196,6 +208,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
       msg += engine.toString();
       msg += "\n";
       engine.disconnect();
+      engine.dispose();
     }
     this.connectedEngines.clear();
     log.info("Disconnected all engines\n" + msg);
