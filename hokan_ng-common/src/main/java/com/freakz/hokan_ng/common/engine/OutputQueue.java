@@ -59,7 +59,8 @@ public class OutputQueue implements CommandRunnable {
       while (!outQueue.isEmpty()) {
         String rawLine = outQueue.poll();
         if (stop) {
-          break;
+          log.info("STOP!");
+          return;
         }
         int length = rawLine.length();
         core.sendRawLine(rawLine);
@@ -94,6 +95,7 @@ public class OutputQueue implements CommandRunnable {
           throttle = false;
         }
       }
+
     }
 
     log.info("<< Exiting dispatcher thread >>");
@@ -105,7 +107,7 @@ public class OutputQueue implements CommandRunnable {
 
   public void stop() {
     this.stop = true;
-    addLine("stop");
+    this.outQueue.add("stop");
   }
 
 /*  public void clearOutQueue() {
