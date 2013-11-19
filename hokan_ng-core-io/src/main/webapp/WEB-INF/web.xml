@@ -1,6 +1,6 @@
 <!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
     <display-name>HokanNG</display-name>
@@ -22,7 +22,7 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>hokan_ng-core-http</servlet-name>
+        <servlet-name>hokan_ng-core-io</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 
         <init-param>
@@ -33,7 +33,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>hokan_ng-core-http</servlet-name>
+        <servlet-name>hokan_ng-core-io</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 

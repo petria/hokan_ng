@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>HokanNG-engine-http</name>
-    <artifactId>hokan_ng-engine-http</artifactId>
+    <name>HokanNG-core-io</name>
+    <artifactId>hokan_ng-core-io</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -15,27 +15,103 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <path>/hokan_ng-core-io</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                <artifactId>svn-revision-number-maven-plugin</artifactId>
+                <version>1.13</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <entries>
+                        <entry>
+                            <prefix>prefix</prefix>
+                        </entry>
+                    </entries>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            com.google.code.maven-svn-revision-number-plugin
+                                        </groupId>
+                                        <artifactId>
+                                            svn-revision-number-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.13,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>revision</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>false</runOnIncremental>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
     <dependencies>
         <dependency>
-            <groupId>com.arthurdo</groupId>
-            <artifactId>arthurdo</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.cheffo.jeplite</groupId>
-            <artifactId>jeplite</artifactId>
-            <version>0.8.7</version>
+            <groupId>com.freakz.hokan_ng</groupId>
+            <artifactId>hokan_ng-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
-            <artifactId>hokan_ng-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <artifactId>hokan_ng-pircbot-custom</artifactId>
+            <version>1.5.0-custom</version>
         </dependency>
 
         <dependency>
@@ -148,89 +224,6 @@
             <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.martiansoftware</groupId>
-            <artifactId>jsap</artifactId>
-            <version>2.1</version>
-        </dependency>
     </dependencies>
 
-    <build>
-        <finalName>${project.artifactId}-${project.version}</finalName>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-                <artifactId>svn-revision-number-maven-plugin</artifactId>
-                <version>1.13</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <entries>
-                        <entry>
-                            <prefix>prefix</prefix>
-                        </entry>
-                    </entries>
-                </configuration>
-            </plugin>
-        </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            com.google.code.maven-svn-revision-number-plugin
-                                        </groupId>
-                                        <artifactId>
-                                            svn-revision-number-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.13,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>revision</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute>
-                                            <runOnIncremental>false</runOnIncremental>
-                                        </execute>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

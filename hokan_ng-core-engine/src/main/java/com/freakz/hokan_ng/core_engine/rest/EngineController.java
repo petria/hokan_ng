@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Date: 29.5.2013
  * Time: 09:31
@@ -53,6 +55,11 @@ public class EngineController implements DisposableBean {
       }
     }
     return response;
+  }
+
+  @PostConstruct
+  public void postConstruct() {
+    this.updaterManagerService.start();
   }
 
   @Override

@@ -40,11 +40,16 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   @PostConstruct
   public void refreshHandlers() {
     handlers = context.getBeansOfType(Updater.class);
-    commandPool.startRunnable(this);
   }
+
 
   public void stop() {
     this.doRun = false;
+  }
+
+  @Override
+  public void start() {
+    commandPool.startRunnable(this);
   }
 
   @Override

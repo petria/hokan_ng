@@ -12,8 +12,8 @@
         <module>hokan_ng-pircbot-custom</module>
         <module>hokan_ng-common</module>
         <module>hokan_ng-core</module>
-        <module>hokan_ng-core-http</module>
-        <module>hokan_ng-engine-http</module>
+        <module>hokan_ng-core-io</module>
+        <module>hokan_ng-core-engine</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

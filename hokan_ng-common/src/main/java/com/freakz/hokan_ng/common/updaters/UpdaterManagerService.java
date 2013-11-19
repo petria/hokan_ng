@@ -17,4 +17,6 @@ public interface UpdaterManagerService {
 
   void stop();
 
+  void start();
+
 }
