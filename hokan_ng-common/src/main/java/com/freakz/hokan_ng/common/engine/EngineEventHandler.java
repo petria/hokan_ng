@@ -13,4 +13,6 @@ public interface EngineEventHandler {
 
   void handleEngineResponse(EngineResponse response);
 
+  void handleEngineError(EngineResponse response);
+
 }

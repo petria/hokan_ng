@@ -283,7 +283,15 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+    String toMe = getName() + ": ";
+    boolean isToMe = false;
+    if (message.startsWith(toMe)) {
+      message = message.replaceFirst(toMe, "");
+      isToMe = true;
+    }
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(channel, sender, login, hostname, message);
+    ircEvent.setToMe(isToMe);
+
     Channel ch = getChannel(ircEvent);
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
@@ -302,7 +310,13 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   @Override
-  @SuppressWarnings({"varargs"})
+  public void handleEngineError(EngineResponse response) {
+    log.error("Engine request failed: {}", response);
+    coreExceptionHandler(response.getException());
+  }
+
+  @Override
+  @SuppressWarnings({"varargs", "ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
 
     Channel ch = getChannel(response.getRequest().getIrcEvent());
@@ -335,7 +349,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       if (method != null) {
         try {
           log.info("Invoking method         : {}", method);
-          Object result = method.invoke(this, methodArgs);
+          Object result = method.invoke(this, (Object[]) methodArgs);
           log.info("Invoke   result         : {}", result);
         } catch (Exception e) {
           log.error("Couldn't do engine method!", e);

@@ -28,6 +28,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
   public List<User> getMasterUsers() throws HokanServiceException {
     List<User> masterUsers = new ArrayList<>();
     masterUsers.add(userService.findUser("_Pete_"));
+    masterUsers.add(userService.findUser("petria"));
     return masterUsers;
   }
 

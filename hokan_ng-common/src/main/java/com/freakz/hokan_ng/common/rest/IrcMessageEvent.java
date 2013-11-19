@@ -14,6 +14,7 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private String message;
+  private boolean isToMe;
 
   public IrcMessageEvent() {
     super();
@@ -32,4 +33,11 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
     this.message = message;
   }
 
+  public boolean isToMe() {
+    return isToMe;
+  }
+
+  public void setToMe(boolean toMe) {
+    isToMe = toMe;
+  }
 }

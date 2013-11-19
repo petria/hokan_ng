@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.common.engine;
 
+import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,8 @@ public class AsyncEngineMessageSender implements CommandRunnable {
   }
 
   public String getRestBaseUrl() {
-    return "http://localhost:8080/hokan_ng-core-engine/";
+//    return "http://localhost:8080/hokan_ng-core-engine/";
+    return "http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/";
   }
 
   public HttpHeaders getRestHeaders() {
@@ -61,21 +63,24 @@ public class AsyncEngineMessageSender implements CommandRunnable {
     RestTemplate restTemplate = new RestTemplate();
     HttpEntity<EngineRequest> httpEntity = new HttpEntity<>(request, getRestHeaders());
     String restUrl = getRestBaseUrl() + "handle";
-    log.info("Making request to: " + restUrl);
+    log.info("\nMaking request to: " + restUrl);
     EngineResponse response;
     try {
       ResponseEntity<EngineResponse> responseEnt
           = restTemplate.exchange(restUrl, HttpMethod.POST, httpEntity, EngineResponse.class);
       response = responseEnt.getBody();
       log.info("Got response: " + response);
+      this.engineEventHandler.handleEngineResponse(response);
 
     } catch (HttpClientErrorException e) {
+      HokanEngineException engineException = new HokanEngineException(e, getRestBaseUrl());
       response = new EngineResponse(request);
+      response.setException(engineException);
       response.setResponseStatus(-100);
       response.setResponseMessage(e.getClass() + " -> " + e.getMessage());
+      this.engineEventHandler.handleEngineError(response);
     }
 
-    this.engineEventHandler.handleEngineResponse(response);
 
   }
 }
