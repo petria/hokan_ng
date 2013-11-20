@@ -5,12 +5,14 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
+import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.IDMap;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Option;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 
@@ -23,7 +25,16 @@ import java.util.Iterator;
  */
 public abstract class Cmd implements HokkanCommand {
 
+  @Autowired
+  private AccessControlService accessControlService;
+
   protected JSAP jsap;
+
+  protected boolean channelOwnerOnly;
+  protected boolean loggedInOnly;
+  protected boolean privateOnly;
+  protected boolean masterUserOnly;
+  protected boolean toBotOnly;
 
   public Cmd() {
     jsap = new JSAP();
@@ -73,7 +84,9 @@ public abstract class Cmd implements HokkanCommand {
       if (!parseRes) {
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
       } else {
-        handleRequest(request, response, results);
+        if (checkAccess(request, response)) {
+          handleRequest(request, response, results);
+        }
       }
 
     }
@@ -82,4 +95,58 @@ public abstract class Cmd implements HokkanCommand {
 
   public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
+  private boolean checkAccess(EngineRequest request, EngineResponse response) {
+    boolean isPublic = request.getIrcEvent() instanceof IrcMessageEvent;
+    boolean masterUser = accessControlService.isMasterUser(request.getIrcEvent());
+
+    if (isMasterUserOnly() && !masterUser) {
+      response.setResponseMessage("Master user only command: " + getName());
+      return false;
+    }
+
+    return true; // TODO
+  }
+
+
+  // ---------------------
+
+  public boolean isChannelOwnerOnly() {
+    return channelOwnerOnly;
+  }
+
+  public void setChannelOwnerOnly(boolean channelOwnerOnly) {
+    this.channelOwnerOnly = channelOwnerOnly;
+  }
+
+  public boolean isLoggedInOnly() {
+    return loggedInOnly;
+  }
+
+  public void setLoggedInOnly(boolean loggedInOnly) {
+    this.loggedInOnly = loggedInOnly;
+  }
+
+  public boolean isPrivateOnly() {
+    return privateOnly;
+  }
+
+  public void setPrivateOnly(boolean privateOnly) {
+    this.privateOnly = privateOnly;
+  }
+
+  public boolean isMasterUserOnly() {
+    return masterUserOnly;
+  }
+
+  public void setMasterUserOnly(boolean masterUserOnly) {
+    this.masterUserOnly = masterUserOnly;
+  }
+
+  public boolean isToBotOnly() {
+    return toBotOnly;
+  }
+
+  public void setToBotOnly(boolean toBotOnly) {
+    this.toBotOnly = toBotOnly;
+  }
 }

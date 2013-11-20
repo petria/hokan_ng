@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.rest.IrcEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,4 +40,22 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     return channelOps;
   }
 
+  @Override
+  public boolean isChannelOp(IrcEvent ircEvent) {
+    return false;  //ToDO
+  }
+
+  @Override
+  public boolean isMasterUser(IrcEvent ircEvent) {
+    try {
+      for (User user : getMasterUsers()) {
+        if (user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
+          return true;
+        }
+      }
+    } catch (HokanServiceException e) {
+      e.printStackTrace();  //ToDO
+    }
+    return false;
+  }
 }

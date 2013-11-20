@@ -18,6 +18,7 @@ public class TestCmd extends Cmd {
 
   public TestCmd() {
     super();
+    setMasterUserOnly(true);
   }
 
   @Override
