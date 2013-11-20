@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,9 +35,20 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
   @Override
   public Cmd getCommandHandler(String line) {
+    List<Cmd> matches = new ArrayList<>();
     for (Cmd base : this.handlers.values()) {
       if (line.matches(base.getMatchPattern())) {
-        return base;
+        matches.add(base);
+      }
+    }
+    if (matches.size() == 1) {
+      return matches.get(0);
+    } else if (matches.size() > 1) {
+      String firstWord = line.split(" ")[0];
+      for (Cmd base : matches) {
+        if (base.getMatchPattern().startsWith(firstWord)) {
+          return base;
+        }
       }
     }
     return null;
