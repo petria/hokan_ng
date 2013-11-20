@@ -84,7 +84,7 @@ public class AsyncConnector implements Connector, CommandRunnable {
       } catch (Exception e) {
         String message = e.getMessage();
         if (message.contains("Nickname too long")) {
-          this.botNick = String.format("_%d_", tryCount);
+          this.botNick = this.botNick.substring(1);
         }
         if (engine != null) {
           engine.disconnect();

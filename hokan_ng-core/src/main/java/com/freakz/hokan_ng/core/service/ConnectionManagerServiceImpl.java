@@ -13,7 +13,6 @@ import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.service.ChannelService;
-import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +38,6 @@ import java.util.Map;
 @Slf4j
 public class ConnectionManagerServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
 
-  private static final String BOT_NICK = "hokan_ng";
-
   @Autowired
   private ChannelService channelService;
 
@@ -54,9 +51,6 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private PropertyService propertyService;
 
   @Autowired
-  private ChannelUsersService channelUsersService;
-
-  @Autowired
   private ApplicationContext context;
 
   private Map<String, IrcServerConfig> configuredServers;
@@ -64,14 +58,16 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   private Map<String, HokanCore> connectedEngines = new HashMap<>();
 
   private Map<String, Connector> connectors = new HashMap<>();
+  private String botNick;
 
   public ConnectionManagerServiceImpl() {
   }
 
   @PostConstruct
   public void postInit() throws HokanException {
-//    channelUsersService.clearChannelUsers();
+
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME, "" + new Date().getTime());
+
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {
       if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
@@ -82,6 +78,16 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
         }
       }
     }
+  }
+
+  private boolean botNickOk() {
+    try {
+      this.botNick = propertyService.findProperty(PropertyName.PROP_SYS_BOT_NICK).getValue();
+    } catch (Exception e) {
+      log.error("Error occured {}", e);
+      return false;
+    }
+    return botNick != null && botNick.length() > 0;
   }
 
   private void updateServerMap() {
@@ -102,9 +108,9 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     log.warn("Going to be destroyed!");
     abortConnectors();
     disconnectAll();
-    Thread.sleep(3 * 1000);
+    Thread.sleep(2 * 1000);
     stopEngines();
-    Thread.sleep(3 * 1000);
+    Thread.sleep(2 * 1000);
     log.warn("Destroy phase done!");
   }
 
@@ -156,6 +162,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   }
 
   public void connect(Network network) throws HokanServiceException {
+
+    if (!botNickOk()) {
+      throw new HokanServiceException("PropertyName.PROP_SYS_BOT_NICK not configured correctly: " + this.botNick);
+    }
     updateServerMap();
     HokanCore engine = getConnectedEngine(network);
     if (engine != null) {
@@ -174,7 +184,7 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     if (connector == null) {
       connector = context.getBean(AsyncConnector.class);
       this.connectors.put(configuredServer.getNetwork().getName(), connector);
-      connector.connect(BOT_NICK, this, configuredServer);
+      connector.connect(this.botNick, this, configuredServer);
     } else {
       throw new HokanServiceException("Going online attempt already going: " + configuredServer.getNetwork());
     }
