@@ -39,7 +39,7 @@ public class PartCmd extends Cmd {
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String channel = results.getString(ARG_CHANNEL);
     response.setResponseMessage("Leaving: " + channel);
-    response.addEngineMethodCall("partChannel", request.getIrcEvent().getSender() + " told me to leave!");
+    response.addEngineMethodCall("partChannel", channel);
   }
 
 }
