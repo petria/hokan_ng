@@ -133,10 +133,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     this.ircServerConfig = ircServerConfig;
   }
 
-  public String toString() {
-    return String.format("%s -> %s", this.getClass().toString(), this.ircServerConfig);
-  }
-
   public void log(String message) {
     if (!message.contains("PING") && !message.contains("PONG")) {
       log.info(message);
@@ -455,4 +451,11 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     TODO
     */
   }
+
+  public String toString() {
+    String config = ircServerConfig.toString();
+    String props = getServerProperties().toString();
+    return String.format("%s: %s", config, props);
+  }
+
 }
