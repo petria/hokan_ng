@@ -26,6 +26,8 @@ public class PartCmd extends Cmd {
         .setRequired(true)
         .setGreedy(false);
     registerParameter(uflg);
+
+    setMasterUserOnly(true);
   }
 
   @Override

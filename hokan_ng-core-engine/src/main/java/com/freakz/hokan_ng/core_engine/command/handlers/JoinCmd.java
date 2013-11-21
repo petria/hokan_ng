@@ -30,6 +30,9 @@ public class JoinCmd extends Cmd {
         .setRequired(false)
         .setGreedy(false);
     registerParameter(uflg);
+
+    setMasterUserOnly(true);
+
   }
 
   @Override
