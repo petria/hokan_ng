@@ -46,7 +46,7 @@ public class JoinCmd extends Cmd {
     if (password != null) {
       response.addEngineMethodCall("joinChannel", channel, password);
     } else {
-      response.addEngineMethodCall("joinChannel", channel, "");
+      response.addEngineMethodCall("joinChannel", channel);
     }
   }
 }

@@ -99,11 +99,18 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   }
 
-  private Method getEngineMethod(String name, int args) {
+  private Method getEngineMethod(String name) { //}, int args) {
+    List<Method> matches = new ArrayList<>();
     for (Method method : methodMap.values()) {
       if (method.getName().equals(name)) { // && method.getGenericParameterTypes().length == args) {
-        return method;
+        matches.add(method);
       }
+    }
+    if (matches.size() == 1) {
+      return matches.get(0);
+    } else if (matches.size() > 1) {
+      log.info("ffufu"); // TODO
+      return matches.get(0);
     }
     return null;
   }
@@ -155,7 +162,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     if (channel == null) {
       channel = channelService.createChannel(getNetwork(), channelName);
     }
-//    channel.setLastActive(new Date());
     return channel;
   }
 
@@ -169,15 +175,11 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     } catch (HokanException e) {
       coreExceptionHandler(e);
     }
-/*    if (user == null) {
-      user = new User();
-      user.setNick(split[5]);
-      user.setMask(StringStuff.quoteRegExp(mask));
-      user.setPassword("1234");
-      user.setFullName(fullName);
-      user = this.userService.updateUser(user);
-    }*/
     return null;
+  }
+
+  public Map<String, String> getServerProperties() {
+    return serverProperties;
   }
 
   // --- PircBot
@@ -343,7 +345,8 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
       log.info("Executing engine method : " + methodName);
       log.info("Engine method args      : " + StringStuff.arrayToString(methodArgs, ", "));
-      Method method = getEngineMethod(methodName, methodArgs.length);
+//      Method method = getEngineMethod(methodName, methodArgs.length);
+      Method method = getEngineMethod(methodName);
       if (method != null) {
         try {
           log.info("Invoking method         : {}", method);
