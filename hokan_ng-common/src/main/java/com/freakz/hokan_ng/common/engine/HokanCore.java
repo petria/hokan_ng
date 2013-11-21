@@ -350,7 +350,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
         log.info("Using method args       : " + StringStuff.arrayToString(args, ", "));
         try {
           log.info("Invoking method         : {}", method);
-          Object result = method.invoke(this, (Object[]) methodArgs);
+          Object result = method.invoke(this, (Object[]) args);
           log.info("Invoke   result         : {}", result);
         } catch (Exception e) {
           log.error("Couldn't do engine method!", e);
