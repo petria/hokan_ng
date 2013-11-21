@@ -53,7 +53,7 @@ public class HoroCmd extends Cmd {
     if (hh != null) {
       response.setResponseMessage(hh.toString());
     } else {
-      response.setResponseMessage("Saat dildoo perään et pääse pylsimään!");
+      response.setResponseMessage("Saat dildoo perään ja et pääse pylsimään!");
     }
   }
 
