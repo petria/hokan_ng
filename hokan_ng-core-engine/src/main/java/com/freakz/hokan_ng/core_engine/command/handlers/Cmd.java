@@ -102,26 +102,32 @@ public abstract class Cmd implements HokkanCommand {
     boolean masterUser = accessControlService.isMasterUser(ircMessageEvent);
     boolean channelOp = accessControlService.isChannelOp(ircMessageEvent);
 
+    boolean ret = true;
+
     if (isToBotOnly() && !isToMe && !masterUser) {
       response.setResponseMessage("To bot only: " + getName());
-      return false;
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
     }
 
     if (isPrivateOnly() && isPublic && !masterUser) {
       response.setResponseMessage("Private only: " + getName());
-      return false;
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
     }
 
     if (isChannelOpOnly() && !channelOp && !masterUser) {
       response.setResponseMessage("ChannelOp only: " + getName());
-      return false;
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
     }
 
     if (isMasterUserOnly() && !masterUser) {
       response.setResponseMessage("Master user only: " + getName());
-      return false;
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
     }
-    return true; // TODO
+    return ret;
   }
 
   // ---------------------

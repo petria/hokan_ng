@@ -20,6 +20,7 @@ public class EngineResponse implements Serializable {
   private int responseStatus;
   private String responseMessage;
   private HokanEngineException exception;
+  private String replyTo;
 
   private EngineRequest request;
 
@@ -30,6 +31,12 @@ public class EngineResponse implements Serializable {
 
   public EngineResponse(EngineRequest request) {
     this.request = request;
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    if (ircMessageEvent.isPrivate()) {
+      replyTo = ircMessageEvent.getSender();
+    } else {
+      replyTo = ircMessageEvent.getChannel();
+    }
   }
 
   public int getResponseStatus() {
@@ -70,5 +77,13 @@ public class EngineResponse implements Serializable {
 
   public void setException(HokanEngineException exception) {
     this.exception = exception;
+  }
+
+  public String getReplyTo() {
+    return replyTo;
+  }
+
+  public void setReplyTo(String replyTo) {
+    this.replyTo = replyTo;
   }
 }

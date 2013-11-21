@@ -319,10 +319,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @SuppressWarnings({"varargs", "ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
 
-    if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {
-      Channel ch = getChannel(response.getRequest().getIrcEvent());
-      ch.addCommandsHandled(1);
-    }
     if (response.getException() != null) {
       coreExceptionHandler(response.getException());
       String error = response.getException().getExceptionClassName() + " failed: " + response.getException().getCause();
@@ -370,7 +366,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   private void handleSendMessage(EngineResponse response) {
-    String channel = response.getRequest().getIrcEvent().getChannel();
+    String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null) {
       handleSendMessage(channel, message);
