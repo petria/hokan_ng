@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
@@ -22,6 +23,9 @@ import java.util.List;
  */
 @Component
 public class HelpCmd extends Cmd {
+
+  @Autowired
+  private AccessControlService accessControlService;
 
   @Autowired
   private CommandHandlerService commandHandler;
@@ -48,36 +52,40 @@ public class HelpCmd extends Cmd {
 
     StringBuilder sb = new StringBuilder();
 
-//    boolean isSuperUser = UserManager.isSuperUser(iEvent.getHokanUser(), iEvent);
+    Comparator<Cmd> comparator = new Comparator<Cmd>() {
+      @Override
+      public int compare(Cmd cmd1, Cmd cmd2) {
+        return cmd1.getName().compareTo(cmd2.getName());
+      }
+    };
 
     if (command == null) {
+      boolean isMasterUser = accessControlService.isMasterUser(request.getIrcEvent());
+      boolean isChannelOp = accessControlService.isChannelOp(request.getIrcEvent());
+
       List<Cmd> commands = commandHandler.getCommandHandlers();
-      Comparator<Cmd> comparator = new Comparator<Cmd>() {
-        @Override
-        public int compare(Cmd cmd1, Cmd cmd2) {
-          return cmd1.getName().compareTo(cmd2.getName());
-        }
-      };
       Collections.sort(commands, comparator);
 
       sb.append("== HELP: Command List");
       sb.append("\n");
 
       for (Cmd cmd : commands) {
+
+        if (cmd.isChannelOpOnly() && (isChannelOp || isMasterUser)) {
+          continue;
+        }
+        if (cmd.isMasterUserOnly() && (!isMasterUser)) {
+          continue;
+        }
         sb.append("  ");
         sb.append(cmd.getName());
+
       }
 
       sb.append("\nTry '!help <command>' to get detailed help\n");
 
     } else {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
-      Comparator<Cmd> comparator = new Comparator<Cmd>() {
-        @Override
-        public int compare(Cmd cmd1, Cmd cmd2) {
-          return cmd1.getName().compareTo(cmd2.getName());
-        }
-      };
       Collections.sort(commands, comparator);
       for (Cmd cmd : commands) {
         String help = String.format("HELP: %s (%s) -> %s", cmd.getName(), cmd.getMatchPattern(), cmd.getHelp());
