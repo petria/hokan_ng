@@ -371,7 +371,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null) {
-      log.info("engine response: \n" + response.getResponseMessage());
       handleSendMessage(channel, message);
     }
   }
