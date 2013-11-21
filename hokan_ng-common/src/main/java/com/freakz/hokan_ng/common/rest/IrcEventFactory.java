@@ -17,13 +17,5 @@ public class IrcEventFactory {
     return new IrcMessageEvent(channel, sender, login, hostname, message);
   }
 
-  public static IrcEvent createIrcPrivateMessageEvent(String sender, String login, String hostname, String message) {
-    return new IrcPrivateMessageEvent(sender, login, hostname, message);
-  }
-
-/*  public static IrcEvent create(String channel, String sender, String login, String hostname) {
-    return new IrcEvent(channel, sender, login, hostname, "");
-  }*/
-
 
 }

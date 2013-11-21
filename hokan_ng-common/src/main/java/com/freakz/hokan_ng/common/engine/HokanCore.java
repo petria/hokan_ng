@@ -14,7 +14,6 @@ import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.rest.IrcEventFactory;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
-import com.freakz.hokan_ng.common.rest.IrcPrivateMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
@@ -303,7 +302,8 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
-    IrcPrivateMessageEvent ircEvent = (IrcPrivateMessageEvent) IrcEventFactory.createIrcPrivateMessageEvent(sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(sender, sender, login, hostname, message);
+    ircEvent.setPrivate(true);
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
     log.info("Message: {}", ircEvent.getMessage());
@@ -319,8 +319,10 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @SuppressWarnings({"varargs", "ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
 
-    Channel ch = getChannel(response.getRequest().getIrcEvent());
-    ch.addCommandsHandled(1);
+    if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {
+      Channel ch = getChannel(response.getRequest().getIrcEvent());
+      ch.addCommandsHandled(1);
+    }
     if (response.getException() != null) {
       coreExceptionHandler(response.getException());
       String error = response.getException().getExceptionClassName() + " failed: " + response.getException().getCause();

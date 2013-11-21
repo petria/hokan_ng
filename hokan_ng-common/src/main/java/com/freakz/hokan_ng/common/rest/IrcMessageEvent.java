@@ -14,6 +14,7 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private String message;
+  private boolean isPrivate;
   private boolean isToMe;
 
   public IrcMessageEvent() {
@@ -39,5 +40,13 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
 
   public void setToMe(boolean toMe) {
     isToMe = toMe;
+  }
+
+  public boolean isPrivate() {
+    return isPrivate;
+  }
+
+  public void setPrivate(boolean aPrivate) {
+    isPrivate = aPrivate;
   }
 }

@@ -14,23 +14,21 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class TestCmd extends Cmd {
+public class ChannelOpCmd extends Cmd {
 
-  public TestCmd() {
+  public ChannelOpCmd() {
     super();
-    setMasterUserOnly(true);
+    setChannelOpOnly(true);
   }
 
   @Override
   public String getMatchPattern() {
-    return "!test.*";
+    return "!channelop.*";
   }
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
-    int a = 100;
-    a = 1 / 0;
-    response.setResponseMessage("test command reply");
+    response.setResponseMessage("channel op only reply");
   }
 
 }

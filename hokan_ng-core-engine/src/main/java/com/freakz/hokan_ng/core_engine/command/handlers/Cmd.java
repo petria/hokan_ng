@@ -30,7 +30,7 @@ public abstract class Cmd implements HokkanCommand {
 
   protected JSAP jsap;
 
-  protected boolean channelOwnerOnly;
+  protected boolean channelOpOnly;
   protected boolean loggedInOnly;
   protected boolean privateOnly;
   protected boolean masterUserOnly;
@@ -96,26 +96,42 @@ public abstract class Cmd implements HokkanCommand {
   public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
   private boolean checkAccess(EngineRequest request, EngineResponse response) {
-    boolean isPublic = request.getIrcEvent() instanceof IrcMessageEvent;
-    boolean masterUser = accessControlService.isMasterUser(request.getIrcEvent());
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    boolean isPublic = !ircMessageEvent.isPrivate();
+    boolean isToMe = ircMessageEvent.isToMe();
+    boolean masterUser = accessControlService.isMasterUser(ircMessageEvent);
+    boolean channelOp = accessControlService.isChannelOp(ircMessageEvent);
 
-    if (isMasterUserOnly() && !masterUser) {
-      response.setResponseMessage("Master user only command: " + getName());
+    if (isToBotOnly() && !isToMe && !masterUser) {
+      response.setResponseMessage("To bot only: " + getName());
       return false;
     }
 
+    if (isPrivateOnly() && isPublic && !masterUser) {
+      response.setResponseMessage("Private only: " + getName());
+      return false;
+    }
+
+    if (isChannelOpOnly() && !channelOp && !masterUser) {
+      response.setResponseMessage("ChannelOp only: " + getName());
+      return false;
+    }
+
+    if (isMasterUserOnly() && !masterUser) {
+      response.setResponseMessage("Master user only: " + getName());
+      return false;
+    }
     return true; // TODO
   }
 
-
   // ---------------------
 
-  public boolean isChannelOwnerOnly() {
-    return channelOwnerOnly;
+  public boolean isChannelOpOnly() {
+    return channelOpOnly;
   }
 
-  public void setChannelOwnerOnly(boolean channelOwnerOnly) {
-    this.channelOwnerOnly = channelOwnerOnly;
+  public void setChannelOpOnly(boolean channelOpOnly) {
+    this.channelOpOnly = channelOpOnly;
   }
 
   public boolean isLoggedInOnly() {
