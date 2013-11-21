@@ -318,7 +318,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   @Override
-  @SuppressWarnings({"varargs", "ThrowableResultOfMethodCallIgnored"})
+  @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
   public void handleEngineResponse(EngineResponse response) {
 
     if (response.getException() != null) {
@@ -360,7 +360,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       }
 
     }
-    log.info("engine response: \n" + response.getResponseMessage());
   }
 
   public void startOutputQueue() {
@@ -372,6 +371,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null) {
+      log.info("engine response: \n" + response.getResponseMessage());
       handleSendMessage(channel, message);
     }
   }

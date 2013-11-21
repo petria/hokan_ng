@@ -69,7 +69,6 @@ public class AsyncEngineMessageSender implements CommandRunnable {
       ResponseEntity<EngineResponse> responseEnt
           = restTemplate.exchange(restUrl, HttpMethod.POST, httpEntity, EngineResponse.class);
       response = responseEnt.getBody();
-      log.info("Got response: " + response);
       this.engineEventHandler.handleEngineResponse(response);
 
     } catch (HttpClientErrorException e) {
@@ -80,7 +79,6 @@ public class AsyncEngineMessageSender implements CommandRunnable {
       response.setResponseMessage(e.getClass() + " -> " + e.getMessage());
       this.engineEventHandler.handleEngineError(response);
     }
-
-
   }
+
 }
