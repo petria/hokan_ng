@@ -51,6 +51,10 @@ public abstract class Cmd implements HokkanCommand {
 
   abstract public String getMatchPattern();
 
+  public void setHelp(String helpText) {
+    this.jsap.setHelp(helpText);
+  }
+
   public String getName() {
     String name = this.getClass().getSimpleName();
     if (name.endsWith("Cmd")) {
@@ -171,4 +175,9 @@ public abstract class Cmd implements HokkanCommand {
   public void setToBotOnly(boolean toBotOnly) {
     this.toBotOnly = toBotOnly;
   }
+
+  public String getHelp() {
+    return this.jsap.getHelp();
+  }
+
 }

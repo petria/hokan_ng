@@ -53,4 +53,20 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
     }
     return null;
   }
+
+  @Override
+  public List<Cmd> getCommandHandlers() {
+    return new ArrayList<>(this.handlers.values());
+  }
+
+  @Override
+  public List<Cmd> getCommandHandlersByName(String name) {
+    List<Cmd> matches = new ArrayList<>();
+    for (Cmd cmd : getCommandHandlers()) {
+      if (cmd.getName().toLowerCase().startsWith(name.toLowerCase())) {
+        matches.add(cmd);
+      }
+    }
+    return matches;
+  }
 }
