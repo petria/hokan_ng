@@ -4,7 +4,6 @@ import com.freakz.hokan_ng.common.updaters.Updater;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.StringTokenizer;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-@Scope("prototype")
+//@Scope("prototype")
 @Slf4j
 public class WeatherUpdater extends Updater {
 
@@ -35,7 +34,7 @@ public class WeatherUpdater extends Updater {
   }
 
   @Override
-  public Object doGetData() {
+  public Object doGetData(String... args) {
     return sortData(data, true);
   }
 

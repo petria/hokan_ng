@@ -19,7 +19,7 @@ public interface DataUpdater {
 
   void updateData(CommandPool commandPool);
 
-  void getData(UpdaterData updaterData);
+  void getData(UpdaterData updaterData, String... args);
 
   UpdaterStatus getStatus();
 
