@@ -263,7 +263,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
   }
 
-  private void coreExceptionHandler(HokanException e) {
+  private void coreExceptionHandler(Exception e) {
     log.error("---------------------------");
     log.error("Exception", e);
     log.error("---------------------------");
@@ -344,15 +344,14 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       Method method = getEngineMethod(methodName);
       if (method != null) {
         String[] args = new String[method.getParameterTypes().length];
-        for (int i = 0; i < args.length; i++) {
-          args[i] = methodArgs[i];
-        }
+        System.arraycopy(methodArgs, 0, args, 0, args.length);
         log.info("Using method args       : " + StringStuff.arrayToString(args, ", "));
         try {
           log.info("Invoking method         : {}", method);
           Object result = method.invoke(this, (Object[]) args);
           log.info("Invoke   result         : {}", result);
         } catch (Exception e) {
+          coreExceptionHandler(e);
           log.error("Couldn't do engine method!", e);
         }
       } else {
