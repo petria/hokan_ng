@@ -16,7 +16,7 @@ public class EngineResponse implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private int responseStatus;
-  private String responseMessage;
+  private String responseMessage = "";
   private String exception;
   private String replyTo;
 
@@ -84,4 +84,9 @@ public class EngineResponse implements Serializable {
   public void setReplyTo(String replyTo) {
     this.replyTo = replyTo;
   }
+
+  public void addResponse(String response) {
+    this.responseMessage += response;
+  }
+
 }
