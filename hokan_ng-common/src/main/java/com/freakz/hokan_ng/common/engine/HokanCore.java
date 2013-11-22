@@ -310,7 +310,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @Override
   public void handleEngineError(EngineResponse response) {
     log.error("Engine request failed: {}", response);
-    coreExceptionHandler(response.getException());
+    coreExceptionHandler(new HokanException(response.getException()));
   }
 
   @Override
@@ -318,8 +318,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   public void handleEngineResponse(EngineResponse response) {
 
     if (response.getException() != null) {
-      coreExceptionHandler(response.getException());
-      String error = response.getException().getExceptionClassName() + " failed: " + response.getException().getCause();
+      String error = " failed: " + response.getException();
       String message;
       String target;
       if (response.getRequest().getIrcEvent() instanceof IrcMessageEvent) {

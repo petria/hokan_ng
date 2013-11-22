@@ -74,7 +74,7 @@ public class AsyncEngineMessageSender implements CommandRunnable {
     } catch (HttpClientErrorException e) {
       HokanEngineException engineException = new HokanEngineException(e, getRestBaseUrl());
       response = new EngineResponse(request);
-      response.setException(engineException);
+      response.setException(engineException.toString());
       response.setResponseStatus(-100);
       response.setResponseMessage(e.getClass() + " -> " + e.getMessage());
       this.engineEventHandler.handleEngineError(response);

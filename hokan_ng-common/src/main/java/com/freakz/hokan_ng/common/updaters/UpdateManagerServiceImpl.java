@@ -9,8 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   @Autowired
   private CommandPool commandPool;
 
-  private Map<String, Updater> handlers;
+  private Map<String, DataUpdater> handlers;
   private boolean doRun;
   private boolean firstRun = true;
 
@@ -40,7 +41,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
 
   @PostConstruct
   public void refreshHandlers() {
-    handlers = context.getBeansOfType(Updater.class);
+    handlers = context.getBeansOfType(DataUpdater.class);
   }
 
 
@@ -54,11 +55,11 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   }
 
   @Override
-  public Collection<Updater> getUpdaterList() {
-    return handlers.values();
+  public List<DataUpdater> getUpdaterList() {
+    return new ArrayList<>(this.handlers.values());
   }
 
-  public Updater getUpdater(String updaterName) {
+  public DataUpdater getUpdater(String updaterName) {
     return handlers.get(updaterName);
   }
 
@@ -68,7 +69,7 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
     log.info("<< Starting update service: {} >>", myPid);
     while (doRun) {
 //      log.info("ping");
-      for (Updater updater : getUpdaterList()) {
+      for (DataUpdater updater : getUpdaterList()) {
         Calendar now = TimeUtil.getCalendar();
         Calendar next = updater.getNextUpdateTime();
         if (firstRun || now.after(next)) {

@@ -50,7 +50,7 @@ public class EngineController implements DisposableBean {
         handler.handleLine(request, response);
       } catch (Exception e) {
         HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
-        response.setException(engineException);
+        response.setException(engineException.toString());
         log.warn("Command handler returned exception {}", e.getMessage());
       }
     }

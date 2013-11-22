@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.updaters.Updater;
+import com.freakz.hokan_ng.common.updaters.DataUpdater;
 import com.freakz.hokan_ng.common.updaters.UpdaterData;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.common.updaters.weather.WeatherData;
@@ -63,7 +63,7 @@ public class WeatherCmd extends Cmd {
   @Override
   @SuppressWarnings("unchecked")
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    Updater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
+    DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
     UpdaterData updaterData = new UpdaterData();
     weatherUpdater.getData(updaterData);
     List<WeatherData> datas = (List<WeatherData>) updaterData.getData();

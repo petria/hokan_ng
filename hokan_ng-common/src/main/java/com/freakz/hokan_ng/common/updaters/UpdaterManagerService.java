@@ -1,6 +1,6 @@
 package com.freakz.hokan_ng.common.updaters;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * User: petria
@@ -11,9 +11,9 @@ import java.util.Collection;
  */
 public interface UpdaterManagerService {
 
-  Collection<Updater> getUpdaterList();
+  List<DataUpdater> getUpdaterList();
 
-  Updater getUpdater(String updaterName);
+  DataUpdater getUpdater(String updaterName);
 
   void stop();
 
