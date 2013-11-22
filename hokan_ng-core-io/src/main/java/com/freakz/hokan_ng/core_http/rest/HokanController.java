@@ -2,6 +2,8 @@ package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.util.CmdExecuter;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,4 +86,11 @@ public class HokanController {
     return ret;
   }
 
+  @RequestMapping(value = "/control/test")
+  public
+  @ResponseBody
+  String test() {
+    CmdExecuter cmdExecuter = new CmdExecuter("/usr/bin/uptime", "UTF-8");
+    return StringStuff.arrayToString(cmdExecuter.getOutput(), " | ");
+  }
 }
