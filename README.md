@@ -1,7 +1,4 @@
 hokan_ng
 ========
 
-testing jenkins
-
-
-
+testing
