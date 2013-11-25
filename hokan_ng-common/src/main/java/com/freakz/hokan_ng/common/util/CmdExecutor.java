@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CmdExecuter {
+public class CmdExecutor {
 
   private List<String> output;
 
-  public CmdExecuter(String cmd, String inputEncoding) {
+  public CmdExecutor(String cmd, String inputEncoding) {
 
     Process p;
 //    OutputStreamWriter out;
@@ -37,7 +37,7 @@ public class CmdExecuter {
       p.destroy();
 
     } catch (Exception e) {
-      log.error("Exception", e);
+      CmdExecutor.log.error("Exception", e);
       output.add("ERROR");
     }
   }
