@@ -36,6 +36,7 @@ public class UpdaterStartCmd extends Cmd {
         .setGreedy(false);
     registerParameter(opt);
 
+    setMasterUserOnly(true);
   }
 
   @Override
