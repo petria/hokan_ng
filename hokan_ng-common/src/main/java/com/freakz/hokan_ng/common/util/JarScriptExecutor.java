@@ -68,6 +68,8 @@ public class JarScriptExecutor {
 
       } while (l != null);
       p.destroy();
+      log.info("Deleting file: {} -> {}", tmpFile, tmpFile.delete());
+
       return output.toArray(new String[output.size()]);
 
     } catch (Exception e) {
