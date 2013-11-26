@@ -52,8 +52,9 @@ public class TelkkuUpdater extends Updater {
 
   private List<TelkkuProgram> programList;
 
-  public TelkkuUpdater() {
+  private List<String> channelNames;
 
+  public TelkkuUpdater() {
   }
 
   @Autowired
@@ -72,7 +73,7 @@ public class TelkkuUpdater extends Updater {
     String cmd = TVGRAB_BIN + " --config-file " + tmpConf + " --output " + outputFile.getAbsolutePath();
     log.info("Running: {}", cmd);
     CmdExecutor cmdExecutor = new CmdExecutor(cmd, FETCH_CHARSET);
-    log.info("Run done!");
+    log.info("Run done: {}", cmdExecutor.getOutput()[0]);
 
     return outputFile.getAbsolutePath();
   }
@@ -82,9 +83,10 @@ public class TelkkuUpdater extends Updater {
     String fileName = runTvGrab();
     log.info("Tv data file: {}", fileName);
     try {
-      List<String> channelNames = new ArrayList<String>();
+      List<String> channelNames = new ArrayList<>();
       this.programList = readXmlFile(fileName, channelNames);
       this.fileUtil.deleteTmpFile(fileName);
+      this.channelNames = channelNames;
     } catch (Exception e) {
       throw new HokanServiceException("Update TV data failed", e);
     }
@@ -92,7 +94,7 @@ public class TelkkuUpdater extends Updater {
 
   @Override
   public Object doGetData(String... args) {
-    return this.programList;
+    return new TelkkuData(channelNames, programList, getLastUpdateTime());
   }
 
   public List<TelkkuProgram> readXmlFile(String fileName, List<String> channels)
@@ -111,7 +113,7 @@ public class TelkkuUpdater extends Updater {
 
     NodeList nodeLst = doc.getElementsByTagName("channel");
 
-    Map<String, String> idDisplayNameMap = new HashMap<String, String>();
+    Map<String, String> idDisplayNameMap = new HashMap<>();
 
     for (int s = 0; s < nodeLst.getLength(); s++) {
 
@@ -136,7 +138,7 @@ public class TelkkuUpdater extends Updater {
 
     nodeLst = doc.getElementsByTagName("programme");
 
-    List<TelkkuProgram> programs = new ArrayList<TelkkuProgram>();
+    List<TelkkuProgram> programs = new ArrayList<>();
 
     for (int s = 0; s < nodeLst.getLength(); s++) {
 
@@ -198,5 +200,6 @@ public class TelkkuUpdater extends Updater {
 
     return programs;
   }
+
 
 }

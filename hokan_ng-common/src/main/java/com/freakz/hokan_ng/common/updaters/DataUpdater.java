@@ -15,6 +15,8 @@ public interface DataUpdater {
 
   Calendar getNextUpdateTime();
 
+  Calendar getLastUpdateTime();
+
   Calendar calculateNextUpdate();
 
   void updateData(CommandPool commandPool);
@@ -26,5 +28,6 @@ public interface DataUpdater {
   long getUpdateCount();
 
   String getUpdaterName();
+
 
 }

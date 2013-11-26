@@ -21,6 +21,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
 
   private long updateCount;
   private Calendar nextUpdate = TimeUtil.getCalendar();
+  private Calendar lastUpdate;
   protected UpdaterStatus status;
 
   protected Updater() {
@@ -34,6 +35,11 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
   @Override
   public Calendar getNextUpdateTime() {
     return nextUpdate;
+  }
+
+  @Override
+  public Calendar getLastUpdateTime() {
+    return lastUpdate;
   }
 
   @Override
@@ -55,6 +61,7 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
       doUpdateData();
       updateCount++;
       status = UpdaterStatus.IDLE;
+      lastUpdate = TimeUtil.getCalendar();
 
     } catch (Exception e) {
       log.error("Updater failed", e);
