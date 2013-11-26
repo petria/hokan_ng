@@ -19,7 +19,7 @@ public class TimeUtil {
   public static Calendar getCalendar() {
     Calendar cal = new GregorianCalendar(tz);
     cal.setTimeZone(tz);
-    cal.add(Calendar.HOUR_OF_DAY, 2); // TODO fix
+//    cal.add(Calendar.HOUR_OF_DAY, 2); // TODO fix
     return cal;
   }
 

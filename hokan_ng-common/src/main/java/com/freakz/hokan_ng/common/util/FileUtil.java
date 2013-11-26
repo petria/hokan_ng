@@ -35,18 +35,18 @@ public class FileUtil {
   public String getTmpDirectory() throws IOException {
     File tmpFile = File.createTempFile("foo", "bar");
     String path = tmpFile.getCanonicalPath();
-    log.info("path directory: {}", path);
+//    log.info("path directory: {}", path);
     return extractPath(path);
   }
 
-  public String copyResourceToTmpFile(String resource) throws IOException {
-
-    File tmpFile = File.createTempFile(resource, "");
-
+  public String copyResourceToFile(String resource, File target) throws IOException {
     InputStream inputStream = this.getClass().getResourceAsStream(resource);
-
+    if (inputStream == null) {
+      log.error("Resource not found: {}", resource);
+      return null;
+    }
     BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-    BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
+    BufferedWriter bw = new BufferedWriter(new FileWriter(target));
     String line;
     while (true) {
       line = br.readLine();
@@ -59,10 +59,16 @@ public class FileUtil {
     bw.flush();
     bw.close();
 
-    String tmpResourcePath = tmpFile.getAbsolutePath();
+    String tmpResourcePath = target.getAbsolutePath();
 
     log.info("Copied resource {} to {}", resource, tmpResourcePath);
     return tmpResourcePath;
+
+  }
+
+  public String copyResourceToTmpFile(String resource) throws IOException {
+    File tmpFile = File.createTempFile(resource, "");
+    return copyResourceToFile(resource, tmpFile);
   }
 
   public boolean deleteTmpFile(String tmpFile) {

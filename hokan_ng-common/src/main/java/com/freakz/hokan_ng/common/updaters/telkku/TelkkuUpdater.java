@@ -2,7 +2,10 @@ package com.freakz.hokan_ng.common.updaters.telkku;
 
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.updaters.Updater;
+import com.freakz.hokan_ng.common.util.CmdExecutor;
+import com.freakz.hokan_ng.common.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,25 +39,50 @@ import java.util.Map;
 @Slf4j
 public class TelkkuUpdater extends Updater {
 
-  private static final String FETCH_SCRIPT = "./scripts/fetch_programs.sh";
-  private static final String FETCH_DIR = "/tmp/";
+  private static final String XMLTV_DTD_FILE = "xmltv.dtd";
+
+  private static final String TVGRAB_CONF_RESOURCE = "/tv_grab_fi.conf";
+
+  private static final String TVGRAB_BIN = "/usr/bin/tv_grab_fi";
+
   private static final String FETCH_FILE = "telkku_progs.xml";
   private static final String FETCH_CHARSET = "UTF-8";
+
+  private FileUtil fileUtil;
 
   private List<TelkkuProgram> programList;
 
   public TelkkuUpdater() {
+
   }
 
-  protected String getFetchFileName() {
-//    return FETCH_DIR + Hokan.getBotPid() + FETCH_FILE;
-    return FETCH_DIR + FETCH_FILE;
+  @Autowired
+  public void setFileUtil(FileUtil fileUtil) {
+    this.fileUtil = fileUtil;
+  }
+
+  public String runTvGrab() throws Exception {
+    String tmpDir = fileUtil.getTmpDirectory();
+    File dtdFile = new File(tmpDir + XMLTV_DTD_FILE);
+    if (!dtdFile.exists()) {
+      fileUtil.copyResourceToFile("/" + XMLTV_DTD_FILE, dtdFile);
+    }
+    String tmpConf = fileUtil.copyResourceToTmpFile(TVGRAB_CONF_RESOURCE);
+    File outputFile = File.createTempFile(FETCH_FILE, "");
+    String cmd = TVGRAB_BIN + " --config-file " + tmpConf + " --output " + outputFile.getAbsolutePath();
+//    CmdExecutor cmdExecutor = new CmdExecutor(TVGRAB_BIN, FETCH_CHARSET, "--config", tmpConf, "--output", outputFile.getAbsolutePath());
+    log.info("Running: {}", cmd);
+    CmdExecutor cmdExecutor = new CmdExecutor(cmd, FETCH_CHARSET, "--config", tmpConf, "--output", outputFile.getAbsolutePath());
+    log.info("Run done!");
+
+    return outputFile.getAbsolutePath();
   }
 
 
   @Override
   public void doUpdateData() throws Exception {
-    String fileName = getFetchFileName();
+    String fileName = runTvGrab();
+    log.info("Tv data file: {}", fileName);
     try {
       List<String> channelNames = new ArrayList<String>();
       List<TelkkuProgram> list = readXmlFile(fileName, channelNames);
