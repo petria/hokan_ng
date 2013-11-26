@@ -19,4 +19,5 @@ public interface EngineConnector {
 
   void engineConnectorDisconnected(HokanCore engine);
 
+  void engineConnectorPingTimeout(HokanCore hokanCore);
 }

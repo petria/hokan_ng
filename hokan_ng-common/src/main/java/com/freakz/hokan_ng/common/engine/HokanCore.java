@@ -193,6 +193,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @Override
   protected void onUnknown(String line) {
     log.info("UNKNOWN: {}", line);
+    if (line.startsWith("ERROR :Ping timeout:")) {
+      this.engineConnector.engineConnectorPingTimeout(this);
+    }
   }
 
   private void sendWhoQuery(String channel) {

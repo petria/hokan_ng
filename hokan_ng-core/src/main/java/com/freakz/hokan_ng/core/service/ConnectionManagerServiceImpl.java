@@ -279,12 +279,19 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   @Override
   public void engineConnectorDisconnected(HokanCore engine) {
     IrcServerConfig config = engine.getIrcServerConfig();
-//    config.setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
-//    this.ircServerConfigService.updateIrcServerConfig(config);
-
     Network network = config.getNetwork();
     this.connectedEngines.remove(network.getName());
     log.info("Engine disconnected: " + engine);
   }
 
+  @Override
+  public void engineConnectorPingTimeout(HokanCore hokanCore) {
+    log.info("Engine ping timeout: {}", hokanCore);
+    try {
+      this.connectedEngines.remove(hokanCore.getIrcServerConfig().getNetwork().getName());
+      connect(hokanCore.getIrcServerConfig().getNetwork().getName());
+    } catch (HokanServiceException e) {
+      log.error("Couldn't re-connect after ping timeout!", e);
+    }
+  }
 }
