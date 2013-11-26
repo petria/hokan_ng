@@ -64,6 +64,12 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   }
 
   @Override
+  public void startUpdater(DataUpdater updater) {
+    log.info("Starting updater: " + updater);
+    updater.updateData(this.commandPool);
+  }
+
+  @Override
   public void handleRun(long myPid, Object args) {
     doRun = true;
     log.info("<< Starting update service: {} >>", myPid);

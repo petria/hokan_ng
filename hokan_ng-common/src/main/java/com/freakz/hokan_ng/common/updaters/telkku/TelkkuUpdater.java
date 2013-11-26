@@ -70,7 +70,6 @@ public class TelkkuUpdater extends Updater {
     String tmpConf = fileUtil.copyResourceToTmpFile(TVGRAB_CONF_RESOURCE);
     File outputFile = File.createTempFile(FETCH_FILE, "");
     String cmd = TVGRAB_BIN + " --config-file " + tmpConf + " --output " + outputFile.getAbsolutePath();
-//    CmdExecutor cmdExecutor = new CmdExecutor(TVGRAB_BIN, FETCH_CHARSET, "--config", tmpConf, "--output", outputFile.getAbsolutePath());
     log.info("Running: {}", cmd);
     CmdExecutor cmdExecutor = new CmdExecutor(cmd, FETCH_CHARSET);
     log.info("Run done!");
@@ -78,19 +77,17 @@ public class TelkkuUpdater extends Updater {
     return outputFile.getAbsolutePath();
   }
 
-
   @Override
   public void doUpdateData() throws Exception {
     String fileName = runTvGrab();
     log.info("Tv data file: {}", fileName);
     try {
       List<String> channelNames = new ArrayList<String>();
-      List<TelkkuProgram> list = readXmlFile(fileName, channelNames);
-      this.programList = list;
+      this.programList = readXmlFile(fileName, channelNames);
+      this.fileUtil.deleteTmpFile(fileName);
     } catch (Exception e) {
       throw new HokanServiceException("Update TV data failed", e);
     }
-
   }
 
   @Override

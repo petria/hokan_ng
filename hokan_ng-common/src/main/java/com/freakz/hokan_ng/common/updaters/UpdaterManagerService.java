@@ -19,4 +19,5 @@ public interface UpdaterManagerService {
 
   void start();
 
+  void startUpdater(DataUpdater updater);
 }

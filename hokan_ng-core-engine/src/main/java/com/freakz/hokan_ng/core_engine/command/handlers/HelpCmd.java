@@ -88,6 +88,15 @@ public class HelpCmd extends Cmd {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
       Collections.sort(commands, comparator);
       for (Cmd cmd : commands) {
+        String seeAlso = "";
+        for (Cmd seeAlsoCmd : getSeeAlso()) {
+          if (seeAlso.length() == 0) {
+            seeAlso = " -- See also: ";
+          } else {
+            seeAlso += ", ";
+          }
+          seeAlso += seeAlsoCmd.getName();
+        }
         String help = String.format("HELP: %s (%s) -> %s", cmd.getName(), cmd.getMatchPattern(), cmd.getHelp());
         sb.append(help);
         sb.append("\n");

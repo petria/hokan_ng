@@ -36,6 +36,8 @@ public abstract class Cmd implements HokkanCommand {
   protected boolean masterUserOnly;
   protected boolean toBotOnly;
 
+  protected Cmd[] seeAlso = new Cmd[0];
+
   public Cmd() {
     jsap = new JSAP();
     jsap.setHelp("Help not set!");
@@ -53,6 +55,14 @@ public abstract class Cmd implements HokkanCommand {
 
   public void setHelp(String helpText) {
     this.jsap.setHelp(helpText);
+  }
+
+  public Cmd[] getSeeAlso() {
+    return seeAlso;
+  }
+
+  public void setSeeAlso(Cmd[] seeAlso) {
+    this.seeAlso = seeAlso;
   }
 
   public String getName() {

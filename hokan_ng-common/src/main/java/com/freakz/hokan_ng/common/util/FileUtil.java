@@ -74,6 +74,7 @@ public class FileUtil {
   public boolean deleteTmpFile(String tmpFile) {
     File f = new File(tmpFile);
     if (f.exists()) {
+      log.info("Deleting file: {}", tmpFile);
       return f.delete();
     }
     return false;
