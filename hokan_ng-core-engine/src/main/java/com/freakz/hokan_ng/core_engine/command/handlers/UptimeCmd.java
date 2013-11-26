@@ -31,6 +31,7 @@ public class UptimeCmd extends Cmd {
 
   public UptimeCmd() {
     super();
+    setHelp("Shows system and bot uptime.");
   }
 
   @PostConstruct
