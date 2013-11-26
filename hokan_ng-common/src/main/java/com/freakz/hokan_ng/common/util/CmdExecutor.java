@@ -28,7 +28,6 @@ public class CmdExecutor {
       String l;
       do {
         l = br.readLine();
-        System.out.println(">>" + l);
         if (l != null) {
           output.add(l);
         }
