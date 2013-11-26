@@ -72,7 +72,7 @@ public class TelkkuUpdater extends Updater {
     String cmd = TVGRAB_BIN + " --config-file " + tmpConf + " --output " + outputFile.getAbsolutePath();
 //    CmdExecutor cmdExecutor = new CmdExecutor(TVGRAB_BIN, FETCH_CHARSET, "--config", tmpConf, "--output", outputFile.getAbsolutePath());
     log.info("Running: {}", cmd);
-    CmdExecutor cmdExecutor = new CmdExecutor(cmd, FETCH_CHARSET, "--config", tmpConf, "--output", outputFile.getAbsolutePath());
+    CmdExecutor cmdExecutor = new CmdExecutor(cmd, FETCH_CHARSET);
     log.info("Run done!");
 
     return outputFile.getAbsolutePath();
