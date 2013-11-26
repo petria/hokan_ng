@@ -23,6 +23,8 @@ public interface DataUpdater {
 
   void getData(UpdaterData updaterData, String... args);
 
+  UpdaterData getData(String... args);
+
   UpdaterStatus getStatus();
 
   long getUpdateCount();
