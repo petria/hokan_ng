@@ -167,7 +167,12 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   public User getUser(IrcEvent ircEvent) {
     try {
-      return this.userService.findUser(ircEvent.getSender());
+      User user = this.userService.findUser(ircEvent.getSender());
+      if (user == null) {
+        user = new User(ircEvent.getSender());
+        user = userService.updateUser(user);
+      }
+      return user;
     } catch (HokanException e) {
       coreExceptionHandler(e);
     }
