@@ -31,7 +31,12 @@ public class JarScriptExecutor {
   }
 
   public String[] executeJarScript(String... args) {
+    log.info("Executing {} with args: {}", scriptName, StringStuff.arrayToString(args, ","));
     InputStream inputStream = this.getClass().getResourceAsStream(scriptName);
+    if (inputStream == null) {
+      log.error("Couldn't get InputStream for {}", this.scriptName);
+      return null;
+    }
     try {
       File tmpFile = File.createTempFile(scriptName, "");
 
@@ -50,15 +55,19 @@ public class JarScriptExecutor {
       bw.close();
 
       String tmpScriptName = tmpFile.getAbsolutePath();
-      String[] cmdArray = new String[]{SHELL, tmpScriptName};
+      String[] cmdArray = new String[2 + args.length];
+      cmdArray[0] = SHELL;
+      cmdArray[1] = tmpScriptName;
+      System.arraycopy(args, 0, cmdArray, 2, args.length);
 
-      Process p;
-      List<String> output = new ArrayList<>();
 
+      Process p = Runtime.getRuntime().exec(cmdArray);
+      int ret = p.waitFor();
+      log.info("Process {} ended: {}", p, ret);
 
-      p = Runtime.getRuntime().exec(cmdArray);
       br = new BufferedReader(new InputStreamReader(p.getInputStream(), this.charset));
 
+      List<String> output = new ArrayList<>();
       String l;
       do {
         l = br.readLine();

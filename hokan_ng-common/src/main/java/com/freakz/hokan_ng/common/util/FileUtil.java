@@ -39,7 +39,7 @@ public class FileUtil {
     return extractPath(path);
   }
 
-  public String copyResourceToFile(String resource, File target) throws IOException {
+  public String copyResourceToFile(String resource, File target, StringBuilder contents) throws IOException {
     InputStream inputStream = this.getClass().getResourceAsStream(resource);
     if (inputStream == null) {
       log.error("Resource not found: {}", resource);
@@ -54,6 +54,10 @@ public class FileUtil {
         break;
       }
       bw.write(line + "\n");
+      if (contents != null) {
+        contents.append(line);
+        contents.append("\n");
+      }
     }
     br.close();
     bw.flush();
@@ -63,7 +67,10 @@ public class FileUtil {
 
     log.info("Copied resource {} to {}", resource, tmpResourcePath);
     return tmpResourcePath;
+  }
 
+  public String copyResourceToFile(String resource, File target) throws IOException {
+    return copyResourceToFile(resource, target, null);
   }
 
   public String copyResourceToTmpFile(String resource) throws IOException {
