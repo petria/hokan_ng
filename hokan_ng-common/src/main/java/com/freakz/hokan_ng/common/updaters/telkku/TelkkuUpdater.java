@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.updaters.Updater;
 import com.freakz.hokan_ng.common.util.CmdExecutor;
 import com.freakz.hokan_ng.common.util.FileUtil;
+import com.freakz.hokan_ng.common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class TelkkuUpdater extends Updater {
   private static final String TVGRAB_BIN = "/usr/bin/tv_grab_fi";
 
   private static final String FETCH_FILE = "telkku_progs.xml";
+  private static final String OLD_FETCH_FILE = "old_telkku_progs.xml";
   private static final String FETCH_CHARSET = "UTF-8";
 
   private FileUtil fileUtil;
@@ -78,13 +80,40 @@ public class TelkkuUpdater extends Updater {
     return outputFile.getAbsolutePath();
   }
 
+  private void loadOldFetchFile() throws Exception {
+    File f = new File(OLD_FETCH_FILE);
+    if (!f.exists()) {
+      log.info("No {} found!", OLD_FETCH_FILE);
+      return;
+    }
+    log.info("Loading {}", OLD_FETCH_FILE);
+
+    List<String> channelNames = new ArrayList<>();
+    this.programList = readXmlFile(OLD_FETCH_FILE, channelNames);
+    this.channelNames = channelNames;
+    this.updateCount++;
+
+  }
+
+  @Override
+  public Calendar calculateNextUpdate() {
+    Calendar cal = TimeUtil.getCalendar();
+    cal.add(Calendar.HOUR_OF_DAY, 4);
+    return cal;
+  }
+
   @Override
   public void doUpdateData() throws Exception {
-    String fileName = runTvGrab();
-    log.info("Tv data file: {}", fileName);
     try {
+      if (getUpdateCount() == 0) {
+        loadOldFetchFile();
+      }
+      String fileName = runTvGrab();
+      log.info("Tv data file: {}", fileName);
+
       List<String> channelNames = new ArrayList<>();
       this.programList = readXmlFile(fileName, channelNames);
+      this.fileUtil.copyFile(fileName, OLD_FETCH_FILE);
       this.fileUtil.deleteTmpFile(fileName);
       this.channelNames = channelNames;
     } catch (Exception e) {

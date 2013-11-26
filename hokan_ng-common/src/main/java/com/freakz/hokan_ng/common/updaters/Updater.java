@@ -19,7 +19,7 @@ import java.util.Calendar;
 @Slf4j
 public abstract class Updater implements DataUpdater, CommandRunnable {
 
-  private long updateCount;
+  protected long updateCount;
   private Calendar nextUpdate = TimeUtil.getCalendar();
   private Calendar lastUpdate;
   protected UpdaterStatus status;

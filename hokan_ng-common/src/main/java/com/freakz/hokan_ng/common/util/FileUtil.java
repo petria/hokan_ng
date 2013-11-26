@@ -6,10 +6,13 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 /**
  * User: petria
@@ -35,7 +38,6 @@ public class FileUtil {
   public String getTmpDirectory() throws IOException {
     File tmpFile = File.createTempFile("foo", "bar");
     String path = tmpFile.getCanonicalPath();
-//    log.info("path directory: {}", path);
     return extractPath(path);
   }
 
@@ -85,6 +87,32 @@ public class FileUtil {
       return f.delete();
     }
     return false;
+  }
+
+  public int copyFile(String fromFile, String toFile) {
+    int copied = 0;
+    try {
+      File f1 = new File(fromFile);
+      File f2 = new File(toFile);
+      InputStream in = new FileInputStream(f1);
+
+      //For Overwrite the file.
+      OutputStream out = new FileOutputStream(f2);
+
+      byte[] buf = new byte[1024];
+      int len;
+      while ((len = in.read(buf)) > 0) {
+        copied += len;
+        out.write(buf, 0, len);
+      }
+      in.close();
+      out.close();
+    } catch (Exception ex) {
+      log.error("Copy File failed '{}' -> '{}'", fromFile, toFile);
+      return -1;
+    }
+    log.info("Copied '{}' -> '{}'", fromFile, toFile);
+    return copied;
   }
 
 }
