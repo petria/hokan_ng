@@ -86,11 +86,11 @@ public class HelpCmd extends Cmd {
     } else {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
       Collections.sort(commands, comparator);
-      String seeAlsoHelp = "";
       for (Cmd cmd : commands) {
-        for (String seeAlsoTxt : getSeeAlso()) {
+        String seeAlsoHelp = "";
+        for (String seeAlsoTxt : cmd.getSeeAlso()) {
           if (seeAlsoHelp.length() == 0) {
-            seeAlsoHelp = " -- See also: ";
+            seeAlsoHelp = " See also: ";
           } else {
             seeAlsoHelp += ", ";
           }

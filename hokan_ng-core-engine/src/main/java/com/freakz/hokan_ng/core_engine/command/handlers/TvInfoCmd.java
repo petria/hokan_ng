@@ -30,7 +30,7 @@ public class TvInfoCmd extends Cmd {
 
   public TvInfoCmd() {
     super();
-    setHelp("Shows info description of given tv program ID. Use !tvfind or !tvnow to find out program IDs.");
+    setHelp("Shows info description of given tv program ID.");
     addSeeAlso("TvFind");
     addSeeAlso("TvNow");
 
