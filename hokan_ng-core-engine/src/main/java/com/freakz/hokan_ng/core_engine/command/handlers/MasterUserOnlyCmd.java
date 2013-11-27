@@ -14,16 +14,11 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class MasterUserCmd extends Cmd {
+public class MasterUserOnlyCmd extends Cmd {
 
-  public MasterUserCmd() {
+  public MasterUserOnlyCmd() {
     super();
     setMasterUserOnly(true);
-  }
-
-  @Override
-  public String getMatchPattern() {
-    return "!masteruser.*";
   }
 
   @Override
