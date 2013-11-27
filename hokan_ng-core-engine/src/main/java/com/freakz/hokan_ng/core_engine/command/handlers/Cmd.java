@@ -84,8 +84,15 @@ public abstract class Cmd implements HokkanCommand {
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
+      String seeAlsoHelp = "";
+      for (String seeAlsoTxt : getSeeAlso()) {
+        if (seeAlsoHelp.length() > 0) {
+          seeAlsoHelp += ", ";
+        }
+        seeAlsoHelp += seeAlsoTxt;
+      }
 
-      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp());
+      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + "\nSee also: " + seeAlsoHelp);
 
     } else {
 
