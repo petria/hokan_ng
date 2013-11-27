@@ -51,7 +51,9 @@ public abstract class Cmd implements HokkanCommand {
     }
   }
 
-  abstract public String getMatchPattern();
+  public String getMatchPattern() {
+    return String.format("!%s.*", getName().toLowerCase());
+  }
 
   public void setHelp(String helpText) {
     this.jsap.setHelp(helpText);
