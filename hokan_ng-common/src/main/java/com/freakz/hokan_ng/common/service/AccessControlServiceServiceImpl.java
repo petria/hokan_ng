@@ -30,7 +30,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     List<User> masterUsers = new ArrayList<>();
     masterUsers.add(userService.findUser("_Pete_"));
     masterUsers.add(userService.findUser("petria"));
-    masterUsers.add(userService.findUser("petria2"));
+    masterUsers.add(userService.findUser("petria_"));
     return masterUsers;
   }
 
