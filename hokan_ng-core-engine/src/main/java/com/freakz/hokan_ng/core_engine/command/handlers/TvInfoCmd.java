@@ -6,35 +6,36 @@ import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuService;
 import com.freakz.hokan_ng.common.util.StringStuff;
+import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * User: petria
  * Date: 11/27/13
- * Time: 3:45 PM
+ * Time: 4:13 PM
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-public class TvFindCmd extends Cmd {
+public class TvInfoCmd extends Cmd {
 
-  private static final String ARG_PROGRAM = "program";
-
+  private static final String ARG_ID = "ID";
   @Autowired
   private TelkkuService tv;
 
-  public TvFindCmd() {
+  public TvInfoCmd() {
     super();
-    setHelp("Finds Telkku programs.");
+    setHelp("Shows info description of given tv program ID. Use !tvfind or !tvnow to find out program IDs.");
+    addSeeAlso("TvFind");
     addSeeAlso("TvNow");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+    UnflaggedOption opt = new UnflaggedOption(ARG_ID)
+        .setStringParser(JSAP.INTEGER_PARSER)
         .setRequired(true)
         .setGreedy(false);
     registerParameter(opt);
@@ -46,31 +47,21 @@ public class TvFindCmd extends Cmd {
       response.addResponse("Telkku data not loaded yet! Try again later...");
       return;
     }
-    String program = results.getString(ARG_PROGRAM);
-    List<TelkkuProgram> matching = tv.findPrograms(program);
-    if (matching.size() > 0) {
-      String reply = "";
-      String lastChannel = "";
-      for (TelkkuProgram prg : matching) {
-        SimpleDateFormat dateFormat;
-        if (StringStuff.isDateToday(prg.getStartTimeD())) {
-          dateFormat = StringStuff.STRING_STUFF_DF_HHMM;
-        } else {
-          dateFormat = StringStuff.STRING_STUFF_DF_DDMMHHMM;
-        }
-
-        String channel = prg.getChannel();
-        if (!channel.equalsIgnoreCase(lastChannel)) {
-          reply += "[" + channel + "] ";
-        }
-        lastChannel = channel;
-        reply += StringStuff.formatTime(prg.getStartTimeD(), dateFormat) +
-            " " + prg.getProgram() + "(" + prg.getId() + ") ";
-
+    int id = results.getInt(ARG_ID);
+    TelkkuProgram prg = tv.findProgramById(id);
+    if (prg != null) {
+      SimpleDateFormat dateFormat;
+      if (StringStuff.isDateToday(prg.getStartTimeD())) {
+        dateFormat = StringStuff.STRING_STUFF_DF_HHMM;
+      } else {
+        dateFormat = StringStuff.STRING_STUFF_DF_DDMMHHMM;
       }
+      String reply = StringStuff.formatTime(prg.getStartTimeD(), dateFormat) +
+          " " + prg.getProgram() + ": " + prg.getDescription();
       response.addResponse(reply);
-    } else {
-      response.addResponse("No matching Telkku programs found with: " + program);
+      return;
     }
+    response.addResponse("No program found with id: " + id);
   }
+
 }

@@ -90,6 +90,20 @@ public class TelkkuServiceImpl implements TelkkuService {
   }
 
   @Override
+  public TelkkuProgram findProgramById(int id) {
+    TelkkuData telkkuData = (TelkkuData) updaterManagerService.getUpdater("telkkuUpdater").getData().getData();
+    if (telkkuData.getPrograms() == null) {
+      return null;
+    }
+    for (TelkkuProgram tp : telkkuData.getPrograms()) {
+      if (tp.getId() == id) {
+        return tp;
+      }
+    }
+    return null;
+  }
+
+  @Override
   public boolean isReady() {
     return updaterManagerService.getUpdater("telkkuUpdater").getUpdateCount() > 0;
   }

@@ -21,4 +21,6 @@ public interface TelkkuService {
   String[] getChannels();
 
   List<TelkkuProgram> findPrograms(String program);
+
+  TelkkuProgram findProgramById(int id);
 }
