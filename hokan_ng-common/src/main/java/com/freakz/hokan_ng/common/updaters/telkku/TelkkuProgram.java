@@ -58,7 +58,7 @@ public class TelkkuProgram implements Comparable {
    * @return when does this program end at?
    */
   public Date getEndTimeD() {
-    return this.startD;
+    return this.endD;
   }
 
   /**

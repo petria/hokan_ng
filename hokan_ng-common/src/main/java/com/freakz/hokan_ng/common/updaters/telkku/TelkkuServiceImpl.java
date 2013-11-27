@@ -35,7 +35,9 @@ public class TelkkuServiceImpl implements TelkkuService {
     }
     for (TelkkuProgram tp : telkkuData.getPrograms()) {
       if (tp.getChannel().equalsIgnoreCase(channelMatcher)) {
-        if (time.getTime() > tp.getStartTimeD().getTime())
+        Date start = tp.getStartTimeD();
+        Date end = tp.getEndTimeD();
+        if (start.getTime() < time.getTime() && end.getTime() > time.getTime())
           return tp;
       }
     }
