@@ -25,6 +25,8 @@ import java.io.OutputStream;
 @Slf4j
 public class FileUtil {
 
+  private static final int COPY_BUF_SIZE = 1024;
+
   public FileUtil() {
   }
 
@@ -36,8 +38,9 @@ public class FileUtil {
   }
 
   public String getTmpDirectory() throws IOException {
-    File tmpFile = File.createTempFile("foo", "bar");
+    File tmpFile = File.createTempFile("___", "___");
     String path = tmpFile.getCanonicalPath();
+    log.info("Deleting tmpFile {}", tmpFile.delete());
     return extractPath(path);
   }
 
@@ -99,7 +102,7 @@ public class FileUtil {
       //For Overwrite the file.
       OutputStream out = new FileOutputStream(f2);
 
-      byte[] buf = new byte[1024];
+      byte[] buf = new byte[COPY_BUF_SIZE];
       int len;
       while ((len = in.read(buf)) > 0) {
         copied += len;
@@ -111,7 +114,7 @@ public class FileUtil {
       log.error("Copy File failed '{}' -> '{}'", fromFile, toFile);
       return -1;
     }
-    log.info("Copied '{}' -> '{}'", fromFile, toFile);
+    log.info("Copied '{}' -> '{}' size: " + copied, fromFile, toFile);
     return copied;
   }
 
