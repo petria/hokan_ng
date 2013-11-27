@@ -12,9 +12,12 @@ import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Option;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * User: petria
@@ -23,6 +26,7 @@ import java.util.Iterator;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
+@Slf4j
 public abstract class Cmd implements HokkanCommand {
 
   @Autowired
@@ -36,7 +40,7 @@ public abstract class Cmd implements HokkanCommand {
   protected boolean masterUserOnly;
   protected boolean toBotOnly;
 
-  protected Cmd[] seeAlso = new Cmd[0];
+  protected List<String> seeAlso = new ArrayList<>();
 
   public Cmd() {
     jsap = new JSAP();
@@ -47,7 +51,7 @@ public abstract class Cmd implements HokkanCommand {
     try {
       jsap.registerParameter(option);
     } catch (JSAPException e) {
-      e.printStackTrace();  // TODO handle?
+      log.error("Error registering command parameter", e);
     }
   }
 
@@ -59,12 +63,12 @@ public abstract class Cmd implements HokkanCommand {
     this.jsap.setHelp(helpText);
   }
 
-  public Cmd[] getSeeAlso() {
+  public List<String> getSeeAlso() {
     return seeAlso;
   }
 
-  public void setSeeAlso(Cmd[] seeAlso) {
-    this.seeAlso = seeAlso;
+  public void addSeeAlso(String seeAlso) {
+    this.seeAlso.add(seeAlso);
   }
 
   public String getName() {

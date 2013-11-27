@@ -79,7 +79,6 @@ public class HelpCmd extends Cmd {
         }
         sb.append("  ");
         sb.append(cmd.getName());
-
       }
 
       sb.append("\nTry '!help <command>' to get detailed help\n");
@@ -87,17 +86,18 @@ public class HelpCmd extends Cmd {
     } else {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
       Collections.sort(commands, comparator);
+      String seeAlsoHelp = "";
       for (Cmd cmd : commands) {
-        String seeAlso = "";
-        for (Cmd seeAlsoCmd : getSeeAlso()) {
-          if (seeAlso.length() == 0) {
-            seeAlso = " -- See also: ";
+        for (String seeAlsoTxt : getSeeAlso()) {
+          if (seeAlsoHelp.length() == 0) {
+            seeAlsoHelp = " -- See also: ";
           } else {
-            seeAlso += ", ";
+            seeAlsoHelp += ", ";
           }
-          seeAlso += seeAlsoCmd.getName();
+          seeAlsoHelp += seeAlsoTxt;
         }
-        String help = String.format("HELP: %s (%s) -> %s", cmd.getName(), cmd.getMatchPattern(), cmd.getHelp());
+        String help = String.format("HELP: %s (%s) -> %s%s",
+            cmd.getName(), cmd.getMatchPattern(), cmd.getHelp(), seeAlsoHelp);
         sb.append(help);
         sb.append("\n");
       }

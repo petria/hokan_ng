@@ -1,0 +1,78 @@
+package com.freakz.hokan_ng.core_engine.command.handlers;
+
+import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
+import com.freakz.hokan_ng.common.updaters.telkku.TelkkuService;
+import com.freakz.hokan_ng.common.util.StringStuff;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.UnflaggedOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+/**
+ * User: petria
+ * Date: 11/27/13
+ * Time: 3:45 PM
+ *
+ * @author Petri Airio <petri.j.airio@gmail.com>
+ */
+@Component
+public class TvFindCmd extends Cmd {
+
+  private static final String ARG_PROGRAM = "program";
+
+  @Autowired
+  private TelkkuService tv;
+
+  public TvFindCmd() {
+    super();
+    setHelp("Finds Telkku programs.");
+    addSeeAlso("TvNow");
+
+    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+        .setRequired(true)
+        .setGreedy(false);
+    registerParameter(opt);
+
+
+  }
+
+  @Override
+  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    if (!tv.isReady()) {
+      response.addResponse("Telkku data not loaded yet! Try again later...");
+      return;
+    }
+    String program = results.getString(ARG_PROGRAM);
+    List<TelkkuProgram> matching = tv.findPrograms(program);
+    if (matching.size() > 0) {
+      String reply = "";
+      String lastChannel = "";
+      for (TelkkuProgram prg : matching) {
+        SimpleDateFormat dateFormat;
+        if (StringStuff.isDateToday(prg.getStartTimeD())) {
+          dateFormat = StringStuff.STRING_STUFF_DF_HHMM;
+        } else {
+          dateFormat = StringStuff.STRING_STUFF_DF_DDMMHHMM;
+        }
+
+        String channel = prg.getChannel();
+        if (!channel.equalsIgnoreCase(lastChannel)) {
+          reply += "[" + channel + "] ";
+        }
+        lastChannel = channel;
+        reply += StringStuff.formatTime(prg.getStartTimeD(), dateFormat) +
+            " " + prg.getProgram() + "(" + prg.getId() + ") ";
+
+      }
+      response.addResponse(reply);
+    } else {
+      response.addResponse("No matching Telkku programs found with: " + program);
+    }
+  }
+}

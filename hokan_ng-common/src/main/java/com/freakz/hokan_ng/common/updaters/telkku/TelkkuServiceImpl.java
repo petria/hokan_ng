@@ -1,12 +1,15 @@
 package com.freakz.hokan_ng.common.updaters.telkku;
 
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * User: petria
@@ -69,6 +72,21 @@ public class TelkkuServiceImpl implements TelkkuService {
       }
     }
     return null;
+  }
+
+  @Override
+  public List<TelkkuProgram> findPrograms(String program) {
+    List<TelkkuProgram> matches = new ArrayList<>();
+    TelkkuData telkkuData = (TelkkuData) updaterManagerService.getUpdater("telkkuUpdater").getData().getData();
+    if (telkkuData.getPrograms() == null) {
+      return matches;
+    }
+    for (TelkkuProgram tp : telkkuData.getPrograms()) {
+      if (StringStuff.match(tp.getProgram(), ".*" + program + ".*", true)) {
+        matches.add(tp);
+      }
+    }
+    return matches;
   }
 
   @Override

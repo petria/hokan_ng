@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.common.updaters.telkku;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: petria
@@ -19,4 +20,5 @@ public interface TelkkuService {
 
   String[] getChannels();
 
+  List<TelkkuProgram> findPrograms(String program);
 }
