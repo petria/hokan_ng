@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExampleCmd extends Cmd {
 
-  public ExampleCmd() {
+/*  public ExampleCmd() {
     super();
     setHelp("Example moi");
-  }
+  }*/
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
