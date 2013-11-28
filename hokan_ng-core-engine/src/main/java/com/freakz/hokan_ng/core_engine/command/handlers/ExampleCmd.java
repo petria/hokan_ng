@@ -20,4 +20,5 @@ public class ExampleCmd extends Cmd {
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     response.addResponse("moi");
   }
+
 }
