@@ -1,4 +1,4 @@
   hokan_ng
 ========
 
-testing
+The IRC bot
