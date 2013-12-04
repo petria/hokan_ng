@@ -4,15 +4,12 @@ import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.service.PropertyService;
+import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.Uptime;
 import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.Date;
 
 /**
  * User: petria
@@ -25,16 +22,11 @@ import java.util.Date;
 public class UptimeCmd extends Cmd {
 
   @Autowired
-  private PropertyService propertyService;
+  private Properties properties;
 
   public UptimeCmd() {
     super();
     setHelp("Shows system and bot uptime.");
-  }
-
-  @PostConstruct
-  public void postInit() throws HokanException {
-    propertyService.setProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME, "" + new Date().getTime());
   }
 
   @Override
@@ -51,11 +43,18 @@ public class UptimeCmd extends Cmd {
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.sh", "UTF-8");
     String[] sysUptime = cmdExecutor.executeJarScript();
-    Long coreHttp = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME).getValue());
-    Long coreEngine = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME).getValue());
-    Uptime ut1 = new Uptime(coreHttp);
-    Uptime ut2 = new Uptime(coreEngine);
-    response.setResponseMessage("System:" + sysUptime[0] + " -- Core-io: " + ut1.toString() + " -- Core-engine: " + ut2.toString());
+    long coreIoUptime = properties.getPropertyAsLong(PropertyName.PROP_SYS_CORE_IO_UPTIME, 0);
+    long coreIoRuntime = properties.getPropertyAsLong(PropertyName.PROP_SYS_CORE_IO_RUNTIME, 0);
+    long coreEngineUptime = properties.getPropertyAsLong(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME, 0);
+    long coreEngineRuntime = properties.getPropertyAsLong(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, 0);
+    Uptime ut1 = new Uptime(coreIoUptime);
+    Uptime ut2 = new Uptime(coreEngineUptime);
+    String uptime1 = String.format("System     :%s\n", sysUptime[0]);
+    String uptime2 = String.format("Core-io    : %s (total runtime: %d sec)\n", ut1.toString(), coreIoRuntime);
+    String uptime3 = String.format("Core-engine: %s (total runtime: %d sec)", ut2.toString(), coreEngineRuntime);
+    response.addResponse(uptime1);
+    response.addResponse(uptime2);
+    response.addResponse(uptime3);
   }
 
 }

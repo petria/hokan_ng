@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class SystemTimerImpl implements SystemTimer, CommandRunnable {
 
-  private static final int SYSTEM_TIMER_SLEEP = 1;
+  private static final int SYSTEM_TIMER_SLEEP = 5;
 
   @Autowired
   private CommandPool commandPool;
