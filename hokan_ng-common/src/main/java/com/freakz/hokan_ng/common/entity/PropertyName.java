@@ -12,6 +12,7 @@ public enum PropertyName {
   PROP_SYS_ACCESS_CONTROL("sys.AccessControl"),
   PROP_SYS_BOT_NICK("sys.BotNick"),
   PROP_SYS_CORE_ENGINE_UPTIME("sys.CoreEngineUptime"),
+  PROP_SYS_CORE_ENGINE_RUNTIME("sys.CoreEngineRuntime"),
   PROP_SYS_CORE_HTTP_UPTIME("sys.CoreHttpUptime"),
   PROP_SYS_DEV_ENV("sys.DevEnv"),
   PROP_SYS_EXEC("sys.Exec"),

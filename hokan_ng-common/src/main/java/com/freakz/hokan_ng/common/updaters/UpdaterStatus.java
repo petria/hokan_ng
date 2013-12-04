@@ -9,6 +9,6 @@ package com.freakz.hokan_ng.common.updaters;
  */
 public enum UpdaterStatus {
 
-  IDLE, UPDATING
+  IDLE, UPDATING, CRASHED
 
 }

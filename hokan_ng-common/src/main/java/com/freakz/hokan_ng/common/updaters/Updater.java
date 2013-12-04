@@ -59,13 +59,14 @@ public abstract class Updater implements DataUpdater, CommandRunnable {
     try {
       status = UpdaterStatus.UPDATING;
       doUpdateData();
+      status = UpdaterStatus.IDLE;
 
     } catch (Exception e) {
       log.error("Updater failed", e);
+      status = UpdaterStatus.CRASHED;
     } finally {
       updateCount++;
       lastUpdate = TimeUtil.getCalendar();
-      status = UpdaterStatus.IDLE;
     }
     nextUpdate = calculateNextUpdate();
   }

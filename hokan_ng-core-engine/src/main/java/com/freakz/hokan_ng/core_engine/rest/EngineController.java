@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
+import com.freakz.hokan_ng.common.service.SystemTimer;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
@@ -30,6 +31,9 @@ public class EngineController implements DisposableBean {
 
   @Autowired
   private CommandHandlerService commandHandler;
+
+  @Autowired
+  private SystemTimer systemTimer;
 
   @Autowired
   private UpdaterManagerService updaterManagerService;
@@ -59,6 +63,7 @@ public class EngineController implements DisposableBean {
 
   @PostConstruct
   public void postConstruct() {
+    this.systemTimer.start();
     this.updaterManagerService.start();
   }
 
@@ -66,6 +71,7 @@ public class EngineController implements DisposableBean {
   public void destroy() throws Exception {
     log.info("Destroying!");
     updaterManagerService.stop();
+    this.systemTimer.stop();
     Thread.sleep(3 * 1000);
   }
 

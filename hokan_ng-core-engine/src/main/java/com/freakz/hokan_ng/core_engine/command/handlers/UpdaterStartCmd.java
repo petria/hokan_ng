@@ -49,11 +49,11 @@ public class UpdaterStartCmd extends Cmd {
     String updaterName = results.getString(ARG_UPDATER);
     DataUpdater updater = updaterManagerService.getUpdater(updaterName);
     if (updater != null) {
-      if (updater.getStatus() == UpdaterStatus.IDLE) {
+      if (updater.getStatus() == UpdaterStatus.UPDATING) {
+        response.addResponse("Updater is already running, see !updaterlist");
+      } else {
         updaterManagerService.startUpdater(updater);
         response.addResponse("Started updater: " + updater.getUpdaterName());
-      } else {
-        response.addResponse("Can only start updaters which status == IDLE, see !updaterlist");
       }
     } else {
       response.addResponse("Updater not found: " + updaterName + "\n");
