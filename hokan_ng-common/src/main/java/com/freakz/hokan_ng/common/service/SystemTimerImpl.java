@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
 @Service
 public class SystemTimerImpl implements SystemTimer, CommandRunnable {
 
-  private static final int SYSTEM_TIMER_SLEEP = 2;
+  private static final int SYSTEM_TIMER_SLEEP = 1;
 
   @Autowired
   private CommandPool commandPool;
@@ -51,10 +53,15 @@ public class SystemTimerImpl implements SystemTimer, CommandRunnable {
   public void handleRun(long myPid, Object args) {
     log.info("Starting system timer, pid: {}", myPid);
     while (this.running) {
+      Calendar calendar = new GregorianCalendar();
+      int hh = calendar.get(Calendar.HOUR_OF_DAY);
+      int mm = calendar.get(Calendar.MINUTE);
+      int ss = calendar.get(Calendar.SECOND);
+
       for (SystemTimerUser user : this.users) {
         this.tickCount++;
         try {
-          user.timerTick();
+          user.timerTick(calendar, hh, mm, ss);
         } catch (Exception e) {
           log.error("SystemTimerUser failed {}", user, e);
         }

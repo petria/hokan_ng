@@ -17,4 +17,6 @@ public interface PropertyService {
 
   Property setProperty(PropertyName name, String value) throws HokanException;
 
+  Property saveProperty(Property property) throws HokanException;
+
 }

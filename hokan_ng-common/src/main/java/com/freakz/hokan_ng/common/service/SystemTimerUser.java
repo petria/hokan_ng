@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.service;
 
+import java.util.Calendar;
+
 /**
  * User: petria
  * Date: 12/3/13
@@ -11,6 +13,6 @@ public interface SystemTimerUser {
 
   void doSubscribe();
 
-  void timerTick();
+  void timerTick(Calendar cal, int hh, int mm, int ss) throws Exception;
 
 }

@@ -9,12 +9,15 @@ import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
+import com.freakz.hokan_ng.common.service.SystemTimer;
+import com.freakz.hokan_ng.common.service.SystemTimerUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +40,8 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class ConnectionManagerServiceImpl implements ConnectionManagerService, EngineConnector, DisposableBean {
+public class ConnectionManagerServiceImpl
+    implements ConnectionManagerService, EngineConnector, DisposableBean, SystemTimerUser {
 
   @Autowired
   private ChannelService channelService;
@@ -53,6 +58,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   @Autowired
   private ApplicationContext context;
 
+  @Autowired
+  private SystemTimer systemTimer;
+
+
   private Map<String, IrcServerConfig> configuredServers;
 
   private Map<String, HokanCore> connectedEngines = new HashMap<>();
@@ -66,8 +75,10 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   @PostConstruct
   public void postInit() throws HokanException {
 
-    propertyService.setProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME, "" + new Date().getTime());
+    systemTimer.start();
+    doSubscribe();
 
+    propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {
       if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
@@ -106,11 +117,12 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
   @Override
   public void destroy() throws Exception {
     log.warn("Going to be destroyed!");
+    systemTimer.stop();
     abortConnectors();
     disconnectAll();
-    Thread.sleep(2 * 1000);
+    Thread.sleep(1 * 1000);
     stopEngines();
-    Thread.sleep(2 * 1000);
+    Thread.sleep(1 * 1000);
     log.warn("Destroy phase done!");
   }
 
@@ -293,5 +305,33 @@ public class ConnectionManagerServiceImpl implements ConnectionManagerService, E
     } catch (HokanServiceException e) {
       log.error("Couldn't re-connect after ping timeout!", e);
     }
+  }
+
+  @Override
+  public void doSubscribe() {
+    this.systemTimer.addSystemTimerUser(this);
+  }
+
+  private int lastUpdated = -1;
+
+  @Override
+  public void timerTick(Calendar cal, int hh, int mm, int ss) throws Exception {
+    if (mm != lastUpdated) {
+      lastUpdated = mm;
+      Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_IO_RUNTIME);
+      if (property == null) {
+        property = new Property(PropertyName.PROP_SYS_CORE_IO_RUNTIME, "0", "");
+      } else {
+        if (property.getValue() == null) {
+          property.setValue("0");
+        } else {
+          int value = Integer.parseInt(property.getValue());
+          value += 60;
+          property.setValue(value + "");
+        }
+      }
+      propertyService.saveProperty(property);
+    }
+//    log.info("Timer tick!");
   }
 }

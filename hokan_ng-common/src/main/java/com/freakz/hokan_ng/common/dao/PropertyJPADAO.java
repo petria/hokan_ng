@@ -34,4 +34,9 @@ public class PropertyJPADAO implements PropertyDAO {
     return entityManager.merge(property);
   }
 
+  @Override
+  public Property saveProperty(Property property) throws HokanDAOException {
+    return entityManager.merge(property);
+  }
+
 }

@@ -17,4 +17,6 @@ public interface PropertyDAO {
 
   Property setProperty(PropertyName name, String value) throws HokanDAOException;
 
+  Property saveProperty(Property property) throws HokanDAOException;
+
 }

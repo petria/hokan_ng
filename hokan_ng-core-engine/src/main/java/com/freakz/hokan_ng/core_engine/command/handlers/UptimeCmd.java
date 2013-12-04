@@ -51,7 +51,7 @@ public class UptimeCmd extends Cmd {
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.sh", "UTF-8");
     String[] sysUptime = cmdExecutor.executeJarScript();
-    Long coreHttp = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_HTTP_UPTIME).getValue());
+    Long coreHttp = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME).getValue());
     Long coreEngine = Long.parseLong(propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME).getValue());
     Uptime ut1 = new Uptime(coreHttp);
     Uptime ut2 = new Uptime(coreEngine);
