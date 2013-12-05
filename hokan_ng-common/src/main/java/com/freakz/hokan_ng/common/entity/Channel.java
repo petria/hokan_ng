@@ -172,10 +172,6 @@ public class Channel implements Serializable {
     this.channelState = channelState;
   }
 
-  public long getId() {
-    return channelId;
-  }
-
   public Date getLastActive() {
     return lastActive;
   }
