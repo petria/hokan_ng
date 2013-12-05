@@ -28,7 +28,7 @@ public class ToBotOnlyCmd extends Cmd {
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
-    response.setResponseMessage("to bot only re dfffdfd ply");
+    response.setResponseMessage("to bot only re dfffdfd fdfdfdply");
   }
 
 }
