@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface ChannelService {
   List<Channel> findChannels(ChannelState state);
 
   Channel findChannelByName(Network network, String name);
+
+  Channel findChannelById(Long id) throws HokanDAOException;
 
   Channel createChannel(Network network, String name);
 

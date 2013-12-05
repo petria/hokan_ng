@@ -80,6 +80,16 @@ public class ChannelJPADAO implements ChannelDAO {
   }
 
   @Override
+  public Channel findChannelById(Long id) throws HokanDAOException {
+    Channel channel = entityManager.find(Channel.class, id);
+    if (channel == null) {
+      throw new HokanDAOException("Channel not found: " + id);
+
+    }
+    return channel;
+  }
+
+  @Override
   public Channel createChannel(Network network, String name) throws HokanDAOException {
     Channel channel = new Channel(network, name);
     try {

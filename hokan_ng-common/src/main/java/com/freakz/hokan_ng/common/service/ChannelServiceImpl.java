@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.dao.ChannelDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class ChannelServiceImpl implements ChannelService {
       log.error("Couldn't get Channel entity", e);
     }
     return null;
+  }
+
+  @Override
+  public Channel findChannelById(Long id) throws HokanDAOException {
+
+    return channelDAO.findChannelById(id);
   }
 
   @Override

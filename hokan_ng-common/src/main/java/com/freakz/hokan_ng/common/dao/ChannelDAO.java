@@ -16,13 +16,16 @@ import java.util.List;
  */
 public interface ChannelDAO {
 
+  Channel createChannel(Network network, String name) throws HokanDAOException;
+
+  Channel findChannelByName(Network network, String name) throws HokanDAOException;
+
+  Channel findChannelById(Long id) throws HokanDAOException;
+
   List<Channel> findChannels(Network network, ChannelState state) throws HokanDAOException;
 
   List<Channel> findChannels(ChannelState state) throws HokanDAOException;
 
-  Channel findChannelByName(Network network, String name) throws HokanDAOException;
-
-  Channel createChannel(Network network, String name) throws HokanDAOException;
-
   Channel updateChannel(Channel channel) throws HokanDAOException;
+
 }
