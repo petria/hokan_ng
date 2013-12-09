@@ -1,4 +1,4 @@
-  hokan_ng
+hokan_ng
 ========
 
 The IRC bot
