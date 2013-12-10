@@ -36,6 +36,8 @@ public class UpdaterStartCmd extends Cmd {
         .setGreedy(false);
     registerParameter(opt);
 
+    addSeeAlso("!updaterlist");
+
     setMasterUserOnly(true);
   }
 

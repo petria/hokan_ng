@@ -25,6 +25,9 @@ public class UpdaterListCmd extends Cmd {
   public UpdaterListCmd() {
     super();
     setHelp("Shows DataUpdaters and their status / update count / next update");
+
+    addSeeAlso("!updaterstart");
+
   }
 
   @Override
