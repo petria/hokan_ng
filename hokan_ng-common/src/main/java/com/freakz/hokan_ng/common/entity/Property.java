@@ -20,4 +20,8 @@ public class Property extends PropertyBase implements Serializable {
     super(property, value, flags);
   }
 
+  public String toString() {
+    return String.format("%s = %s", getProperty().toString(), getValue());
+  }
+
 }

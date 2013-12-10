@@ -1,6 +1,5 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
-import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
@@ -34,9 +33,9 @@ public class EnvCmd extends Cmd {
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List<Property> propertyList = properties.getAllProperties();
-    for (Property property : propertyList) {
-      response.addResponse("%s = %s\n", property.getProperty().toString(), property.getValue());
+    List propertyList = properties.getAllProperties();
+    for (Object property : propertyList) {
+      response.addResponse("%s\n", property.toString());
     }
   }
 }

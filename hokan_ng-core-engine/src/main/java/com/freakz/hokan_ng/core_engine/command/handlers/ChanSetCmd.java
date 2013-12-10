@@ -50,13 +50,14 @@ public class ChanSetCmd extends Cmd {
       response.addResponse("Syntax error, usage: %s <PropertyName>=<Value>", getName());
       return;
     }
-    String property = results.getString(ARG_PROPERTY);
-    PropertyName propertyName = properties.getPropertyName(property);
+
+    PropertyName propertyName = properties.getPropertyName(split[0]);
     if (propertyName == null) {
-      response.addResponse("Invalid property: %s", property);
+      response.addResponse("Invalid property: %s", split[0]);
       return;
     }
-    ChannelProperty chanProp = new ChannelProperty(iRequest.getChannel(), propertyName, split[0], split[1]);
+    ChannelProperty chanProp = new ChannelProperty(iRequest.getChannel(), propertyName, split[1], "");
+    chanProp = properties.saveChannelProperty(chanProp);
     response.addResponse("Property set: %s", chanProp.toString());
   }
 }

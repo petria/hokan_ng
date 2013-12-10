@@ -73,7 +73,7 @@ public class EngineController implements DisposableBean, SystemTimerUser {
       } catch (Exception e) {
         HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
         response.setException(engineException.toString());
-        log.warn("Command handler returned exception {}", e.getMessage());
+        log.error("Command handler returned exception {}", e);
       }
     }
     return response;

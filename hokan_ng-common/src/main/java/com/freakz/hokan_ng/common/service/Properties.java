@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.common.service;
 
+import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 
@@ -21,6 +22,8 @@ public interface Properties {
   boolean getPropertyAsBoolean(PropertyName property, boolean def);
 
   Property saveProperty(Property property);
+
+  ChannelProperty saveChannelProperty(ChannelProperty property);
 
   List<Property> getAllProperties();
 

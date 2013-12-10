@@ -36,12 +36,12 @@ public class SystemTimerImpl implements SystemTimer, CommandRunnable {
 
   @Override
   public void addSystemTimerUser(SystemTimerUser user) {
-    users.add(user);
+    //  users.add(user);
   }
 
   @Override
   public void start() {
-    commandPool.startRunnable(this);
+//    commandPool.startRunnable(this);
   }
 
   @Override

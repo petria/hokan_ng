@@ -25,6 +25,8 @@ public interface PropertyService {
 
   Property saveProperty(Property property) throws HokanException;
 
+  ChannelProperty saveChannelProperty(ChannelProperty property) throws HokanException;
+
   List<ChannelProperty> getChannelProperties(Channel... channel);
 
 }

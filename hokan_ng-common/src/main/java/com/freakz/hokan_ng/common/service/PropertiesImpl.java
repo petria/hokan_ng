@@ -61,6 +61,16 @@ public class PropertiesImpl implements Properties {
   }
 
   @Override
+  public ChannelProperty saveChannelProperty(ChannelProperty property) {
+    try {
+      return service.saveChannelProperty(property);
+    } catch (HokanException e) {
+      log.error("property error", e);
+    }
+    return null;
+  }
+
+  @Override
   public Property saveProperty(Property property) {
     try {
       return service.saveProperty(property);

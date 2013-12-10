@@ -91,6 +91,6 @@ public class PropertyJPADAO implements PropertyDAO {
 
   @Override
   public ChannelProperty saveChannelProperty(ChannelProperty property) throws HokanDAOException {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+    return entityManager.merge(property);
   }
 }

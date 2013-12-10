@@ -49,6 +49,11 @@ public class PropertyServiceImpl implements PropertyService {
   }
 
   @Override
+  public ChannelProperty saveChannelProperty(ChannelProperty property) throws HokanException {
+    return propertyDAO.saveChannelProperty(property);
+  }
+
+  @Override
   public List<ChannelProperty> getChannelProperties(Channel... channel) {
     try {
       return propertyDAO.getChannelProperties(channel);
