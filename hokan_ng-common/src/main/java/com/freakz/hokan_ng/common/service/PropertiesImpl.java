@@ -1,11 +1,15 @@
 package com.freakz.hokan_ng.common.service;
 
+import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: petria
@@ -65,4 +69,14 @@ public class PropertiesImpl implements Properties {
     return null;
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public List getAllProperties() {
+    List allProperties = new ArrayList<>();
+    List<Property> props1 = service.getProperties();
+    List<ChannelProperty> props2 = service.getChannelProperties();
+    allProperties.addAll(props1);
+    allProperties.addAll(props2);
+    return allProperties;
+  }
 }

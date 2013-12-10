@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,6 +27,13 @@ public class PropertyJPADAO implements PropertyDAO {
 
   @PersistenceContext
   private EntityManager entityManager;
+
+  @Override
+  public List<Property> getProperties() {
+    TypedQuery<Property> query =
+        entityManager.createQuery("SELECT p FROM Property p ORDER BY p.property", Property.class);
+    return query.getResultList();
+  }
 
   @Override
   public Property findProperty(PropertyName name) throws HokanDAOException {
@@ -52,10 +60,18 @@ public class PropertyJPADAO implements PropertyDAO {
   }
 
   @Override
-  public List<ChannelProperty> getChannelProperties(Channel channel) throws HokanDAOException {
-    TypedQuery<ChannelProperty> query =
-        entityManager.createQuery("SELECT p FROM ChannelProperty p WHERE p.channel = :channel ORDER BY p.property", ChannelProperty.class);
-    query.setParameter("channel", channel);
+  public List<ChannelProperty> getChannelProperties(Channel... channel) throws HokanDAOException {
+    TypedQuery<ChannelProperty> query;
+    List<Channel> channels = Arrays.asList(channel);
+    if (channels.isEmpty()) {
+      query =
+          entityManager.createQuery("SELECT p FROM ChannelProperty p ORDER BY p.property", ChannelProperty.class);
+
+    } else {
+      query =
+          entityManager.createQuery("SELECT p FROM ChannelProperty p WHERE p.channel IN (:channels) GROUP BY p.channel ORDER BY p.property", ChannelProperty.class);
+      query.setParameter("channels", channels);
+    }
     return query.getResultList();
   }
 

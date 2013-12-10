@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface PropertyDAO {
 
+  List<Property> getProperties();
+
   Property findProperty(PropertyName name) throws HokanDAOException;
 
   Property setProperty(PropertyName name, String value) throws HokanDAOException;
@@ -25,7 +27,7 @@ public interface PropertyDAO {
 
   List<Channel> getChannelsWithProperty(PropertyName propertyName) throws HokanDAOException;
 
-  List<ChannelProperty> getChannelProperties(Channel channel) throws HokanDAOException;
+  List<ChannelProperty> getChannelProperties(Channel... channel) throws HokanDAOException;
 
   ChannelProperty findChannelProperty(Channel channel, PropertyName name) throws HokanDAOException;
 

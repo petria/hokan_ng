@@ -3,6 +3,8 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 
+import java.util.List;
+
 /**
  * User: petria
  * Date: 12/4/13
@@ -20,4 +22,5 @@ public interface Properties {
 
   Property saveProperty(Property property);
 
+  List<Property> getAllProperties();
 }

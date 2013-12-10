@@ -15,13 +15,15 @@ public enum PropertyName {
   PROP_SYS_CORE_ENGINE_RUNTIME("sys.CoreEngineRuntime"),
   PROP_SYS_CORE_IO_UPTIME("sys.CoreIoUptime"),
   PROP_SYS_CORE_IO_RUNTIME("sys.CoreIoRuntime"),
-  PROP_SYS_DEV_ENV("sys.DevEnv"),
   PROP_SYS_EXEC("sys.Exec"),
   PROP_SYS_EXEC_USERS("sys.ExecUsers"),
   PROP_SYS_IGNORE("sys.Ignore"),
   PROP_SYS_MAX_CONNECTION_RETRY("sys.MaxConnectionRetry"),
   PROP_SYS_SUPER_USERS("sys.SuperUsers"),
-  PROP_SYS_RAWLOG("sys.RawLog");
+  PROP_SYS_RAWLOG("sys.RawLog"),
+
+  PROP_CHANNEL_DO_TVNOTIFY("channel.DoTvNotify"),
+  PROP_CHANNEL_STATS_TIME("channel.DoStats");
 
   /**
    * @param text
