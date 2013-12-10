@@ -41,6 +41,9 @@ public class ChanSendCmd extends Cmd {
         .setRequired(true)
         .setGreedy(false);
     registerParameter(flg);
+
+    setChannelOpOnly(true);
+
   }
 
   @Override
