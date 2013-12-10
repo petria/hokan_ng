@@ -34,6 +34,7 @@ public class HelpCmd extends Cmd {
 
   public HelpCmd() {
     super();
+    setHelp("Shows command list / help about specific command.");
     UnflaggedOption flg = new UnflaggedOption(ARG_COMMAND)
         .setRequired(false)
         .setGreedy(false);

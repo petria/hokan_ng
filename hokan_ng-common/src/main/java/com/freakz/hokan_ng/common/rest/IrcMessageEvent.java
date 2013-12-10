@@ -21,8 +21,8 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
     super();
   }
 
-  public IrcMessageEvent(String channel, String sender, String login, String hostname, String message) {
-    super(channel, sender, login, hostname);
+  public IrcMessageEvent(String network, String channel, String sender, String login, String hostname, String message) {
+    super(network, channel, sender, login, hostname);
     this.message = message;
   }
 

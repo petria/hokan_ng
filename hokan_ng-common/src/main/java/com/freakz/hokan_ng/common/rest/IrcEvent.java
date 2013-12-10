@@ -13,6 +13,7 @@ public class IrcEvent implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  private String network;
   private String channel;
   private String sender;
   private String login;
@@ -21,11 +22,20 @@ public class IrcEvent implements Serializable {
   public IrcEvent() {
   }
 
-  public IrcEvent(String channel, String sender, String login, String hostname) {
+  public IrcEvent(String network, String channel, String sender, String login, String hostname) {
+    this.network = network;
     this.channel = channel;
     this.sender = sender;
     this.login = login;
     this.hostname = hostname;
+  }
+
+  public String getNetwork() {
+    return network;
+  }
+
+  public void setNetwork(String network) {
+    this.network = network;
   }
 
   public String getChannel() {

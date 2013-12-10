@@ -294,7 +294,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       message = message.replaceFirst(toMe, "");
       isToMe = true;
     }
-    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(channel, sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), channel, sender, login, hostname, message);
     ircEvent.setToMe(isToMe);
 
     Channel ch = getChannel(ircEvent);
@@ -308,7 +308,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
-    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(sender, sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), sender, sender, login, hostname, message);
     ircEvent.setPrivate(true);
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
@@ -398,7 +398,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {
-    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(channel, sender, login, hostname);
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     log.info("{} joined channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {
@@ -433,7 +433,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onPart(String channel, String sender, String login, String hostname) {
-    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(channel, sender, login, hostname);
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     log.info("{} part channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {

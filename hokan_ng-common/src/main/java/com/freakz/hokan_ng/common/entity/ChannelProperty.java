@@ -37,4 +37,8 @@ public class ChannelProperty extends PropertyBase implements Serializable {
     this.channel = channel;
   }
 
+  public String toString() {
+    return String.format("[%s] %s = %s", channel.getChannelName(), getProperty().toString(), getValue());
+  }
+
 }

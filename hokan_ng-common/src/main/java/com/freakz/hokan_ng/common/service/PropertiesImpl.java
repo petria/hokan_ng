@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -78,5 +79,15 @@ public class PropertiesImpl implements Properties {
     allProperties.addAll(props1);
     allProperties.addAll(props2);
     return allProperties;
+  }
+
+  @Override
+  public PropertyName getPropertyName(String property) {
+    for (PropertyName prop : PropertyName.values()) {
+      if (StringStuff.match(prop.toString(), property, true)) {
+        return prop;
+      }
+    }
+    return null;
   }
 }

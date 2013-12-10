@@ -13,9 +13,11 @@ import com.freakz.hokan_ng.common.service.SystemTimerUser;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
+import com.freakz.hokan_ng.core_engine.dto.InternalRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,16 +39,19 @@ import java.util.Date;
 public class EngineController implements DisposableBean, SystemTimerUser {
 
   @Autowired
+  private ApplicationContext context;
+
+  @Autowired
   private CommandHandlerService commandHandler;
+
+  @Autowired
+  private PropertyService propertyService;
 
   @Autowired
   private SystemTimer systemTimer;
 
   @Autowired
   private UpdaterManagerService updaterManagerService;
-
-  @Autowired
-  private PropertyService propertyService;
 
 
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
@@ -62,7 +67,9 @@ public class EngineController implements DisposableBean, SystemTimerUser {
     Cmd handler = commandHandler.getCommandHandler(ircMessageEvent.getMessage());
     if (handler != null) {
       try {
-        handler.handleLine(request, response);
+        InternalRequest internalRequest = context.getBean(InternalRequest.class);
+        internalRequest.init(request);
+        handler.handleLine(internalRequest, response);
       } catch (Exception e) {
         HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
         response.setException(engineException.toString());

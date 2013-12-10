@@ -23,4 +23,7 @@ public interface Properties {
   Property saveProperty(Property property);
 
   List<Property> getAllProperties();
+
+  PropertyName getPropertyName(String property);
+
 }
