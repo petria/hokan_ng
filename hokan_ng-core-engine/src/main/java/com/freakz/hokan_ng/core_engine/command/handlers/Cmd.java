@@ -1,6 +1,8 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 
+import com.freakz.hokan_ng.common.engine.CommandPool;
+import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
@@ -27,10 +29,13 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Slf4j
-public abstract class Cmd implements HokkanCommand {
+public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   private AccessControlService accessControlService;
+
+  @Autowired
+  private CommandPool commandPool;
 
   protected JSAP jsap;
 
@@ -112,12 +117,29 @@ public abstract class Cmd implements HokkanCommand {
         response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
       } else {
         if (checkAccess(request, response)) {
-          handleRequest(request, response, results);
+          ArgsWrapper wrapper = new ArgsWrapper();
+          wrapper.request = request;
+          wrapper.response = response;
+          wrapper.results = results;
+          commandPool.startSyncRunnable(this, wrapper);
+//          handleRequest(request, response, results);
         }
       }
 
     }
 
+  }
+
+  public static class ArgsWrapper {
+    public EngineRequest request;
+    public EngineResponse response;
+    public JSAPResult results;
+  }
+
+  @Override
+  public void handleRun(long myPid, Object args) throws HokanException {
+    ArgsWrapper wrapper = (ArgsWrapper) ((Object[]) args)[0];
+    handleRequest(wrapper.request, wrapper.response, wrapper.results);
   }
 
   public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;

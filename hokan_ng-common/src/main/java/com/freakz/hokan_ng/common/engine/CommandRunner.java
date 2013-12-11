@@ -1,5 +1,10 @@
 package com.freakz.hokan_ng.common.engine;
 
+import com.freakz.hokan_ng.common.exception.HokanException;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Date;
+
 /**
  * User: petria
  * Date: 11/5/13
@@ -7,6 +12,7 @@ package com.freakz.hokan_ng.common.engine;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
+@Slf4j
 public class CommandRunner implements Runnable {
 
   private long myPid;
@@ -24,7 +30,20 @@ public class CommandRunner implements Runnable {
   @Override
   public void run() {
     Thread.currentThread().setName("[" + myPid + "] CommandRunner: " + runnable);
-    this.runnable.handleRun(myPid, args);
+    CommandHistory history = new CommandHistory(myPid, runnable, args);
+    try {
+      this.runnable.handleRun(myPid, args);
+    } catch (HokanException e) {
+      log.error("CommandRunner error", e);
+    }
+    history.setEndTime(new Date().getTime());
     this.commandPool.runnerFinished(this);
+    this.commandPool.addCommandHistory(history);
   }
+
+  @Override
+  public String toString() {
+    return String.format("%4d %15s", myPid, runnable.getClass().getName());
+  }
+
 }

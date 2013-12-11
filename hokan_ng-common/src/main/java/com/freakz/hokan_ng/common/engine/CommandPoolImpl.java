@@ -24,6 +24,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
 
   private ExecutorService executor = Executors.newCachedThreadPool();
   private List<CommandRunner> activeRunners = new ArrayList<>();
+  private List<CommandHistory> commandHistory = new ArrayList<>();
 
   public CommandPoolImpl() {
   }
@@ -42,6 +43,13 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
   }
 
   @Override
+  public void startSyncRunnable(CommandRunnable runnable, Object... args) {
+    CommandRunner runner = new CommandRunner(pidCounter, runnable, this, args);
+    activeRunners.add(runner);
+    runner.run();
+  }
+
+  @Override
   public void runnerFinished(CommandRunner runner) {
     this.activeRunners.remove(runner);
   }
@@ -57,4 +65,13 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
     log.info("Runnables size: {}", runnableList.size());
   }
 
+  @Override
+  public void addCommandHistory(CommandHistory history) {
+    this.commandHistory.add(0, history);
+  }
+
+  @Override
+  public List<CommandHistory> getCommandHistory() {
+    return this.commandHistory;
+  }
 }

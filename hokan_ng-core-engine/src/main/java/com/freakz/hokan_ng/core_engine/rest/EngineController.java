@@ -89,7 +89,6 @@ public class EngineController implements DisposableBean {
 
   @Scheduled(fixedDelay = 30000)
   public void updateRuntime() throws Exception {
-    log.info("Updating PROP_SYS_CORE_ENGINE_RUNTIME");
     Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME);
     if (property == null) {
       property = new Property(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, "0", "");

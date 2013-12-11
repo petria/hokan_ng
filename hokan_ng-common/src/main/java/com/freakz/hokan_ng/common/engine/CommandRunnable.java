@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.engine;
 
+import com.freakz.hokan_ng.common.exception.HokanException;
+
 /**
  * User: petria
  * Date: 11/5/13
@@ -9,5 +11,5 @@ package com.freakz.hokan_ng.common.engine;
  */
 public interface CommandRunnable {
 
-  public void handleRun(long myPid, Object args);
+  public void handleRun(long myPid, Object args) throws HokanException;
 }
