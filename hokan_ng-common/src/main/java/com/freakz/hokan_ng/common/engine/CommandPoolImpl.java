@@ -47,6 +47,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
     CommandRunner runner = new CommandRunner(pidCounter, runnable, this, args);
     activeRunners.add(runner);
     runner.run();
+    pidCounter++;
   }
 
   @Override
