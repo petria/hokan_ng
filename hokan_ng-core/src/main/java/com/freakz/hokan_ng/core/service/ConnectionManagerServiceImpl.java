@@ -16,16 +16,14 @@ import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
-import com.freakz.hokan_ng.common.service.SystemTimer;
-import com.freakz.hokan_ng.common.service.SystemTimerUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,7 +39,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class ConnectionManagerServiceImpl
-    implements ConnectionManagerService, EngineConnector, DisposableBean, SystemTimerUser {
+    implements ConnectionManagerService, EngineConnector, DisposableBean {
 
   @Autowired
   private ChannelService channelService;
@@ -58,9 +56,6 @@ public class ConnectionManagerServiceImpl
   @Autowired
   private ApplicationContext context;
 
-  @Autowired
-  private SystemTimer systemTimer;
-
 
   private Map<String, IrcServerConfig> configuredServers;
 
@@ -74,9 +69,6 @@ public class ConnectionManagerServiceImpl
 
   @PostConstruct
   public void postInit() throws HokanException {
-
-    systemTimer.start();
-    doSubscribe();
 
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
     updateServerMap();
@@ -117,7 +109,6 @@ public class ConnectionManagerServiceImpl
   @Override
   public void destroy() throws Exception {
     log.warn("Going to be destroyed!");
-    systemTimer.stop();
     abortConnectors();
     disconnectAll();
     Thread.sleep(1 * 1000);
@@ -307,31 +298,21 @@ public class ConnectionManagerServiceImpl
     }
   }
 
-  @Override
-  public void doSubscribe() {
-    this.systemTimer.addSystemTimerUser(this);
-  }
-
-  private int lastUpdated = -1;
-
-  @Override
-  public void timerTick(Calendar cal, int hh, int mm, int ss) throws Exception {
-    if (mm != lastUpdated) {
-      lastUpdated = mm;
-      Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_IO_RUNTIME);
-      if (property == null) {
-        property = new Property(PropertyName.PROP_SYS_CORE_IO_RUNTIME, "0", "");
+  @Scheduled(fixedDelay = 30000)
+  public void updateRuntime() throws Exception {
+    Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME);
+    if (property == null) {
+      property = new Property(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, "0", "");
+    } else {
+      if (property.getValue() == null) {
+        property.setValue("0");
       } else {
-        if (property.getValue() == null) {
-          property.setValue("0");
-        } else {
-          int value = Integer.parseInt(property.getValue());
-          value += 60;
-          property.setValue(value + "");
-        }
+        int value = Integer.parseInt(property.getValue());
+        value += 60;
+        property.setValue(value + "");
       }
-      propertyService.saveProperty(property);
     }
-//    log.info("Timer tick!");
+    propertyService.saveProperty(property);
   }
+
 }

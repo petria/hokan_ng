@@ -233,11 +233,6 @@
             </dependency>
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz-weblogic</artifactId>
-                <version>2.1.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz-commonj</artifactId>
                 <version>2.1.6</version>
             </dependency>

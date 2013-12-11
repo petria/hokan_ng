@@ -8,8 +8,6 @@ import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.PropertyService;
-import com.freakz.hokan_ng.common.service.SystemTimer;
-import com.freakz.hokan_ng.common.service.SystemTimerUser;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
@@ -18,13 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -36,7 +34,7 @@ import java.util.Date;
 
 @Controller
 @Slf4j
-public class EngineController implements DisposableBean, SystemTimerUser {
+public class EngineController implements DisposableBean {
 
   @Autowired
   private ApplicationContext context;
@@ -46,9 +44,6 @@ public class EngineController implements DisposableBean, SystemTimerUser {
 
   @Autowired
   private PropertyService propertyService;
-
-  @Autowired
-  private SystemTimer systemTimer;
 
   @Autowired
   private UpdaterManagerService updaterManagerService;
@@ -81,8 +76,6 @@ public class EngineController implements DisposableBean, SystemTimerUser {
 
   @PostConstruct
   public void postConstruct() throws HokanException {
-    this.systemTimer.start();
-    doSubscribe();
     this.updaterManagerService.start();
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME, "" + new Date().getTime());
   }
@@ -91,35 +84,25 @@ public class EngineController implements DisposableBean, SystemTimerUser {
   public void destroy() throws Exception {
     log.info("Destroying!");
     updaterManagerService.stop();
-    this.systemTimer.stop();
     Thread.sleep(3 * 1000);
   }
 
-  @Override
-  public void doSubscribe() {
-    systemTimer.addSystemTimerUser(this);
-  }
-
-  private int lastUpdated = -1;
-
-  @Override
-  public void timerTick(Calendar cal, int hh, int mm, int ss) throws Exception {
-    if (mm != lastUpdated) {
-      lastUpdated = mm;
-      Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME);
-      if (property == null) {
-        property = new Property(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, "0", "");
+  @Scheduled(fixedDelay = 30000)
+  public void updateRuntime() throws Exception {
+    log.info("Updating PROP_SYS_CORE_ENGINE_RUNTIME");
+    Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME);
+    if (property == null) {
+      property = new Property(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, "0", "");
+    } else {
+      if (property.getValue() == null) {
+        property.setValue("0");
       } else {
-        if (property.getValue() == null) {
-          property.setValue("0");
-        } else {
-          int value = Integer.parseInt(property.getValue());
-          value += 60;
-          property.setValue(value + "");
-        }
+        int value = Integer.parseInt(property.getValue());
+        value += 60;
+        property.setValue(value + "");
       }
-      propertyService.saveProperty(property);
     }
-//    log.info("Timer tick!");
+    propertyService.saveProperty(property);
   }
+
 }
