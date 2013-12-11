@@ -300,9 +300,9 @@ public class ConnectionManagerServiceImpl
 
   @Scheduled(fixedDelay = 30000)
   public void updateRuntime() throws Exception {
-    Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME);
+    Property property = propertyService.findProperty(PropertyName.PROP_SYS_CORE_IO_RUNTIME);
     if (property == null) {
-      property = new Property(PropertyName.PROP_SYS_CORE_ENGINE_RUNTIME, "0", "");
+      property = new Property(PropertyName.PROP_SYS_CORE_IO_RUNTIME, "0", "");
     } else {
       if (property.getValue() == null) {
         property.setValue("0");
