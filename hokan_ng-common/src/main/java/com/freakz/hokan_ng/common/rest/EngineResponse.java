@@ -89,7 +89,7 @@ public class EngineResponse implements Serializable {
     this.responseMessage += response;
   }
 
-  public void addResponse(String response, String... args) {
+  public void addResponse(String response, Object... args) {
     this.responseMessage += String.format(response, (Object[]) args);
   }
 
