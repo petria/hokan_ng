@@ -33,13 +33,14 @@ public class ChanSetCmd extends Cmd {
     setHelp("Sets channel property.");
 
     UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
-        .setRequired(false)
+        .setRequired(true)
         .setGreedy(false);
     registerParameter(flg);
 
     addSeeAlso("!env");
     addSeeAlso("!set");
 
+    setChannelOpOnly(true);
   }
 
   @Override

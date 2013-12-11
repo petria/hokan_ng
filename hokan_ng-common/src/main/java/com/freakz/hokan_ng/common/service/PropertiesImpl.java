@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.common.service;
 
+import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
@@ -89,6 +90,11 @@ public class PropertiesImpl implements Properties {
     allProperties.addAll(props1);
     allProperties.addAll(props2);
     return allProperties;
+  }
+
+  @Override
+  public List getChannelProperties(Channel channel) {
+    return service.getChannelProperties(channel);
   }
 
   @Override

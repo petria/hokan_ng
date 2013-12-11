@@ -34,8 +34,13 @@ public class PropertyServiceImpl implements PropertyService {
   }
 
   @Override
-  public Property findProperty(PropertyName name) throws HokanException {
-    return propertyDAO.findProperty(name);
+  public Property findProperty(PropertyName name) {
+    try {
+      return propertyDAO.findProperty(name);
+    } catch (Exception e) {
+      //
+    }
+    return null;
   }
 
   @Override

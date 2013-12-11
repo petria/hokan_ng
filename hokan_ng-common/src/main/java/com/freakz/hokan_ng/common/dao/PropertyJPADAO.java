@@ -36,13 +36,27 @@ public class PropertyJPADAO implements PropertyDAO {
   }
 
   @Override
-  public Property findProperty(PropertyName name) throws HokanDAOException {
-    return entityManager.find(Property.class, name);
+  public Property findProperty(PropertyName property) throws HokanDAOException {
+    TypedQuery<Property> query =
+        entityManager.createQuery("SELECT p FROM Property p WHERE p.property = :property", Property.class);
+    query.setParameter("property", property);
+    return query.getSingleResult();
   }
 
   @Override
   public Property setProperty(PropertyName name, String value) throws HokanDAOException {
-    Property property = new Property(name, value, "");
+    Property property = null;
+    try {
+      property = findProperty(name);
+    } catch (Exception e) {
+      //
+    } finally {
+      if (property == null) {
+        property = new Property(name, value, "");
+      } else {
+        property.setValue(value);
+      }
+    }
     return entityManager.merge(property);
   }
 
@@ -86,7 +100,8 @@ public class PropertyJPADAO implements PropertyDAO {
 
   @Override
   public ChannelProperty setChannelProperty(Channel channel, PropertyName name, String value) throws HokanDAOException {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+    ChannelProperty property = new ChannelProperty(channel, name, value, "");
+    return entityManager.merge(property);
   }
 
   @Override

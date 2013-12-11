@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.common.service;
 
+import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
@@ -29,4 +30,5 @@ public interface Properties {
 
   PropertyName getPropertyName(String property);
 
+  List getChannelProperties(Channel channel);
 }

@@ -3,6 +3,8 @@ package com.freakz.hokan_ng.common.entity;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -18,6 +20,10 @@ import java.io.Serializable;
 public class PropertyBase implements Serializable {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ID")
+  private long id;
+
   @Column(name = "PROPERTY")
   @Enumerated(EnumType.STRING)
   private PropertyName property;
@@ -35,6 +41,14 @@ public class PropertyBase implements Serializable {
     this.property = property;
     this.value = value;
     this.flags = flags;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public PropertyName getProperty() {

@@ -72,17 +72,38 @@ public class HelpCmd extends Cmd {
 
       for (Cmd cmd : commands) {
 
-        if (cmd.isChannelOpOnly() && (isChannelOp || isMasterUser)) {
+        if (cmd.isChannelOpOnly() && !isChannelOp && !isMasterUser) {
           continue;
         }
+
         if (cmd.isMasterUserOnly() && (!isMasterUser)) {
           continue;
         }
+
         sb.append("  ");
         sb.append(cmd.getName());
+        String flags = "";
+        if (cmd.toBotOnly) {
+          flags += "B";
+        }
+        if (cmd.channelOpOnly) {
+          flags += "C";
+        }
+        if (cmd.loggedInOnly) {
+          flags += "L";
+        }
+        if (cmd.masterUserOnly) {
+          flags += "M";
+        }
+        if (cmd.privateOnly) {
+          flags += "P";
+        }
+        if (flags.length() > 0) {
+          sb.append("[" + flags + "]");
+        }
       }
-
       sb.append("\nTry '!help <command>' to get detailed help\n");
+      sb.append("B: to bot only C: channel op only L: logged in only M: master user only P: private msg only");
 
     } else {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);

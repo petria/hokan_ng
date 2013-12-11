@@ -5,40 +5,37 @@ import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.martiansoftware.jsap.JSAPResult;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * User: petria
- * Date: 12/10/13
- * Time: 2:32 PM
+ * Date: 12/11/13
+ * Time: 2:16 PM
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-@Slf4j
 @Component
-public class EnvCmd extends Cmd {
+public class PropertyListCmd extends Cmd {
 
   @Autowired
   private Properties properties;
 
-  public EnvCmd() {
+  public PropertyListCmd() {
     super();
-    setHelp("Show bot system properties.");
-    addSeeAlso("!chanenv");
-    addSeeAlso("!chanset");
+    setHelp("Shows available properties.");
     addSeeAlso("!env");
+    addSeeAlso("!chanset");
     addSeeAlso("!set");
   }
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List propertyList = properties.getAllProperties();
-    for (Object property : propertyList) {
-      response.addResponse("%s\n", property.toString());
+    StringBuilder sb = new StringBuilder();
+    for (Object property : properties.getAllProperties()) {
+      sb.append(property);
+      sb.append(" | ");
     }
+    response.addResponse(sb.toString());
   }
 }
