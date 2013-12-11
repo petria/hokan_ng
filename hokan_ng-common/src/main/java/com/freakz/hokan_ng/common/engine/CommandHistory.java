@@ -25,8 +25,11 @@ public class CommandHistory {
   }
 
   public String toString() {
-    long runtime = (endTime - startTime) / 1000;
-    return String.format("%4d %15s (runtime: %d secs)", pid, runnable.getClass().getName(), runtime);
+    String runtime = "";
+    if (endTime != 0) {
+      runtime = String.format(" (runtime: %d ms)", (endTime - startTime));
+    }
+    return String.format("%4d %15s%s", pid, runnable.getClass().getName(), runtime);
   }
 
   public long getPid() {

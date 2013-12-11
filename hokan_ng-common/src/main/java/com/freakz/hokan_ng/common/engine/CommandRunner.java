@@ -31,6 +31,7 @@ public class CommandRunner implements Runnable {
   public void run() {
     Thread.currentThread().setName("[" + myPid + "] CommandRunner: " + runnable);
     CommandHistory history = new CommandHistory(myPid, runnable, args);
+    this.commandPool.addCommandHistory(history);
     try {
       this.runnable.handleRun(myPid, args);
     } catch (HokanException e) {
@@ -38,7 +39,6 @@ public class CommandRunner implements Runnable {
     }
     history.setEndTime(new Date().getTime());
     this.commandPool.runnerFinished(this);
-    this.commandPool.addCommandHistory(history);
   }
 
   @Override
