@@ -18,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: petria
@@ -46,6 +48,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean toBotOnly;
 
   protected List<String> seeAlso = new ArrayList<>();
+  protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
 
   public Cmd() {
     jsap = new JSAP();
@@ -74,6 +77,10 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public void addSeeAlso(String seeAlso) {
     this.seeAlso.add(seeAlso);
+  }
+
+  public void addToHelpGroup(HelpGroup helpGroup) {
+
   }
 
   public String getName() {
