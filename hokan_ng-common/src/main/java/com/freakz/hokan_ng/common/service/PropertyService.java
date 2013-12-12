@@ -29,4 +29,5 @@ public interface PropertyService {
 
   List<ChannelProperty> getChannelProperties(Channel... channel);
 
+  List<Channel> getChannelsWithProperty(PropertyName propertyName);
 }

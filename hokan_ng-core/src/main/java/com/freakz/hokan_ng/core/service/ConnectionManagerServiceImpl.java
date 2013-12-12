@@ -11,8 +11,10 @@ import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.rest.CoreRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
@@ -66,6 +68,7 @@ public class ConnectionManagerServiceImpl
 
   public ConnectionManagerServiceImpl() {
   }
+
 
   @PostConstruct
   public void postInit() throws HokanException {
@@ -315,4 +318,14 @@ public class ConnectionManagerServiceImpl
     propertyService.saveProperty(property);
   }
 
+  @Override
+  public void handleCoreRequest(CoreRequest request) {
+    try {
+      Channel target = channelService.findChannelById(request.getTargetChannelId());
+      HokanCore core = this.connectedEngines.get(target.getNetwork().getName());
+      core.sendMessage(target.getChannelName(), request.getMessage());
+    } catch (HokanDAOException e) {
+      log.error("CoreRequest error!", e);
+    }
+  }
 }

@@ -31,4 +31,7 @@ public interface Properties {
   PropertyName getPropertyName(String property);
 
   List getChannelProperties(Channel channel);
+
+  List<Channel> getChannelsWithProperty(PropertyName propertyName);
+
 }

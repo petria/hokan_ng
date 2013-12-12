@@ -2,12 +2,16 @@ package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.rest.CoreRequest;
+import com.freakz.hokan_ng.common.rest.CoreResponse;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,12 +21,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author Petri Airio (petri.j.airio@gmail.com)
  */
-
 @Controller
+@Slf4j
 public class HokanController {
 
   @Autowired
   private ConnectionManagerService connectionManager;
+
+  @RequestMapping(value = "/control/handle") //, produces = JSON, consumes = JSON)
+  public
+  @ResponseBody
+  CoreResponse handleRequest(
+      @RequestBody CoreRequest request
+  ) {
+    log.info("Got request: " + request);
+    CoreResponse response = new CoreResponse();
+    connectionManager.handleCoreRequest(request);
+    response.setRequest(request);
+
+    return response;
+  }
+
 
   @RequestMapping(value = "/control/joinChannels/{network}")
   public

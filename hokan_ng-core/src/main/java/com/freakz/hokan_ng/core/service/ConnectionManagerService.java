@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.core.service;
 
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.rest.CoreRequest;
 
 import java.util.Collection;
 
@@ -24,4 +25,7 @@ public interface ConnectionManagerService {
   Collection<Connector> getConnectors();
 
   void updateServers();
+
+  void handleCoreRequest(CoreRequest request);
+
 }

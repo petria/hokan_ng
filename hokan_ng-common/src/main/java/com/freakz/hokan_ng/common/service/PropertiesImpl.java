@@ -98,6 +98,11 @@ public class PropertiesImpl implements Properties {
   }
 
   @Override
+  public List<Channel> getChannelsWithProperty(PropertyName propertyName) {
+    return service.getChannelsWithProperty(propertyName);
+  }
+
+  @Override
   public PropertyName getPropertyName(String property) {
     for (PropertyName prop : PropertyName.values()) {
       if (StringStuff.match(prop.toString(), property, true)) {
