@@ -20,4 +20,10 @@ public interface TvNotifyDAO {
   List<TvNotify> getTvNotifies(Channel channel) throws HokanDAOException;
 
   TvNotify getTvNotify(Channel channel, String pattern) throws HokanDAOException;
+
+  TvNotify getTvNotifyById(long id);
+
+  int delTvNotifies(Channel channel);
+
+  void delTvNotify(TvNotify notify);
 }

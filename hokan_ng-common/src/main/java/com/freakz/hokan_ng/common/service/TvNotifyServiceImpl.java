@@ -50,4 +50,19 @@ public class TvNotifyServiceImpl implements TvNotifyService {
     }
     return null;
   }
+
+  @Override
+  public TvNotify getTvNotifyById(long id) {
+    return tvNotifyDAO.getTvNotifyById(id);
+  }
+
+  @Override
+  public int delTvNotifies(Channel channel) {
+    return tvNotifyDAO.delTvNotifies(channel);
+  }
+
+  @Override
+  public void delTvNotify(TvNotify notify) {
+    tvNotifyDAO.delTvNotify(notify);
+  }
 }

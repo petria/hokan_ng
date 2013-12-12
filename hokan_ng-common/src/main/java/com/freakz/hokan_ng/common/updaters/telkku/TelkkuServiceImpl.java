@@ -154,11 +154,13 @@ public class TelkkuServiceImpl implements TelkkuService, CoreEventHandler {
         if (current != null) {
           for (TvNotify notify : notifyList) {
             if (StringStuff.match(current.getProgram(), ".*" + notify.getNotifyPattern() + ".*", true)) {
-              Notify n = new Notify();
-              n.channel = channel;
-              n.notify = notify;
-              n.program = current;
-              toNotify.add(n);
+              if (!current.isNotifyDone()) {
+                Notify n = new Notify();
+                n.channel = channel;
+                n.notify = notify;
+                n.program = current;
+                toNotify.add(n);
+              }
             }
           }
         }
@@ -172,13 +174,18 @@ public class TelkkuServiceImpl implements TelkkuService, CoreEventHandler {
 
   private void sendNotifies(List<Notify> toNotify) {
     AsyncCoreMessageSender sender = context.getBean(AsyncCoreMessageSender.class);
-    for (Notify notify : toNotify) {
-
+    for (Notify n : toNotify) {
+      String note = String.format("Kohta alkaa -> [%s] %s %s (%s)",
+          n.program.getChannel(),
+          StringStuff.formatTime(n.program.getStartTimeD(), StringStuff.STRING_STUFF_DF_HHMM),
+          n.program.getProgram(),
+          n.program.getId()
+      );
       CoreRequest request = new CoreRequest();
-      request.setTargetChannelId(notify.channel.getChannelId());
-      request.setMessage("fufufufuf tvnotify!");
-//      sender.sendRequest(request, this);
-
+      request.setTargetChannelId(n.channel.getChannelId());
+      request.setMessage(note);
+      sender.sendRequest(request, this);
+      n.program.setNotifyDone(true);
     }
   }
 

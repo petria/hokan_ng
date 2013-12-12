@@ -19,4 +19,10 @@ public interface TvNotifyService {
   List<TvNotify> getTvNotifies(Channel channel);
 
   TvNotify getTvNotify(Channel channel, String pattern);
+
+  TvNotify getTvNotifyById(long id);
+
+  int delTvNotifies(Channel channel);
+
+  void delTvNotify(TvNotify notify);
 }

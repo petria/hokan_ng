@@ -1,0 +1,66 @@
+package com.freakz.hokan_ng.core_engine.command.handlers;
+
+import com.freakz.hokan_ng.common.entity.TvNotify;
+import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.service.TvNotifyService;
+import com.freakz.hokan_ng.core_engine.dto.InternalRequest;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.UnflaggedOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * User: petria
+ * Date: 12/12/13
+ * Time: 6:06 PM
+ *
+ * @author Petri Airio <petri.j.airio@gmail.com>
+ */
+@Component
+public class TvNotifyDelCmd extends Cmd {
+
+  private static final String ARG_PROGRAM = "Program";
+
+  @Autowired
+  private TvNotifyService tvNotifyService;
+
+  public TvNotifyDelCmd() {
+    super();
+    setHelp("del");
+
+    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+        .setRequired(true)
+        .setGreedy(false);
+    registerParameter(opt);
+
+  }
+
+  @Override
+  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    InternalRequest ir = (InternalRequest) request;
+
+    String program = results.getString(ARG_PROGRAM);
+    if (program.equals("all")) {
+      int removed = tvNotifyService.delTvNotifies(ir.getChannel());
+      response.addResponse("Removed %d TvNotifies.", removed);
+      return;
+    } else {
+      TvNotify notify;
+      try {
+        long id = Long.parseLong(program);
+        notify = tvNotifyService.getTvNotifyById(id);
+      } catch (NumberFormatException e) {
+        notify = tvNotifyService.getTvNotify(ir.getChannel(), program);
+      }
+      if (notify != null) {
+        tvNotifyService.delTvNotify(notify);
+        response.addResponse("Removed TvNotify: %d: %s", notify.getId(), notify.getNotifyPattern());
+
+      } else {
+        response.addResponse("No TvNotify found with: %s", program);
+      }
+    }
+  }
+}

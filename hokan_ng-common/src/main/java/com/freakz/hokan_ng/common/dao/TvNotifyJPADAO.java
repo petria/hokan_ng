@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -55,4 +56,24 @@ public class TvNotifyJPADAO implements TvNotifyDAO {
       throw new HokanDAOException(e);
     }
   }
+
+  @Override
+  public TvNotify getTvNotifyById(long id) {
+    return entityManager.find(TvNotify.class, id);
+  }
+
+  @Override
+  public int delTvNotifies(Channel channel) {
+    Query query = entityManager.createQuery("DELETE FROM TvNotify tv WHERE tv.channel = :channel");
+    query.setParameter("channel", channel);
+    return query.executeUpdate();
+  }
+
+  @Override
+  public void delTvNotify(TvNotify notify) {
+    Query query = entityManager.createQuery("DELETE FROM TvNotify tv WHERE tv.notifyId = :notifyId");
+    query.setParameter("notifyId", notify.getId());
+    query.executeUpdate();
+  }
+
 }
