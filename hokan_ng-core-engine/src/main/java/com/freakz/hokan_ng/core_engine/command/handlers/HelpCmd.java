@@ -103,7 +103,15 @@ public class HelpCmd extends Cmd {
         }
       }
       sb.append("\nTry '!help <command>' to get detailed help\n");
-      sb.append("B: to bot only C: channel op only L: logged in only M: master user only P: private msg only");
+      sb.append("B: to bot only ");
+      if (isMasterUser || isChannelOp) {
+        sb.append("C: channel op only ");
+      }
+      sb.append("L: logged in only ");
+      if (isMasterUser) {
+        sb.append("M: master user only ");
+      }
+      sb.append("P: private msg only");
 
     } else {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
