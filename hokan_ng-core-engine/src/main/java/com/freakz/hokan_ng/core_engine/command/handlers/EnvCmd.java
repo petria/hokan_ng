@@ -28,10 +28,7 @@ public class EnvCmd extends Cmd {
   public EnvCmd() {
     super();
     setHelp("Show bot system properties.");
-    addSeeAlso("!chanenv");
-    addSeeAlso("!chanset");
-    addSeeAlso("!env");
-    addSeeAlso("!set");
+    addToHelpGroup(HelpGroup.PROPERTIES, this);
   }
 
   @Override

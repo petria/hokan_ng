@@ -37,6 +37,8 @@ public class JoinedCmd extends Cmd {
 
   public JoinedCmd() {
     super();
+    addToHelpGroup(HelpGroup.CHANNELS, this);
+
   }
 
 

@@ -32,8 +32,8 @@ public class TvFindCmd extends Cmd {
   public TvFindCmd() {
     super();
     setHelp("Finds Telkku programs.");
-    addSeeAlso("TvFind");
-    addSeeAlso("TvNow");
+    addToHelpGroup(HelpGroup.TV, this);
+
 
     UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
         .setRequired(true)

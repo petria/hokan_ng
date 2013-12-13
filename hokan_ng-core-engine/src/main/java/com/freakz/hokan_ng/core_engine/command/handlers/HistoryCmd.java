@@ -27,7 +27,7 @@ public class HistoryCmd extends Cmd {
   public HistoryCmd() {
     super();
     setHelp("Show history of processes ran in Bot.");
-    addSeeAlso("!ps");
+    addToHelpGroup(HelpGroup.PROCESS, this);
   }
 
   @Override

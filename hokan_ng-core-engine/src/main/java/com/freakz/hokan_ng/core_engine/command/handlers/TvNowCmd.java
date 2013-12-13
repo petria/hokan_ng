@@ -28,8 +28,7 @@ public class TvNowCmd extends Cmd {
   public TvNowCmd() {
     super();
     setHelp("Shows what's going on in TV.");
-    addSeeAlso("TvFind");
-    addSeeAlso("TvInfo");
+    addToHelpGroup(HelpGroup.TV, this);
 
   }
 

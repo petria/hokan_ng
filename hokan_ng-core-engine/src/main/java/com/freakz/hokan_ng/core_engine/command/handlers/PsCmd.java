@@ -29,7 +29,7 @@ public class PsCmd extends Cmd {
   public PsCmd() {
     super();
     setHelp("Shows active processes running in Bot.");
-    addSeeAlso("!history");
+    addToHelpGroup(HelpGroup.PROCESS, this);
   }
 
   @Override

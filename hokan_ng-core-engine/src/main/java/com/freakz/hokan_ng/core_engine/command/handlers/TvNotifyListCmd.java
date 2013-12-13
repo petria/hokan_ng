@@ -28,10 +28,7 @@ public class TvNotifyListCmd extends Cmd {
   public TvNotifyListCmd() {
     super();
     setHelp("Show channels tvnotify list.");
-    addSeeAlso("!tvfind");
-    addSeeAlso("!tvinfo");
-    addSeeAlso("!tvnotifyadd");
-    addSeeAlso("!tvnow");
+    addToHelpGroup(HelpGroup.TV, this);
 
   }
 

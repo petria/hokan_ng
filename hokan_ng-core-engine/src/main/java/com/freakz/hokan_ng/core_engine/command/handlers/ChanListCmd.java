@@ -29,6 +29,8 @@ public class ChanListCmd extends Cmd {
   public ChanListCmd() {
     super();
     setHelp("Shows what channels the Bot is joined.");
+    addToHelpGroup(HelpGroup.CHANNELS, this);
+
   }
 
   @Override

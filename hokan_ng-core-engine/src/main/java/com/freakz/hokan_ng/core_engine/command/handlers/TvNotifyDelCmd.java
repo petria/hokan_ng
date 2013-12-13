@@ -28,7 +28,8 @@ public class TvNotifyDelCmd extends Cmd {
 
   public TvNotifyDelCmd() {
     super();
-    setHelp("del");
+    setHelp("Removes TvNotify either by Id or by keyword");
+    addToHelpGroup(HelpGroup.TV, this);
 
     UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
         .setRequired(true)

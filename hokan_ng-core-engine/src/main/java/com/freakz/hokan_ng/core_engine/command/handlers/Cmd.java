@@ -54,8 +54,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean isMasterUser;
   protected boolean isToBot;
 
-  protected List<String> seeAlso = new ArrayList<>();
-  protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
+  static protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
 
   public Cmd() {
     jsap = new JSAP();
@@ -76,14 +75,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public void setHelp(String helpText) {
     this.jsap.setHelp(helpText);
-  }
-
-  public List<String> getSeeAlso() {
-    return seeAlso;
-  }
-
-  public void addSeeAlso(String seeAlso) {
-    this.seeAlso.add(seeAlso);
   }
 
   public void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
@@ -129,13 +120,13 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
-      String seeAlsoHelp = "";
-      for (String seeAlsoTxt : getSeeAlso()) {
+      String seeAlsoHelp = ""; // TODO
+/*      for (String seeAlsoTxt : getSeeAlso()) {
         if (seeAlsoHelp.length() > 0) {
           seeAlsoHelp += ", ";
         }
         seeAlsoHelp += seeAlsoTxt;
-      }
+      }*/
 
       response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + "\nSee also: " + seeAlsoHelp);
 

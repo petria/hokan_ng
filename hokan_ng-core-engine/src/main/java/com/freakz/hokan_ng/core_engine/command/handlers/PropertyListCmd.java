@@ -24,9 +24,7 @@ public class PropertyListCmd extends Cmd {
   public PropertyListCmd() {
     super();
     setHelp("Shows available properties.");
-    addSeeAlso("!env");
-    addSeeAlso("!chanset");
-    addSeeAlso("!set");
+    addToHelpGroup(HelpGroup.PROPERTIES, this);
   }
 
   @Override

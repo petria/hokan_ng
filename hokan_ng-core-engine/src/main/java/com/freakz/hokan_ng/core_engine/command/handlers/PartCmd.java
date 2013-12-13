@@ -21,6 +21,8 @@ public class PartCmd extends Cmd {
 
   public PartCmd() {
     super();
+    addToHelpGroup(HelpGroup.CHANNELS, this);
+
 
     UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
         .setRequired(true)

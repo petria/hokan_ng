@@ -21,6 +21,8 @@ public class JoinCmd extends Cmd {
 
   public JoinCmd() {
     super();
+    addToHelpGroup(HelpGroup.CHANNELS, this);
+
     UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
         .setRequired(true)
         .setGreedy(false);

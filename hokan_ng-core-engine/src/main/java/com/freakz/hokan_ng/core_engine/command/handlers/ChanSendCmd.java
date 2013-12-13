@@ -30,7 +30,7 @@ public class ChanSendCmd extends Cmd {
   public ChanSendCmd() {
     super();
     setHelp("Sends message to specified channel.");
-    addSeeAlso("!chanlist");
+    addToHelpGroup(HelpGroup.CHANNELS, this);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_CHAN_ID)
         .setRequired(true)

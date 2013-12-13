@@ -29,10 +29,7 @@ public class TvNotifyAddCmd extends Cmd {
   public TvNotifyAddCmd() {
     super();
     setHelp("Adds notify for Telkku programs.");
-    addSeeAlso("!tvfind");
-    addSeeAlso("!tvinfo");
-    addSeeAlso("!tvnotifylist");
-    addSeeAlso("!tvnow");
+    addToHelpGroup(HelpGroup.TV, this);
 
     UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
         .setRequired(true)

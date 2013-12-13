@@ -8,5 +8,5 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 public enum HelpGroup {
-  TV, PROCESS
+  CHANNELS, PROCESS, PROPERTIES, UPDATERS, TV
 }

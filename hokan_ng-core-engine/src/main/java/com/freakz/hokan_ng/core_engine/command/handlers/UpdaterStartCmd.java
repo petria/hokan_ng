@@ -36,8 +36,7 @@ public class UpdaterStartCmd extends Cmd {
         .setGreedy(false);
     registerParameter(opt);
 
-    addSeeAlso("!updaterlist");
-
+    addToHelpGroup(HelpGroup.UPDATERS, this);
     setMasterUserOnly(true);
   }
 

@@ -27,6 +27,7 @@ public class ChanEnvCmd extends Cmd {
   public ChanEnvCmd() {
     super();
     setHelp("Shows properties set for the channel");
+    addToHelpGroup(HelpGroup.PROPERTIES, this);
   }
 
   @Override

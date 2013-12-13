@@ -115,14 +115,19 @@ public class HelpCmd extends Cmd {
       List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
       Collections.sort(commands, comparator);
       for (Cmd cmd : commands) {
-        String seeAlsoHelp = "";
-        for (String seeAlsoTxt : cmd.getSeeAlso()) {
-          if (seeAlsoHelp.length() == 0) {
-            seeAlsoHelp = " See also: ";
-          } else {
-            seeAlsoHelp += ", ";
+        String seeAlsoGroups = "";
+        for (HelpGroup group : getCmdHelpGroups(cmd)) {
+          List<Cmd> groupCmds = getOtherCmdsInGroup(group, this);
+          Collections.sort(groupCmds, comparator);
+          if (groupCmds.size() > 0) {
+            for (Cmd groupCmd : groupCmds) {
+              seeAlsoGroups += " " + groupCmd.getName();
+            }
           }
-          seeAlsoHelp += seeAlsoTxt;
+        }
+        String seeAlsoHelp = "";
+        if (seeAlsoGroups.length() > 0) {
+          seeAlsoHelp = "\nSee also:" + seeAlsoGroups;
         }
         String help = String.format("HELP: %s (%s) -> %s%s",
             cmd.getName(), cmd.getMatchPattern(), cmd.getHelp(), seeAlsoHelp);

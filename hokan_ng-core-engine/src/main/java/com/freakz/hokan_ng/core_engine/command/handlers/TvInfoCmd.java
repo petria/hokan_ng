@@ -31,8 +31,7 @@ public class TvInfoCmd extends Cmd {
   public TvInfoCmd() {
     super();
     setHelp("Shows info description of given tv program ID.");
-    addSeeAlso("TvFind");
-    addSeeAlso("TvNow");
+    addToHelpGroup(HelpGroup.TV, this);
 
     UnflaggedOption opt = new UnflaggedOption(ARG_ID)
         .setStringParser(JSAP.INTEGER_PARSER)
