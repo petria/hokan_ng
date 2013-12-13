@@ -4,10 +4,15 @@ import com.freakz.hokan_ng.common.dao.TvNotifyDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.TvNotify;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
+import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
+import com.freakz.hokan_ng.common.updaters.telkku.TelkkuService;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +28,10 @@ public class TvNotifyServiceImpl implements TvNotifyService {
 
   @Autowired
   private TvNotifyDAO tvNotifyDAO;
+
+  @Autowired
+  private TelkkuService tv;
+
 
   @Override
   public TvNotify addTvNotify(Channel channel, String pattern, String owner) {
@@ -64,5 +73,20 @@ public class TvNotifyServiceImpl implements TvNotifyService {
   @Override
   public void delTvNotify(TvNotify notify) {
     tvNotifyDAO.delTvNotify(notify);
+  }
+
+  @Override
+  public List<TelkkuProgram> getChannelDailyNotifiedPrograms(Channel channel, Date day) {
+    List<TelkkuProgram> matches = new ArrayList<>();
+    List<TelkkuProgram> daily = tv.findDailyPrograms(day);
+    List<TvNotify> notifies = getTvNotifies(channel);
+    for (TelkkuProgram prg : daily) {
+      for (TvNotify notify : notifies) {
+        if (StringStuff.match(prg.getProgram(), ".*" + notify.getNotifyPattern() + ".*", true)) {
+          matches.add(prg);
+        }
+      }
+    }
+    return matches;
   }
 }

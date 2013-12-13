@@ -2,7 +2,9 @@ package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.TvNotify;
+import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +27,7 @@ public interface TvNotifyService {
   int delTvNotifies(Channel channel);
 
   void delTvNotify(TvNotify notify);
+
+  List<TelkkuProgram> getChannelDailyNotifiedPrograms(Channel channel, Date day);
+
 }

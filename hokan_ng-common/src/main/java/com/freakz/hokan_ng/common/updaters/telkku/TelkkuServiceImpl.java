@@ -112,6 +112,23 @@ public class TelkkuServiceImpl implements TelkkuService, CoreEventHandler {
   }
 
   @Override
+  public List<TelkkuProgram> findDailyPrograms(Date theDay) {
+    List<TelkkuProgram> daily = new ArrayList<>();
+    TelkkuData telkkuData = (TelkkuData) updaterManagerService.getUpdater("telkkuUpdater").getData().getData();
+    if (telkkuData.getPrograms() == null) {
+      return daily;
+    }
+    String day1 = StringStuff.formatTime(theDay, StringStuff.STRING_STUFF_DF_DDMMYYYY);
+    for (TelkkuProgram prg : telkkuData.getPrograms()) {
+      String day2 = StringStuff.formatTime(prg.getStartTimeD(), StringStuff.STRING_STUFF_DF_DDMMYYYY);
+      if (day1.equals(day2)) {
+        daily.add(prg);
+      }
+    }
+    return daily;
+  }
+
+  @Override
   public TelkkuProgram findProgramById(int id) {
     TelkkuData telkkuData = (TelkkuData) updaterManagerService.getUpdater("telkkuUpdater").getData().getData();
     if (telkkuData.getPrograms() == null) {

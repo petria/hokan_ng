@@ -23,4 +23,6 @@ public interface TelkkuService {
   List<TelkkuProgram> findPrograms(String program);
 
   TelkkuProgram findProgramById(int id);
+
+  List<TelkkuProgram> findDailyPrograms(Date day);
 }
