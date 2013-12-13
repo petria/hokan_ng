@@ -47,6 +47,13 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean masterUserOnly;
   protected boolean toBotOnly;
 
+  protected boolean isChannelOp;
+  protected boolean isLoggedIn;
+  protected boolean isPublic;
+  protected boolean isPrivate;
+  protected boolean isMasterUser;
+  protected boolean isToBot;
+
   protected List<String> seeAlso = new ArrayList<>();
   protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
 
@@ -79,8 +86,34 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     this.seeAlso.add(seeAlso);
   }
 
-  public void addToHelpGroup(HelpGroup helpGroup) {
+  public void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
+    List<Cmd> cmds = this.helpGroups.get(helpGroup);
+    if (cmds == null) {
+      cmds = new ArrayList<>();
+      this.helpGroups.put(helpGroup, cmds);
+    }
+    cmds.add(cmd);
+  }
 
+  public List<HelpGroup> getCmdHelpGroups(Cmd cmd) {
+    List<HelpGroup> inGroups = new ArrayList<>();
+    for (HelpGroup group : this.helpGroups.keySet()) {
+      List<Cmd> cmds = this.helpGroups.get(group);
+      if (cmds.contains(cmd)) {
+        inGroups.add(group);
+      }
+    }
+    return inGroups;
+  }
+
+  public List<Cmd> getOtherCmdsInGroup(HelpGroup group, Cmd cmd) {
+    List<Cmd> otherCmds = new ArrayList<>();
+    for (Cmd cmdInGroup : this.helpGroups.get(group)) {
+      if (cmdInGroup != cmd) {
+        otherCmds.add(cmdInGroup);
+      }
+    }
+    return otherCmds;
   }
 
   public String getName() {
@@ -129,12 +162,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
           wrapper.response = response;
           wrapper.results = results;
           commandPool.startSyncRunnable(this, wrapper);
-//          handleRequest(request, response, results);
         }
       }
-
     }
-
   }
 
   public static class ArgsWrapper {
@@ -153,32 +183,34 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   private boolean checkAccess(EngineRequest request, EngineResponse response) {
     IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
-    boolean isPublic = !ircMessageEvent.isPrivate();
-    boolean isToMe = ircMessageEvent.isToMe();
-    boolean masterUser = accessControlService.isMasterUser(ircMessageEvent);
-    boolean channelOp = accessControlService.isChannelOp(ircMessageEvent);
+    isLoggedIn = false; // TODO
+    isPublic = !ircMessageEvent.isPrivate();
+    isPrivate = !isPublic;
+    isToBot = ircMessageEvent.isToMe();
+    isMasterUser = accessControlService.isMasterUser(ircMessageEvent);
+    isChannelOp = accessControlService.isChannelOp(ircMessageEvent);
 
     boolean ret = true;
 
-    if (isToBotOnly() && !isToMe && !masterUser) {
+    if (isToBotOnly() && !isToBot && !isMasterUser) {
       response.setResponseMessage("To bot only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isPrivateOnly() && isPublic && !masterUser) {
+    if (isPrivateOnly() && isPublic && !isMasterUser) {
       response.setResponseMessage("Private only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isChannelOpOnly() && !channelOp && !masterUser) {
+    if (isChannelOpOnly() && !isChannelOp && !isMasterUser) {
       response.setResponseMessage("ChannelOp only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
-    if (isMasterUserOnly() && !masterUser) {
+    if (isMasterUserOnly() && !isMasterUser) {
       response.setResponseMessage("Master user only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;

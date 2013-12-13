@@ -61,8 +61,6 @@ public class HelpCmd extends Cmd {
     };
 
     if (command == null) {
-      boolean isMasterUser = accessControlService.isMasterUser(request.getIrcEvent());
-      boolean isChannelOp = accessControlService.isChannelOp(request.getIrcEvent());
 
       List<Cmd> commands = commandHandler.getCommandHandlers();
       Collections.sort(commands, comparator);
