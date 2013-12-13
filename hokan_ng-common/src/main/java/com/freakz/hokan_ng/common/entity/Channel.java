@@ -180,6 +180,13 @@ public class Channel implements Serializable {
     this.lastActive = lastActive;
   }
 
+  public long getIdleTime() {
+    if (lastActive == null) {
+      return -1;
+    }
+    return (new Date().getTime() - lastActive.getTime()) / 1000;
+  }
+
   public String getLastWriter() {
     return lastWriter;
   }

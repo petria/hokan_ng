@@ -92,10 +92,15 @@ public class PropertyJPADAO implements PropertyDAO {
   @Override
   public ChannelProperty findChannelProperty(Channel channel, PropertyName property) throws HokanDAOException {
     TypedQuery<ChannelProperty> query =
-        entityManager.createQuery("SELECT p FROM ChannelProperty p WHERE p.channel = :channel AND p.property = :property GROUP BY p.channel ORDER BY p.property", ChannelProperty.class);
+        entityManager.createQuery("SELECT p FROM ChannelProperty p WHERE p.channel = :channel AND p.property = :property", ChannelProperty.class);
     query.setParameter("channel", channel);
     query.setParameter("property", property);
-    return query.getSingleResult();
+    try {
+      return query.getSingleResult();
+
+    } catch (Exception e) {
+      throw new HokanDAOException(e);
+    }
   }
 
   @Override

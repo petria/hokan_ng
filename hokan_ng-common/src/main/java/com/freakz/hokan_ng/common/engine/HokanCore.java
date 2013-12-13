@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
@@ -17,6 +18,7 @@ import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
+import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.IRCUtility;
@@ -57,6 +59,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Autowired
   private ChannelUsersService channelUsersService;
+
+  @Autowired
+  private Properties properties;
 
   @Autowired
   private UserChannelService userChannelService;
@@ -297,9 +302,16 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), channel, sender, login, hostname, message);
     ircEvent.setToMe(isToMe);
 
+
     Channel ch = getChannel(ircEvent);
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
+    ch.setLastActive(new Date());
+    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_WHOLELINE_TRICKERS, false);
+    if (wlt) {
+      WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
+      wholeLineTrickers.checkWholeLineTrickers(ircEvent);
+    }
 
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
@@ -377,7 +389,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     this.outputQueue.init(this, getIrcServerConfig().isThrottleInUse());
   }
 
-  private void handleSendMessage(EngineResponse response) {
+  protected void handleSendMessage(EngineResponse response) {
     String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null && message.trim().length() > 1) {
@@ -385,7 +397,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
   }
 
-  private void handleSendMessage(String channel, String message) {
+  protected void handleSendMessage(String channel, String message) {
     String[] lines = message.split("\n");
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);

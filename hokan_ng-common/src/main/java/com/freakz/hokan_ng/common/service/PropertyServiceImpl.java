@@ -77,4 +77,14 @@ public class PropertyServiceImpl implements PropertyService {
     }
     return new ArrayList<>();
   }
+
+  @Override
+  public ChannelProperty findChannelProperty(Channel channel, PropertyName name) {
+    try {
+      return propertyDAO.findChannelProperty(channel, name);
+    } catch (HokanDAOException e) {
+      log.error("Property error", e);
+    }
+    return null;
+  }
 }

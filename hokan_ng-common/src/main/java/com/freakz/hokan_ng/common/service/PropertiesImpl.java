@@ -40,25 +40,43 @@ public class PropertiesImpl implements Properties {
     return null;
   }
 
+  private ChannelProperty getChannelProperty(Channel channel, PropertyName name, Object def) {
+    ChannelProperty property = null;
+    try {
+      property = service.findChannelProperty(channel, name);
+      if (property == null) {
+        property = new ChannelProperty(channel, name, "" + def, "");
+      }
+      return property;
+    } catch (Exception e) {
+//      log.error("property error", e);
+    }
+    return property;
+
+  }
+
   @Override
   public int getPropertyAsInt(PropertyName name, int def) {
     Property property = getProperty(name, def);
-    int val = Integer.parseInt(property.getValue());
-    return val;
+    return Integer.parseInt(property.getValue());
   }
 
   @Override
   public long getPropertyAsLong(PropertyName name, long def) {
     Property property = getProperty(name, def);
-    long val = Long.parseLong(property.getValue());
-    return val;
+    return Long.parseLong(property.getValue());
   }
 
   @Override
   public boolean getPropertyAsBoolean(PropertyName name, boolean def) {
     Property property = getProperty(name, def);
-    boolean val = Boolean.parseBoolean(property.getValue());
-    return val;
+    return Boolean.parseBoolean(property.getValue());
+  }
+
+  @Override
+  public boolean getChannelPropertyAsBoolean(Channel channel, PropertyName name, boolean def) {
+    ChannelProperty property = getChannelProperty(channel, name, def);
+    return Boolean.parseBoolean(property.getValue());
   }
 
   @Override
