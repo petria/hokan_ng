@@ -19,6 +19,7 @@ import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.ChannelUsersService;
 import com.freakz.hokan_ng.common.service.Properties;
+import com.freakz.hokan_ng.common.service.UrlLoggerService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.IRCUtility;
@@ -62,6 +63,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Autowired
   private Properties properties;
+
+  @Autowired
+  private UrlLoggerService urlLoggerService;
 
   @Autowired
   private UserChannelService userChannelService;
@@ -307,10 +311,14 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
     ch.setLastActive(new Date());
-    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_WHOLELINE_TRICKERS, false);
+    boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
     if (wlt) {
       WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
       wholeLineTrickers.checkWholeLineTrickers(ircEvent);
+    }
+    boolean titles = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
+    if (titles) {
+      urlLoggerService.catchUrls(ircEvent, this);
     }
 
     EngineRequest request = new EngineRequest(ircEvent);
@@ -397,7 +405,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
   }
 
-  protected void handleSendMessage(String channel, String message) {
+  public void handleSendMessage(String channel, String message) {
     String[] lines = message.split("\n");
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);

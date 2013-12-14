@@ -23,8 +23,9 @@ public enum PropertyName {
   PROP_SYS_RAWLOG("sys.RawLog"),
 
   PROP_CHANNEL_DO_TVNOTIFY("channel.DoTvNotify"),
-  PROP_CHANNEL_STATS_TIME("channel.DoStats"),
-  PROP_CHANNEL_WHOLELINE_TRICKERS("channel.WholeLineTrickers");
+  PROP_CHANNEL_DO_STATS("channel.DoStats"),
+  PROP_CHANNEL_DO_URL_TITLES("channel.DoUrlTitles"),
+  PROP_CHANNEL_DO_WHOLELINE_TRICKERS("channel.DoWholeLineTrickers");
 
   /**
    * @param text

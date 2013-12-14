@@ -15,6 +15,7 @@
         <class>com.freakz.hokan_ng.common.entity.User</class>
         <class>com.freakz.hokan_ng.common.entity.UserChannel</class>
         <class>com.freakz.hokan_ng.common.entity.TvNotify</class>
+        <class>com.freakz.hokan_ng.common.entity.Url</class>
 
 
         <!--        <exclude-unlisted-classes>true</exclude-unlisted-classes> -->
