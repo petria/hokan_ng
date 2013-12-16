@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: petria
@@ -24,13 +26,30 @@ public class UrlJPADAO implements UrlDAO {
   private EntityManager entityManager;
 
   @Override
-  public Url findUrl(String url) {
-    TypedQuery<Url> query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url = :url", Url.class);
-    query.setParameter("url", url);
+  public List<Url> findUrls(String url, String... nicks) {
+
+    TypedQuery<Url> query;
+    if (nicks == null || nicks.length == 0) {
+      query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url LIKE :url ORDER BY url.created DESC", Url.class);
+    } else {
+      List<String> nickList = Arrays.asList(nicks);
+      query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url LIKE :url AND url.sender IN (:nickList) ORDER BY url.created DESC", Url.class);
+      query.setParameter("nickList", nickList);
+    }
+    query.setParameter("url", "%" + url + "%");
     try {
-      return query.getSingleResult();
+      return query.getResultList();
     } catch (Exception e) {
       //
+    }
+    return null;
+  }
+
+  @Override
+  public Url findUrl(String url, String... nicks) {
+    List<Url> urlList = findUrls(url, nicks);
+    if (urlList.size() == 1) {
+      return urlList.get(0);
     }
     return null;
   }

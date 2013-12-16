@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.dao;
 import com.freakz.hokan_ng.common.entity.Url;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: petria
@@ -13,9 +14,12 @@ import java.util.Date;
  */
 public interface UrlDAO {
 
-  Url findUrl(String url);
+  Url findUrl(String url, String... nicks);
+
+  List<Url> findUrls(String url, String... nicks);
 
   Url storeUrl(Url entity);
 
   Url createUrl(String url, String sender, String channel, Date date);
+
 }

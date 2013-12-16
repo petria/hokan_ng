@@ -83,7 +83,9 @@ public class PropertyServiceImpl implements PropertyService {
     try {
       return propertyDAO.findChannelProperty(channel, name);
     } catch (HokanDAOException e) {
-      log.error("Property error", e);
+      if (!e.getMessage().contains("javax.persistence.NoResultException")) {
+        log.error("Property error", e);
+      }
     }
     return null;
   }

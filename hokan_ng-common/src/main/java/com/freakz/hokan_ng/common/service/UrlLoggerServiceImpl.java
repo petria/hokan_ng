@@ -19,6 +19,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -202,4 +203,13 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
     core.handleSendMessage(iEvent.getChannel(), reply);
   }
 
+  @Override
+  public List<Url> findUrls(String url, String... nick) {
+    return urlDAO.findUrls(url, nick);
+  }
+
+  @Override
+  public Url findUrl(String url, String... nick) {
+    return urlDAO.findUrl(url, nick);
+  }
 }
