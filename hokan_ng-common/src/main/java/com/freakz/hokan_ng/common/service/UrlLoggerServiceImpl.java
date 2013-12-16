@@ -4,6 +4,8 @@ import com.freakz.hokan_ng.common.dao.UrlDAO;
 import com.freakz.hokan_ng.common.engine.CommandPool;
 import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.engine.HokanCore;
+import com.freakz.hokan_ng.common.entity.Channel;
+import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.entity.Url;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
@@ -38,6 +40,9 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   private CommandPool commandPool;
 
   @Autowired
+  private Properties properties;
+
+  @Autowired
   private UrlDAO urlDAO;
 
   static class HTMLEditorKit2 extends HTMLEditorKit {
@@ -48,7 +53,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
     }
   }
 
-  public void getTitle(final IrcMessageEvent iEvent, final String url, final String encoding, final boolean isWanha, final String wanhaAadd, final HokanCore core) {
+  public void getTitle(final IrcMessageEvent iEvent, final Channel ch, final String url, final String encoding, final boolean isWanha, final String wanhaAadd, final HokanCore core) {
 
     CommandRunnable cmdRunnable = new CommandRunnable() {
 
@@ -118,8 +123,10 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
         if (isWanha) {
           title = title + " | wanha" + wanhaAadd;
         }
-        processReply(iEvent, title, core);
-
+        boolean titles = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
+        if (titles) {
+          processReply(iEvent, title, core);
+        }
 
       }
     };
@@ -169,8 +176,9 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
    * means this should not block as then it's preventing any further command executing while doing so.</b>
    *
    * @param iEvent the incoming IrcEvent
+   * @param ch
    */
-  public void catchUrls(IrcMessageEvent iEvent, HokanCore core) {
+  public void catchUrls(IrcMessageEvent iEvent, Channel ch, HokanCore core) {
 
     String msg = iEvent.getMessage();
     String regexp = "(https?://|www\\.)\\S+";
@@ -188,7 +196,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
       }
       if (!StringStuff.match(url, ignoreTitles, true)) {
         log.info("Finding title: " + url);
-        getTitle(iEvent, url, "utf-8", isWanha > 0, wanhaAdd, core);
+        getTitle(iEvent, ch, url, "utf-8", isWanha > 0, wanhaAdd, core);
       } else {
         log.info("SKIP finding title: " + url);
         if (isWanha > 0) {

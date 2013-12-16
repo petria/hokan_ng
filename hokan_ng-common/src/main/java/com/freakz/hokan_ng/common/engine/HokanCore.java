@@ -316,10 +316,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
       wholeLineTrickers.checkWholeLineTrickers(ircEvent);
     }
-    boolean titles = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
-    if (titles) {
-      urlLoggerService.catchUrls(ircEvent, this);
-    }
+    urlLoggerService.catchUrls(ircEvent, ch, this);
 
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);

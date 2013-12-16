@@ -44,7 +44,6 @@ public class FindUrlCmd extends Cmd {
 
     flg = new UnflaggedOption(ARG_NICK)
         .setRequired(false)
-        .setDefault("%")
         .setGreedy(false);
     registerParameter(flg);
 
