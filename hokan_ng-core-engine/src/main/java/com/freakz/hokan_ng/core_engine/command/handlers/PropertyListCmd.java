@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
+import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
@@ -30,10 +31,11 @@ public class PropertyListCmd extends Cmd {
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     StringBuilder sb = new StringBuilder();
-    for (Object property : properties.getAllProperties()) {
+    for (Object property : PropertyName.values()) {
       sb.append(property);
       sb.append(" | ");
     }
+    response.addResponse("Available properties: ");
     response.addResponse(sb.toString());
   }
 }
