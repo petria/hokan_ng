@@ -4,9 +4,7 @@ import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.service.Properties;
 import com.martiansoftware.jsap.JSAPResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,9 +16,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PropertyListCmd extends Cmd {
-
-  @Autowired
-  private Properties properties;
 
   public PropertyListCmd() {
     super();
@@ -38,4 +33,5 @@ public class PropertyListCmd extends Cmd {
     response.addResponse("Available properties: ");
     response.addResponse(sb.toString());
   }
+
 }
