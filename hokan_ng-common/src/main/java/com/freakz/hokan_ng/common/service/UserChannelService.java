@@ -22,4 +22,6 @@ public interface UserChannelService {
 
   List<UserChannel> findUserChannels(User user) throws HokanException;
 
+  UserChannel storeUserChannel(UserChannel userChannel) throws HokanException;
+
 }

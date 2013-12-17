@@ -46,4 +46,8 @@ public class UserChannelServiceImpl implements UserChannelService {
     return userChannelDAO.findUserChannels(user);
   }
 
+  @Override
+  public UserChannel storeUserChannel(UserChannel userChannel) throws HokanException {
+    return userChannelDAO.storeUserChannel(userChannel);
+  }
 }

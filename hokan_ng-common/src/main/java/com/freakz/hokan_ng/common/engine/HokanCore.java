@@ -321,6 +321,16 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
     ch.setLastActive(new Date());
+
+    UserChannel userChannel = userChannelService.getUserChannel(user, ch);
+    userChannel.setLastMessage(message);
+    userChannel.setLastMessageTime(new Date());
+    try {
+      userChannelService.storeUserChannel(userChannel);
+    } catch (HokanException e) {
+      coreExceptionHandler(e);
+    }
+
     boolean wlt = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_WHOLELINE_TRICKERS, false);
     if (wlt) {
       WholeLineTrickers wholeLineTrickers = new WholeLineTrickers(this);
@@ -441,6 +451,14 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       }
     }
     this.channelService.updateChannel(ch);
+    UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
+    userChannel.setLastJoin(new Date());
+    try {
+      this.userChannelService.storeUserChannel(userChannel);
+    } catch (HokanException e) {
+      coreExceptionHandler(e);
+    }
+
   }
 
   @Override
@@ -455,7 +473,19 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason, String[] fromChannels) {
     for (String channel : fromChannels) {
       sendWhoQuery(channel);
+
+      IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sourceNick, sourceLogin, sourceHostname);
+
+      UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), getChannel(ircEvent));
+      userChannel.setLastPart(new Date());
+      userChannel.setLastPartMessage(reason);
+      try {
+        this.userChannelService.storeUserChannel(userChannel);
+      } catch (HokanException e) {
+        coreExceptionHandler(e);
+      }
     }
+
   }
 
   @Override
@@ -478,6 +508,14 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       }
     }
     this.channelService.updateChannel(ch);
+    UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
+    userChannel.setLastPart(new Date());
+    try {
+      this.userChannelService.storeUserChannel(userChannel);
+    } catch (HokanException e) {
+      coreExceptionHandler(e);
+    }
+
   }
 
   @Override

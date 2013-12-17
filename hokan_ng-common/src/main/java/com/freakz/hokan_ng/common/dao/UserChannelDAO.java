@@ -22,4 +22,5 @@ public interface UserChannelDAO {
 
   List<UserChannel> findUserChannels(User user) throws HokanDAOException;
 
+  UserChannel storeUserChannel(UserChannel userChannel);
 }

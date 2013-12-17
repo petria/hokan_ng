@@ -65,4 +65,9 @@ public class UserChannelJPADAO implements UserChannelDAO {
     }
   }
 
+  @Override
+  public UserChannel storeUserChannel(UserChannel userChannel) {
+    return entityManager.merge(userChannel);
+  }
+
 }
