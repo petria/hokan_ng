@@ -176,11 +176,20 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   public User getUser(IrcEvent ircEvent) {
     try {
-      User user = this.userService.findUser(ircEvent.getSender());
-      if (user == null) {
-        user = new User(ircEvent.getSender());
-        user = userService.updateUser(user);
+      User user;
+      User maskUser = this.userService.getUserByMask(ircEvent.getMask());
+      if (maskUser != null) {
+        user = maskUser;
+      } else {
+        user = this.userService.findUser(ircEvent.getSender());
+        if (user == null) {
+          user = new User(ircEvent.getSender());
+          user = userService.updateUser(user);
+        }
+
       }
+      user.setRealMask(StringStuff.quoteRegExp(ircEvent.getMask()));
+      this.userService.updateUser(user);
       return user;
     } catch (HokanException e) {
       coreExceptionHandler(e);
@@ -306,6 +315,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), channel, sender, login, hostname, message);
     ircEvent.setToMe(isToMe);
 
+    User user = getUser(ircEvent);
 
     Channel ch = getChannel(ircEvent);
     ch.setLastWriter(sender);

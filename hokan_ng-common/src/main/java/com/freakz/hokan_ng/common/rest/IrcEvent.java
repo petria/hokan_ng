@@ -18,6 +18,7 @@ public class IrcEvent implements Serializable {
   private String sender;
   private String login;
   private String hostname;
+  private String mask;
 
   public IrcEvent() {
   }
@@ -28,6 +29,7 @@ public class IrcEvent implements Serializable {
     this.sender = sender;
     this.login = login;
     this.hostname = hostname;
+    this.mask = sender + "!" + login + "@" + hostname;
   }
 
   public String getNetwork() {
@@ -70,4 +72,7 @@ public class IrcEvent implements Serializable {
     this.hostname = hostname;
   }
 
+  public String getMask() {
+    return this.mask;
+  }
 }

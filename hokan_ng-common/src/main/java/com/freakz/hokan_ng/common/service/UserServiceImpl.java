@@ -5,6 +5,7 @@ import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,18 @@ public class UserServiceImpl implements UserService {
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }
+  }
+
+  @Override
+  public User getUserByMask(String mask) throws HokanServiceException {
+
+    List<User> users = findUsers();
+    for (User user : users) {
+      if (StringStuff.match(mask, user.getMask())) {
+        return user;
+      }
+    }
+    return null;
   }
 
   @Override

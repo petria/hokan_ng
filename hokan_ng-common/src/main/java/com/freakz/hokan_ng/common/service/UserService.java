@@ -18,6 +18,8 @@ public interface UserService {
 
   List<User> findUsers() throws HokanServiceException;
 
+  User getUserByMask(String mask) throws HokanServiceException;
+
   List<User> getLoggedInUsers() throws HokanServiceException;
 
   void resetLoggedInUsers() throws HokanServiceException;
