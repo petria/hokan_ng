@@ -988,7 +988,7 @@ public abstract class PircBot implements ReplyConstants {
       if (sourceNick.equals(this.getNick())) {
         this.removeChannel(target);
       }
-      this.onPart(target, sourceNick, sourceLogin, sourceHostname);
+      this.onPart(target, sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
     } else if (command.equals("NICK")) {
       // Somebody is changing their nick.
       String newNick = target;
@@ -1322,8 +1322,9 @@ public abstract class PircBot implements ReplyConstants {
    * @param sender   The nick of the user who parted from the channel.
    * @param login    The login of the user who parted from the channel.
    * @param hostname The hostname of the user who parted from the channel.
+   * @param message
    */
-  protected void onPart(String channel, String sender, String login, String hostname) {
+  protected void onPart(String channel, String sender, String login, String hostname, String message) {
   }
 
 

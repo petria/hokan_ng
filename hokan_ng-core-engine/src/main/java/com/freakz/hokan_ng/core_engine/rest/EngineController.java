@@ -61,15 +61,23 @@ public class EngineController implements DisposableBean {
     IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
     Cmd handler = commandHandler.getCommandHandler(ircMessageEvent.getMessage());
     if (handler != null) {
+      InternalRequest internalRequest = null;
       try {
-        InternalRequest internalRequest = context.getBean(InternalRequest.class);
+        internalRequest = context.getBean(InternalRequest.class);
         internalRequest.init(request);
+        internalRequest.getUserChannel().setLastCommand(handler.getName());
+        internalRequest.getUserChannel().setLastCommandTime(new Date());
         handler.handleLine(internalRequest, response);
       } catch (Exception e) {
         HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
         response.setException(engineException.toString());
         log.error("Command handler returned exception {}", e);
+      } finally {
+        if (internalRequest != null) {
+          internalRequest.updateUserChannel();
+        }
       }
+
     }
     return response;
   }

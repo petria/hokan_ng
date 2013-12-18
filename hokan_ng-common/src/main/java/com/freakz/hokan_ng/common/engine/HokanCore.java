@@ -496,7 +496,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   @Override
-  protected void onPart(String channel, String sender, String login, String hostname) {
+  protected void onPart(String channel, String sender, String login, String hostname, String message) {
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     log.info("{} part channel: {}", sender, channel);
@@ -517,6 +517,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     this.channelService.updateChannel(ch);
     UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
     userChannel.setLastPart(new Date());
+    userChannel.setLastPartMessage(message);
     try {
       this.userChannelService.storeUserChannel(userChannel);
     } catch (HokanException e) {
