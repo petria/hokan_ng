@@ -458,6 +458,13 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     } catch (HokanException e) {
       coreExceptionHandler(e);
     }
+    boolean doJoin = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);
+    if (doJoin) {
+      String message = userChannel.getJoinComment();
+      if (message != null && message.length() > 0) {
+        handleSendMessage(channel, sender + " -> " + message);
+      }
+    }
 
   }
 

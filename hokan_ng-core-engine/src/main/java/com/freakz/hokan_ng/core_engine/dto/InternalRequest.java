@@ -5,6 +5,7 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.service.ChannelService;
@@ -82,8 +83,24 @@ public class InternalRequest extends EngineRequest implements Serializable {
     return user;
   }
 
+  public void updateUser() {
+    try {
+      userService.updateUser(user);
+    } catch (HokanServiceException e) {
+      log.error("User error", e);
+    }
+  }
+
   public UserChannel getUserChannel() {
     return userChannel;
+  }
+
+  public void updateUserChannel() {
+    try {
+      userChannelService.storeUserChannel(userChannel);
+    } catch (HokanException e) {
+      log.error("UserChannel error", e);
+    }
   }
 
   private User getUser(IrcEvent ircEvent) {
@@ -106,5 +123,6 @@ public class InternalRequest extends EngineRequest implements Serializable {
     }
     return null;
   }
+
 
 }

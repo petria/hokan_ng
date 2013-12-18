@@ -1,11 +1,13 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
+import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.core_engine.dto.InternalRequest;
 import com.martiansoftware.jsap.FlaggedOption;
@@ -38,6 +40,8 @@ public class UserModCmd extends Cmd {
 
   @Autowired
   private AccessControlService accessControlService;
+  @Autowired
+  private UserChannelService userChannelService;
   @Autowired
   private UserService userService;
 
@@ -120,9 +124,12 @@ public class UserModCmd extends Cmd {
 
     if (hUser == null) {
       response.addResponse("No User found with: " + target);
+      return;
     }
-    String ret = "";
+    UserChannel userChannel = userChannelService.getUserChannel(hUser, ir.getChannel());
 
+    String ret = "";
+    boolean updateUserChannel = false;
     if (email != null) {
       String old = hUser.getEmail();
       hUser.setEmail(email);
@@ -139,10 +146,10 @@ public class UserModCmd extends Cmd {
       ret += "Fullname : '" + old + "' -> '" + fullName + "'\n";
     }
     if (joinMsg != null) {
-      String old = ir.getUserChannel().getJoinComment();
-      ir.getUserChannel().setJoinComment(joinMsg);
+      String old = userChannel.getJoinComment();
+      userChannel.setJoinComment(joinMsg);
       ret += "JoinMsg  : '" + old + "' -> '" + joinMsg + "'\n";
-      ret += "TODO"; // TODO
+      updateUserChannel = true;
     }
     if (mask != null) {
       String old = hUser.getMask();
@@ -157,6 +164,9 @@ public class UserModCmd extends Cmd {
 
     if (ret.length() > 0) {
       hUser = userService.updateUser(hUser);
+      if (updateUserChannel) {
+        userChannelService.storeUserChannel(userChannel);
+      }
       if (results.getBoolean(ARG_VERBOSE)) {
         response.addResponse(hUser.getNick() + " datas modified: \n" + ret);
       } else {

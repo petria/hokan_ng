@@ -22,10 +22,12 @@ public enum PropertyName {
   PROP_SYS_SUPER_USERS("sys.SuperUsers"),
   PROP_SYS_RAWLOG("sys.RawLog"),
 
+  PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),
   PROP_CHANNEL_DO_TVNOTIFY("channel.DoTvNotify"),
   PROP_CHANNEL_DO_STATS("channel.DoStats"),
   PROP_CHANNEL_DO_URL_TITLES("channel.DoUrlTitles"),
   PROP_CHANNEL_DO_WHOLELINE_TRICKERS("channel.DoWholeLineTrickers");
+
 
   /**
    * @param text
