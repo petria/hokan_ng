@@ -13,7 +13,7 @@ import com.martiansoftware.jsap.IDMap;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Option;
+import com.martiansoftware.jsap.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,9 +61,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     jsap.setHelp("Help not set!");
   }
 
-  protected void registerParameter(Option option) {
+  protected void registerParameter(Parameter paramter) {
     try {
-      jsap.registerParameter(option);
+      jsap.registerParameter(paramter);
     } catch (JSAPException e) {
       log.error("Error registering command parameter", e);
     }

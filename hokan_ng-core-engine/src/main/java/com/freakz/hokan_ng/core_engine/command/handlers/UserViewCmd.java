@@ -43,14 +43,12 @@ public class UserViewCmd extends Cmd {
   public UserViewCmd() {
     super();
     setHelp("UserViewCmd help");
-
+    addToHelpGroup(HelpGroup.USERS, this);
 
     UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
         .setRequired(false)
         .setGreedy(false);
     registerParameter(flg);
-
-
   }
 
   @Override

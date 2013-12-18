@@ -9,7 +9,14 @@ package com.freakz.hokan_ng.common.util;
  */
 public class StaticStrings {
 
-  public static final String ARG_URL_PATTERN = "UrlPattern";
+  public static final String ARG_EMAIL = "Email";
+  public static final String ARG_FLAGS = "Flags";
+  public static final String ARG_FULL_NAME = "FullName";
+  public static final String ARG_JOIN_MSG = "JoinMsg";
+  public static final String ARG_MASK = "Mask";
+  public static final String ARG_PHONE = "Phone";
   public static final String ARG_NICK = "Nick";
+  public static final String ARG_URL_PATTERN = "UrlPattern";
+  public static final String ARG_VERBOSE = "Verbose";
 
 }
