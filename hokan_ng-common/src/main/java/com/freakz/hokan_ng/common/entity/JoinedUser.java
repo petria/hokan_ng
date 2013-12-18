@@ -17,8 +17,8 @@ import javax.persistence.Table;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "ChannelUser")
-public class ChannelUser {
+@Table(name = "JoinedUser")
+public class JoinedUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,10 +33,10 @@ public class ChannelUser {
   @JoinColumn(name = "USER", referencedColumnName = "ID", nullable = false)
   private User user;
 
-  public ChannelUser() {
+  public JoinedUser() {
   }
 
-  public ChannelUser(Channel channel, User user) {
+  public JoinedUser(Channel channel, User user) {
     this.channel = channel;
     this.user = user;
   }

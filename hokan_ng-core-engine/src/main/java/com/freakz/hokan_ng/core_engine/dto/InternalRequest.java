@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.core_engine.dto;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
+import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
@@ -10,7 +11,6 @@ import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
-import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,12 +35,17 @@ public class InternalRequest extends EngineRequest implements Serializable {
   private ChannelService channelService;
 
   @Autowired
+  private UserChannelService userChannelService;
+
+  @Autowired
   private UserService userService;
+
 
   private EngineRequest request;
   private Network network;
   private Channel channel;
   private User user;
+  private UserChannel userChannel;
 
   public InternalRequest() {
   }
@@ -50,6 +55,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
     this.network = networkService.getNetwork(request.getIrcEvent().getNetwork());
     this.channel = channelService.findChannelByName(network, request.getIrcEvent().getChannel());
     this.user = getUser(request.getIrcEvent());
+    this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
   }
 
   public EngineRequest getRequest() {
@@ -74,6 +80,10 @@ public class InternalRequest extends EngineRequest implements Serializable {
 
   public User getUser() {
     return user;
+  }
+
+  public UserChannel getUserChannel() {
+    return userChannel;
   }
 
   private User getUser(IrcEvent ircEvent) {

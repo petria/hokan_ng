@@ -1,8 +1,8 @@
 package com.freakz.hokan_ng.common.service;
 
-import com.freakz.hokan_ng.common.dao.ChannelUsersDAO;
+import com.freakz.hokan_ng.common.dao.JoinedUsersDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
-import com.freakz.hokan_ng.common.entity.ChannelUser;
+import com.freakz.hokan_ng.common.entity.JoinedUser;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
@@ -21,54 +21,64 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class ChannelUsersServiceImpl implements ChannelUsersService {
+public class JoinedUsersServiceImpl implements JoinedUsersService {
 
   @Autowired
-  private ChannelUsersDAO dao;
+  private JoinedUsersDAO dao;
 
-  public ChannelUsersServiceImpl() {
+  public JoinedUsersServiceImpl() {
   }
 
   @Override
-  public ChannelUser createChannelUser(Channel channel, User user) throws HokanServiceException {
+  public JoinedUser createJoinedUser(Channel channel, User user) throws HokanServiceException {
     try {
-      return dao.createChannelUser(channel, user);
+      return dao.createJoinedUser(channel, user);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }
   }
 
   @Override
-  public void removeChannelUser(Channel channel, User user) throws HokanServiceException {
+  public JoinedUser getJoinedUser(Channel channel, User user) {
     try {
-      dao.removeChannelUser(channel, user);
+      return dao.getJoinedUser(channel, user);
+    } catch (HokanDAOException e) {
+      log.error("JoinedUser error", e);
+    }
+    return null;
+  }
+
+  @Override
+  public void removeJoinedUser(Channel channel, User user) throws HokanServiceException {
+    try {
+      dao.removeJoinedUser(channel, user);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }
   }
 
   @Override
-  public List<ChannelUser> findChannelUsers(Channel channel) throws HokanServiceException {
+  public List<JoinedUser> findJoinedUsers(Channel channel) throws HokanServiceException {
     try {
-      return dao.findChannelUsers(channel);
+      return dao.findJoinedUsers(channel);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }
   }
 
   @Override
-  public void clearChannelUsers(Channel channel) throws HokanServiceException {
+  public void clearJoinedUsers(Channel channel) throws HokanServiceException {
     try {
-      dao.clearChannelUsers(channel);
+      dao.clearJoinedUsers(channel);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }
   }
 
   @Override
-  public void clearChannelUsers() throws HokanServiceException {
+  public void clearJoinedUsers() throws HokanServiceException {
     try {
-      dao.clearChannelUsers();
+      dao.clearJoinedUsers();
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }

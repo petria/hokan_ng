@@ -17,7 +17,7 @@ import com.freakz.hokan_ng.common.rest.IrcEventFactory;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
-import com.freakz.hokan_ng.common.service.ChannelUsersService;
+import com.freakz.hokan_ng.common.service.JoinedUsersService;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.service.UrlLoggerService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
@@ -59,7 +59,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   private ChannelService channelService;
 
   @Autowired
-  private ChannelUsersService channelUsersService;
+  private JoinedUsersService joinedUsersService;
 
   @Autowired
   private Properties properties;
@@ -230,7 +230,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   private void handleWhoList(String channelName, List<String> whoReplies) throws HokanException {
     Channel channel = getChannel(channelName);
-    this.channelUsersService.clearChannelUsers(channel);
+    this.joinedUsersService.clearJoinedUsers(channel);
     for (String whoLine : whoReplies) {
       String[] split = whoLine.split(" ");
       String nick = split[5];
@@ -249,7 +249,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);
       }
-      this.channelUsersService.createChannelUser(channel, user);
+      this.joinedUsersService.createJoinedUser(channel, user);
     }
   }
 
@@ -445,7 +445,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       }
     } else {
       try {
-        this.channelUsersService.createChannelUser(ch, getUser(ircEvent));
+        this.joinedUsersService.createJoinedUser(ch, getUser(ircEvent));
       } catch (HokanServiceException e) {
         coreExceptionHandler(e);
       }
@@ -496,13 +496,13 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     if (sender.equalsIgnoreCase(getNick())) {
       ch.setChannelState(ChannelState.NOT_JOINED);
       try {
-        this.channelUsersService.clearChannelUsers(ch);
+        this.joinedUsersService.clearJoinedUsers(ch);
       } catch (HokanServiceException e) {
         coreExceptionHandler(e);
       }
     } else {
       try {
-        this.channelUsersService.removeChannelUser(ch, getUser(ircEvent));
+        this.joinedUsersService.removeJoinedUser(ch, getUser(ircEvent));
       } catch (HokanServiceException e) {
         coreExceptionHandler(e);
       }
@@ -526,7 +526,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
 /*    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname);
     Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
-    this.channelUsersService.removeChannelUser(getUser(ircEvent))
+    this.joinedUsersService.removeChannelUser(getUser(ircEvent))
     TODO
     */
   }

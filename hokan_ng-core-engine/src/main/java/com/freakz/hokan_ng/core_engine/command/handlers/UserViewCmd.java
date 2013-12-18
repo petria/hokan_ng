@@ -39,7 +39,6 @@ public class UserViewCmd extends Cmd {
   @Autowired
   private UserChannelService userChannelService;
 
-
   public UserViewCmd() {
     super();
     setHelp("UserViewCmd help");

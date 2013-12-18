@@ -2,13 +2,13 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelState;
-import com.freakz.hokan_ng.common.entity.ChannelUser;
+import com.freakz.hokan_ng.common.entity.JoinedUser;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.service.ChannelService;
-import com.freakz.hokan_ng.common.service.ChannelUsersService;
+import com.freakz.hokan_ng.common.service.JoinedUsersService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class JoinedCmd extends Cmd {
   private ChannelService channelService;
 
   @Autowired
-  private ChannelUsersService channelUsersService;
+  private JoinedUsersService joinedUsersService;
 
   @Autowired
   private NetworkService networkService;
@@ -58,10 +58,10 @@ public class JoinedCmd extends Cmd {
         for (Channel channel : channels) {
           if (channels.size() > 0) {
             sb.append(String.format("  %s (%d)\n", channel.getChannelName(), channel.getChannelId()));
-            List<ChannelUser> channelUsers = channelUsersService.findChannelUsers(channel);
+            List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsers(channel);
             sb.append("    ");
-            for (ChannelUser channelUser : channelUsers) {
-              sb.append(channelUser.getUser().getNick());
+            for (JoinedUser joinedUser : joinedUsers) {
+              sb.append(joinedUser.getUser().getNick());
               sb.append(" ");
             }
             sb.append("\n");

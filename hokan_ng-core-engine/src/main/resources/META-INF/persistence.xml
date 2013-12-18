@@ -8,7 +8,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>com.freakz.hokan_ng.common.entity.Channel</class>
         <class>com.freakz.hokan_ng.common.entity.ChannelProperty</class>
-        <class>com.freakz.hokan_ng.common.entity.ChannelUser</class>
+        <class>com.freakz.hokan_ng.common.entity.JoinedUser</class>
         <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
         <class>com.freakz.hokan_ng.common.entity.Network</class>
         <class>com.freakz.hokan_ng.common.entity.Property</class>

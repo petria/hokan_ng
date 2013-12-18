@@ -139,9 +139,9 @@ public class UserModCmd extends Cmd {
       ret += "Fullname : '" + old + "' -> '" + fullName + "'\n";
     }
     if (joinMsg != null) {
-/*      String old = hUser.getJoinMessage();
-      hUser.setJoinMessage(joinMsg);
-      ret += "JoinMsg  : '" + old + "' -> '" + joinMsg + "'\n";*/
+      String old = ir.getUserChannel().getJoinComment();
+      ir.getUserChannel().setJoinComment(joinMsg);
+      ret += "JoinMsg  : '" + old + "' -> '" + joinMsg + "'\n";
       ret += "TODO"; // TODO
     }
     if (mask != null) {
