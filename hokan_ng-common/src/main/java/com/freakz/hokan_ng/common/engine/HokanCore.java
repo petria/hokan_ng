@@ -486,6 +486,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), getChannel(ircEvent));
       userChannel.setLastPart(new Date());
       userChannel.setLastPartMessage(reason);
+//      userChannel.getUser().setLoggedIn(0);
       try {
         this.userChannelService.storeUserChannel(userChannel);
       } catch (HokanException e) {
