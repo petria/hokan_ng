@@ -6,6 +6,7 @@ import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
@@ -18,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -115,20 +118,40 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return name;
   }
 
+  protected String buildSeeAlso(Cmd cmd) {
+    Comparator<Cmd> comparator = new Comparator<Cmd>() {
+      @Override
+      public int compare(Cmd cmd1, Cmd cmd2) {
+        return cmd1.getName().compareTo(cmd2.getName());
+      }
+    };
+
+    String seeAlsoGroups = "";
+    for (HelpGroup group : getCmdHelpGroups(cmd)) {
+      List<Cmd> groupCmds = getOtherCmdsInGroup(group, cmd);
+      Collections.sort(groupCmds, comparator);
+      if (groupCmds.size() > 0) {
+        for (Cmd groupCmd : groupCmds) {
+          if (groupCmd == this) {
+            continue;
+          }
+          seeAlsoGroups += " " + groupCmd.getName();
+        }
+      }
+    }
+    String seeAlsoHelp = "";
+    if (seeAlsoGroups.length() > 0) {
+      seeAlsoHelp = "\nSee also:" + seeAlsoGroups;
+    }
+    return seeAlsoHelp;
+  }
+
   public void handleLine(EngineRequest request, EngineResponse response) throws Exception {
     IrcMessageEvent ircEvent = (IrcMessageEvent) request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     if (args.hasArgs() && args.getArgs().equals("?")) {
-      String seeAlsoHelp = ""; // TODO
-/*      for (String seeAlsoTxt : getSeeAlso()) {
-        if (seeAlsoHelp.length() > 0) {
-          seeAlsoHelp += ", ";
-        }
-        seeAlsoHelp += seeAlsoTxt;
-      }*/
-
-      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + "\nSee also: " + seeAlsoHelp);
+      response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
 
     } else {
 
@@ -173,13 +196,15 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
   private boolean checkAccess(EngineRequest request, EngineResponse response) {
+    InternalRequest ir = (InternalRequest) request;
+
     IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
     isLoggedIn = false; // TODO
     isPublic = !ircMessageEvent.isPrivate();
-    isPrivate = !isPublic;
+    isPrivate = ircMessageEvent.isPrivate();
     isToBot = ircMessageEvent.isToMe();
     isMasterUser = accessControlService.isMasterUser(ircMessageEvent);
-    isChannelOp = accessControlService.isChannelOp(ircMessageEvent);
+    isChannelOp = accessControlService.isChannelOp(ircMessageEvent, ir.getChannel());
 
     boolean ret = true;
 

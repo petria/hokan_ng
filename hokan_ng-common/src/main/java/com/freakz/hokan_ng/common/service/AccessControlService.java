@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 
 import java.util.List;
@@ -21,8 +22,10 @@ public interface AccessControlService {
 
   List<User> getChannelOps(Channel channel) throws HokanServiceException;
 
+  boolean isChannelOp(IrcEvent ircEvent, Channel ch);
+
   boolean isMasterUser(IrcEvent ircEvent);
 
-  boolean isChannelOp(IrcEvent ircEvent);
+  User login(InternalRequest request, String string);
 
 }

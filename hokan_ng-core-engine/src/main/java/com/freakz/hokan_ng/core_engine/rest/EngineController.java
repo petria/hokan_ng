@@ -6,12 +6,12 @@ import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
-import com.freakz.hokan_ng.core_engine.dto.InternalRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,19 +65,17 @@ public class EngineController implements DisposableBean {
       try {
         internalRequest = context.getBean(InternalRequest.class);
         internalRequest.init(request);
-        internalRequest.getUserChannel().setLastCommand(handler.getName());
-        internalRequest.getUserChannel().setLastCommandTime(new Date());
+        if (!ircMessageEvent.isPrivate()) {
+          internalRequest.getUserChannel().setLastCommand(handler.getName());
+          internalRequest.getUserChannel().setLastCommandTime(new Date());
+          internalRequest.updateUserChannel();
+        }
         handler.handleLine(internalRequest, response);
       } catch (Exception e) {
         HokanEngineException engineException = new HokanEngineException(e, handler.getClass().getName());
         response.setException(engineException.toString());
         log.error("Command handler returned exception {}", e);
-      } finally {
-        if (internalRequest != null) {
-          internalRequest.updateUserChannel();
-        }
       }
-
     }
     return response;
   }

@@ -14,6 +14,9 @@ public class StaticStrings {
   public static final String ARG_FULL_NAME = "FullName";
   public static final String ARG_JOIN_MSG = "JoinMsg";
   public static final String ARG_MASK = "Mask";
+  public static final String ARG_NEW_PASSWORD1 = "NewPassword1";
+  public static final String ARG_NEW_PASSWORD2 = "NewPassword2";
+  public static final String ARG_PASSWORD = "Password";
   public static final String ARG_PHONE = "Phone";
   public static final String ARG_NICK = "Nick";
   public static final String ARG_URL_PATTERN = "UrlPattern";

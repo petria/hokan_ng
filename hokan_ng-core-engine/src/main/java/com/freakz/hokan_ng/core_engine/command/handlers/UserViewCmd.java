@@ -5,10 +5,10 @@ import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
-import com.freakz.hokan_ng.core_engine.dto.InternalRequest;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +73,7 @@ public class UserViewCmd extends Cmd {
     if (accessControlService.isMasterUser(request.getIrcEvent())) {
       ret += "[MasterUser] ";
     }
-    if (accessControlService.isChannelOp(request.getIrcEvent())) {
+    if (accessControlService.isChannelOp(request.getIrcEvent(), ir.getChannel())) {
       ret += "[ChannelOp] ";
     }
     ret += "=-\n";

@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core_engine.dto;
+package com.freakz.hokan_ng.common.rest;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.Network;
@@ -6,8 +6,6 @@ import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
-import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
@@ -52,11 +50,15 @@ public class InternalRequest extends EngineRequest implements Serializable {
   }
 
   public void init(EngineRequest request) throws HokanException {
+    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+
     this.request = request;
     this.network = networkService.getNetwork(request.getIrcEvent().getNetwork());
-    this.channel = channelService.findChannelByName(network, request.getIrcEvent().getChannel());
     this.user = getUser(request.getIrcEvent());
-    this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
+    if (!ircMessageEvent.isPrivate()) {
+      this.channel = channelService.findChannelByName(network, request.getIrcEvent().getChannel());
+      this.userChannel = userChannelService.getUserChannel(this.user, this.channel);
+    }
   }
 
   public EngineRequest getRequest() {
@@ -87,7 +89,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
     try {
       userService.updateUser(user);
     } catch (HokanServiceException e) {
-      log.error("User error", e);
+      InternalRequest.log.error("User error", e);
     }
   }
 
@@ -99,7 +101,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
     try {
       userChannelService.storeUserChannel(userChannel);
     } catch (HokanException e) {
-      log.error("UserChannel error", e);
+      InternalRequest.log.error("UserChannel error", e);
     }
   }
 
@@ -119,7 +121,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
       }
       return user;
     } catch (HokanException e) {
-      log.error("User error", e);
+      InternalRequest.log.error("User error", e);
     }
     return null;
   }

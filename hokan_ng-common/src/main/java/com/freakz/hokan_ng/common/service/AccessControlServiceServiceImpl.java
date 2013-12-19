@@ -3,7 +3,9 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,12 +40,26 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
   public List<User> getChannelOps(Channel channel) throws HokanServiceException {
     List<User> channelOps = new ArrayList<>();
     channelOps.add(userService.findUser("_Pete_"));
+    channelOps.add(userService.findUser("petria"));
+    channelOps.add(userService.findUser("petria_"));
     return channelOps;
   }
 
   @Override
-  public boolean isChannelOp(IrcEvent ircEvent) {
-    return false;  //ToDO
+  public boolean isChannelOp(IrcEvent ircEvent, Channel ch) {
+    if (ch == null) {
+      return false;
+    }
+    try {
+      for (User user : getChannelOps(ch)) {
+        if (user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
+          return true;
+        }
+      }
+    } catch (HokanServiceException e) {
+      log.error("User error", e);
+    }
+    return false;
   }
 
   @Override
@@ -55,8 +71,26 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
         }
       }
     } catch (HokanServiceException e) {
-      e.printStackTrace();  //ToDO
+      log.error("User error", e);
     }
     return false;
+  }
+
+  @Override
+  public User login(InternalRequest request, String password) {
+    User user;
+    try {
+      user = userService.getUserByMask(request.getIrcEvent().getMask());
+      if (user != null) {
+        String userPassword = user.getPassword();
+        if (userPassword.equals(StringStuff.md5(password))) {
+          user.setLoggedIn(1);
+          return userService.updateUser(user);
+        }
+      }
+    } catch (HokanServiceException e) {
+      log.error("User error", e);
+    }
+    return null;
   }
 }
