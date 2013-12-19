@@ -18,6 +18,7 @@ import com.freakz.hokan_ng.common.rest.CoreRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
+import com.freakz.hokan_ng.common.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class ConnectionManagerServiceImpl
   private ChannelService channelService;
 
   @Autowired
+  private ApplicationContext context;
+
+  @Autowired
   private IrcServerConfigService ircServerConfigService;
 
   @Autowired
@@ -56,8 +60,9 @@ public class ConnectionManagerServiceImpl
   private PropertyService propertyService;
 
   @Autowired
-  private ApplicationContext context;
+  private UserService userService;
 
+  //----------
 
   private Map<String, IrcServerConfig> configuredServers;
 
@@ -74,6 +79,8 @@ public class ConnectionManagerServiceImpl
   public void postInit() throws HokanException {
 
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_IO_UPTIME, "" + new Date().getTime());
+    userService.resetLoggedInUsers();
+    userService.resetOlpos();
     updateServerMap();
     for (IrcServerConfig server : this.configuredServers.values()) {
       if (server.getIrcServerConfigState() == IrcServerConfigState.CONNECTED) {
