@@ -87,7 +87,7 @@ public class WholeLineTrickers {
       GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance();
       cal.set(Calendar.MONTH, Calendar.DECEMBER);
       cal.set(Calendar.DAY_OF_MONTH, 24);
-      cal.set(Calendar.YEAR, 2013);
+      cal.set(Calendar.YEAR, 2014);
       cal.set(Calendar.HOUR_OF_DAY, 12);
       cal.set(Calendar.MINUTE, 0);
       cal.set(Calendar.SECOND, 0);
@@ -286,7 +286,7 @@ public class WholeLineTrickers {
       _olpo = "";
     }*/
 
-    checkApplause(iEvent);
+    //   checkApplause(iEvent);
     checkJospa(iEvent);
     checkPerkeleVittu(iEvent);
     checkJoulu(iEvent);
