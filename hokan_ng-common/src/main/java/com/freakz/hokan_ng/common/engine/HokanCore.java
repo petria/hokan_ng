@@ -211,7 +211,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @Override
   protected void onUnknown(String line) {
     log.info("UNKNOWN: {}", line);
-    if (line.startsWith("ERROR :Ping timeout:")) {
+    if (line.contains("Ping timeout")) {
       this.engineConnector.engineConnectorPingTimeout(this);
     }
   }
@@ -437,33 +437,46 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   protected void onJoin(String channel, String sender, String login, String hostname) {
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
+    UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
+
     log.info("{} joined channel: {}", sender, channel);
+
     if (sender.equalsIgnoreCase(getNick())) {
       ch.setChannelState(ChannelState.JOINED);
       if (ch.getFirstJoined() == null) {
         ch.setFirstJoined(new Date());
       }
     } else {
+      boolean doJoin = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);
+      if (doJoin) {
+        String message = userChannel.getJoinComment();
+        if (message != null && message.length() > 0) {
+          handleSendMessage(channel, sender + " -> " + message);
+        }
+      }
+
       try {
         this.joinedUsersService.createJoinedUser(ch, getUser(ircEvent));
       } catch (HokanServiceException e) {
         coreExceptionHandler(e);
       }
     }
+
+    int oldC = ch.getMaxUserCount();
+    int newC = getUsers(ch.getChannelName()).length;
+    if (newC > oldC) {
+      log.info("Got new channel users record: " + newC + " > " + oldC);
+      ch.setMaxUserCount(newC);
+      ch.setMaxUserCountDate(new Date());
+    }
+
     this.channelService.updateChannel(ch);
-    UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
+
     userChannel.setLastJoin(new Date());
     try {
       this.userChannelService.storeUserChannel(userChannel);
     } catch (HokanException e) {
       coreExceptionHandler(e);
-    }
-    boolean doJoin = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);
-    if (doJoin) {
-      String message = userChannel.getJoinComment();
-      if (message != null && message.length() > 0) {
-        handleSendMessage(channel, sender + " -> " + message);
-      }
     }
 
   }
@@ -532,12 +545,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     for (String joined : getChannels()) {
       sendWhoQuery(joined);
     }
-
-/*    IrcEvent ircEvent = IrcEvent.create(channel, sender, login, hostname);
-    Channel ch = getChannel(IrcEvent.create(channel, sender, login, hostname));
-    this.joinedUsersService.removeChannelUser(getUser(ircEvent))
-    TODO
-    */
   }
 
   public String toString() {
