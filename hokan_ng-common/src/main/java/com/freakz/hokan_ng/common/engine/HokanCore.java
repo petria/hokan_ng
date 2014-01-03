@@ -330,6 +330,20 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     ch.addToLinesReceived(1);
     ch.setLastActive(new Date());
 
+    String lastWriter = ch.getLastWriter();
+    if (lastWriter != null && lastWriter.equalsIgnoreCase(sender)) {
+      int spree = ch.getLastWriterSpree();
+      spree++;
+      ch.setLastWriterSpree(spree);
+      if (spree > ch.getWriterSpreeRecord()) {
+        ch.setWriterSpreeRecord(spree);
+        ch.setWriterSpreeOwner(sender);
+      }
+    } else {
+      ch.setLastWriterSpree(1);
+    }
+    ch.setLastWriter(sender);
+
     UserChannel userChannel = userChannelService.getUserChannel(user, ch);
     userChannel.setLastMessage(message);
     userChannel.setLastMessageTime(new Date());
