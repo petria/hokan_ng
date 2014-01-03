@@ -2,7 +2,9 @@ package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.dao.NetworkDAO;
 import com.freakz.hokan_ng.common.entity.Network;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Service
+@Slf4j
 public class NetworkServiceImpl implements NetworkService {
 
   @Autowired
@@ -25,8 +28,13 @@ public class NetworkServiceImpl implements NetworkService {
   }
 
   @Override
-  public Network getNetwork(String name) throws HokanException {
-    return networkDAO.getNetwork(name);
+  public Network getNetwork(String name) {
+    try {
+      return networkDAO.getNetwork(name);
+    } catch (HokanDAOException e) {
+      log.error("Network error", e);
+    }
+    return null;
   }
 
   @Override
@@ -40,8 +48,13 @@ public class NetworkServiceImpl implements NetworkService {
   }
 
   @Override
-  public Network updateNetwork(Network network) throws HokanException {
-    return networkDAO.updateNetwork(network);
+  public Network updateNetwork(Network network) {
+    try {
+      return networkDAO.updateNetwork(network);
+    } catch (HokanDAOException e) {
+      log.error("Network update error", e);
+    }
+    return null;
   }
 
 }

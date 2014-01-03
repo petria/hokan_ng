@@ -18,6 +18,7 @@ import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.JoinedUsersService;
+import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.service.UrlLoggerService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
@@ -63,6 +64,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Autowired
   private Properties properties;
+
+  @Autowired
+  private NetworkService networkService;
 
   @Autowired
   private UrlLoggerService urlLoggerService;
@@ -159,7 +163,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   public Network getNetwork() {
-    return this.getIrcServerConfig().getNetwork();
+    return networkService.getNetwork(getIrcServerConfig().getNetwork().getName());
   }
 
   public Channel getChannel(String channelName) {
@@ -315,6 +319,10 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), channel, sender, login, hostname, message);
     ircEvent.setToMe(isToMe);
 
+    Network nw = getNetwork();
+    nw.addToLinesReceived(1);
+    this.networkService.updateNetwork(nw);
+
     User user = getUser(ircEvent);
 
     Channel ch = getChannel(ircEvent);
@@ -347,6 +355,12 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
     IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), sender, sender, login, hostname, message);
     ircEvent.setPrivate(true);
+
+    Network nw = getNetwork();
+    nw.addToLinesReceived(1);
+    this.networkService.updateNetwork(nw);
+
+
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
     log.info("Message: {}", ircEvent.getMessage());
@@ -428,14 +442,20 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   public void handleSendMessage(String channel, String message) {
+    Channel ch = getChannel(channel);
+    Network nw = getNetwork();
     String[] lines = message.split("\n");
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
       for (String l : split) {
         String raw = "PRIVMSG " + channel + " :" + l;
         this.outputQueue.addLine(raw);
+        ch.addToLinesSent(1);
+        nw.addToLinesSent(1);
       }
     }
+    this.channelService.updateChannel(ch);
+    this.networkService.updateNetwork(nw);
   }
 
   @Override
@@ -447,9 +467,19 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     log.info("{} joined channel: {}", sender, channel);
 
     if (sender.equalsIgnoreCase(getNick())) {
+      Network nw = getNetwork();
+      nw.addToChannelsJoined(1);
+      this.networkService.updateNetwork(nw);
+
       ch.setChannelState(ChannelState.JOINED);
       if (ch.getFirstJoined() == null) {
-        ch.setFirstJoined(new Date());
+        Date d = new Date();
+        ch.setLastWriter(getName());
+        ch.setMaxUserCount(1);
+        ch.setFirstJoined(d);
+        ch.setLastActive(d);
+        ch.setMaxUserCountDate(d);
+        ch.setWriterSpreeOwner(getName());
       }
     } else {
       boolean doJoin = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_JOIN_MESSAGE, false);

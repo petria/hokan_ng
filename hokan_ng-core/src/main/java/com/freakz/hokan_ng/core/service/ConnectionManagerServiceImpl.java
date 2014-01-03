@@ -207,15 +207,15 @@ public class ConnectionManagerServiceImpl
   @Override
   public void disconnect(String networkName) throws HokanServiceException {
     Network network;
-    try {
-      network = networkService.getNetwork(networkName);
-    } catch (HokanException e) {
-      throw new HokanServiceException(e);
+
+    network = networkService.getNetwork(networkName);
+    if (network == null) {
+      throw new HokanServiceException("Unknown Network name: " + networkName);
     }
 
     HokanCore engine = this.connectedEngines.get(network.getName());
     if (engine == null) {
-      throw new HokanServiceException("No connected engine found for network: " + network);
+      throw new HokanServiceException("No connected Engine found for Network: " + network);
     }
     engine.getIrcServerConfig().setIrcServerConfigState(IrcServerConfigState.DISCONNECTED);
     this.ircServerConfigService.updateIrcServerConfig(engine.getIrcServerConfig());

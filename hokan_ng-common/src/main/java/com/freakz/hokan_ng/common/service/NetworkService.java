@@ -14,12 +14,12 @@ import java.util.List;
  */
 public interface NetworkService {
 
-  Network getNetwork(String name) throws HokanException;
+  Network getNetwork(String name);
 
   List<Network> getNetworks() throws HokanException;
 
   Network createNetwork(String name) throws HokanException;
 
-  Network updateNetwork(Network network) throws HokanException;
+  Network updateNetwork(Network network);
 
 }
