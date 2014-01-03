@@ -378,9 +378,11 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
 
     handleSendMessage(response);
-    Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
-    ch.addCommandsHandled(1);
-    this.channelService.updateChannel(ch);
+    if (response.getCommandClass() != null) {
+      Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
+      ch.addCommandsHandled(1);
+      this.channelService.updateChannel(ch);
+    }
 
     for (EngineMethodCall methodCall : response.getEngineMethodCalls()) {
       String methodName = methodCall.getMethodName();

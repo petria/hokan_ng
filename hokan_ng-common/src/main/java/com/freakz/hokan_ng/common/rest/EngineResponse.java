@@ -19,6 +19,7 @@ public class EngineResponse implements Serializable {
   private String responseMessage = "";
   private String exception;
   private String replyTo;
+  private String commandClass;
 
   private EngineRequest request;
 
@@ -93,4 +94,11 @@ public class EngineResponse implements Serializable {
     this.responseMessage += String.format(response, (Object[]) args);
   }
 
+  public String getCommandClass() {
+    return commandClass;
+  }
+
+  public void setCommandClass(String commandClass) {
+    this.commandClass = commandClass;
+  }
 }

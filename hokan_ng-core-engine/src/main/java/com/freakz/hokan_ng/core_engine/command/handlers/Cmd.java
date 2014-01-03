@@ -150,6 +150,8 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     IrcMessageEvent ircEvent = (IrcMessageEvent) request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
+    response.setCommandClass(this.getClass().toString());
+
     if (args.hasArgs() && args.getArgs().equals("?")) {
       response.setResponseMessage("Usage: " + getName() + " " + jsap.getUsage() + "\n" + "Help: " + jsap.getHelp() + buildSeeAlso(this));
 
