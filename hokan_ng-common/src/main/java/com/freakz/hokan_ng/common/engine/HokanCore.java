@@ -326,7 +326,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     User user = getUser(ircEvent);
 
     Channel ch = getChannel(ircEvent);
-    ch.setLastWriter(sender);
     ch.addToLinesReceived(1);
     ch.setLastActive(new Date());
 

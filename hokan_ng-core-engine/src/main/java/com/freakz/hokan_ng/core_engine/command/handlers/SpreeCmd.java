@@ -30,7 +30,7 @@ public class SpreeCmd extends Cmd {
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     InternalRequest ir = (InternalRequest) request;
     Channel channel = ir.getChannel();
-    response.addResponse("%s writer spree owner: %s with %d lines!", channel.getChannelName(), channel.getWriterSpreeOwner(), channel.getWriterSpreeRecord());
+    response.addResponse("%s writing spree owner: %s with %d lines!", channel.getChannelName(), channel.getWriterSpreeOwner(), channel.getWriterSpreeRecord());
   }
 
 }
