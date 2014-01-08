@@ -94,6 +94,10 @@ public class EngineResponse implements Serializable {
     this.responseMessage += String.format(response, (Object[]) args);
   }
 
+  public void addResponse(StringBuilder sb, Object... args) {
+    addResponse(sb.toString(), args);
+  }
+
   public String getCommandClass() {
     return commandClass;
   }
@@ -101,4 +105,5 @@ public class EngineResponse implements Serializable {
   public void setCommandClass(String commandClass) {
     this.commandClass = commandClass;
   }
+
 }
