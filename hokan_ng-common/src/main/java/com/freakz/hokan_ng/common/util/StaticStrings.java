@@ -10,6 +10,7 @@ package com.freakz.hokan_ng.common.util;
 public class StaticStrings {
 
   public static final String ARG_CHANNEL = "Channel";
+  public static final String ARG_COMMAND = "Command";
   public static final String ARG_EMAIL = "Email";
   public static final String ARG_FLAGS = "Flags";
   public static final String ARG_FULL_NAME = "FullName";

@@ -3,7 +3,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_COMMAND;
 
 /**
  * User: petria
@@ -25,12 +26,8 @@ import java.util.List;
 public class HelpCmd extends Cmd {
 
   @Autowired
-  private AccessControlService accessControlService;
-
-  @Autowired
   private CommandHandlerService commandHandler;
 
-  private final static String ARG_COMMAND = "Command";
 
   public HelpCmd() {
     super();
@@ -97,7 +94,7 @@ public class HelpCmd extends Cmd {
           flags += "P";
         }
         if (flags.length() > 0) {
-          sb.append("[" + flags + "]");
+          sb.append("[").append(flags).append("]");
         }
       }
       sb.append("\nTry '!help <command>' to get detailed help\n");
