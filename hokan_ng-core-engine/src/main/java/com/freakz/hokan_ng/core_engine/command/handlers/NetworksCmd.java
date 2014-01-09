@@ -4,7 +4,6 @@ import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
@@ -31,20 +30,10 @@ public class NetworksCmd extends Cmd {
     super();
     setHelp("Shows configured IRC Networks");
     addToHelpGroup(HelpGroup.NETWORK, this);
-
-/*
-    UnflaggedOption flg = new UnflaggedOption(ARG_NetworksCmd)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
-*/
-
-
   }
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
     StringBuilder sb = new StringBuilder();
     List<Network> nws = networkService.getNetworks();
     if (nws.size() > 0) {

@@ -23,6 +23,7 @@ import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.service.UrlLoggerService;
 import com.freakz.hokan_ng.common.service.UserChannelService;
 import com.freakz.hokan_ng.common.service.UserService;
+import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.freakz.hokan_ng.common.util.IRCUtility;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
@@ -359,9 +360,52 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
     urlLoggerService.catchUrls(ircEvent, ch, this);
 
+    if (accessControlService.isMasterUser(ircEvent)) {
+      handleBuiltInCommands(ircEvent);
+    }
+
+
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
     this.channelService.updateChannel(ch);
+  }
+
+  private void handleBuiltInCommands(IrcMessageEvent ircEvent) {
+    String message = ircEvent.getMessage();
+    CommandArgs args = new CommandArgs(ircEvent.getMessage());
+    if (message.startsWith("!qset ")) {
+
+      boolean ok = outputQueue.setQueueValues(args.getArgs());
+      handleSendMessage(ircEvent.getChannel(), "!qset: " + ok);
+      String info = String.format("Throttle[%s]: sleepTime %d - maxLines - %d - fullLineLength %d - fullLineSleepTime %d - throttleBaseSleepTime %d",
+          outputQueue.isUsingThrottle() + "",
+          outputQueue.defSleepTime, outputQueue.defMaxLines,
+          outputQueue.defFullLineLength, outputQueue.defFullLineSleepTime,
+          outputQueue.defThrottleBaseSleepTime);
+
+      handleSendMessage(ircEvent.getChannel(), info);
+
+
+    } else if (message.equals("!qclear")) {
+
+      outputQueue.clearOutQueue();
+      handleSendMessage(ircEvent.getChannel(), "OutQueue cleared!");
+
+    } else if (message.startsWith("!qthrottle")) {
+
+      outputQueue.setThrottle(StringStuff.parseBooleanString(args.getArgs()));
+      handleSendMessage(ircEvent.getChannel(), String.format("Throttle[%s]", outputQueue.isUsingThrottle() + ""));
+
+    } else if (message.equals("!qinfo")) {
+      String info = String.format("Throttle[%s]: sleepTime %d - maxLines - %d - fullLineLength %d - fullLineSleepTime %d - throttleBaseSleepTime %d",
+          outputQueue.isUsingThrottle() + "",
+          outputQueue.defSleepTime, outputQueue.defMaxLines,
+          outputQueue.defFullLineLength, outputQueue.defFullLineSleepTime,
+          outputQueue.defThrottleBaseSleepTime);
+
+      handleSendMessage(ircEvent.getChannel(), info);
+
+    }
   }
 
   @Override

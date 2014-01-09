@@ -110,7 +110,7 @@ public class OutputQueue implements CommandRunnable {
     this.outQueue.add("stop");
   }
 
-/*  public void clearOutQueue() {
+  public void clearOutQueue() {
     outQueue.clear();
   }
 
@@ -120,6 +120,30 @@ public class OutputQueue implements CommandRunnable {
 
   public boolean isUsingThrottle() {
     return useThrottle;
-  }*/
+  }
+
+  public boolean setQueueValues(String values) {
+
+    String[] split = values.split(" ");
+    if (split.length != 5) {
+      return false;
+    }
+    int[] newValues = new int[5];
+    for (int i = 0; i < newValues.length; i++) {
+      try {
+        newValues[i] = Integer.parseInt(split[i]);
+
+      } catch (NumberFormatException ex) {
+        return false;
+      }
+    }
+    defSleepTime = newValues[0];
+    defMaxLines = newValues[1];
+    defFullLineLength = newValues[2];
+    defFullLineSleepTime = newValues[3];
+    defThrottleBaseSleepTime = newValues[4];
+
+    return true;
+  }
 
 }
