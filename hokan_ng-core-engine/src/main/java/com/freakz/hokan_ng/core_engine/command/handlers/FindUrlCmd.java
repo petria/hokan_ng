@@ -75,6 +75,11 @@ public class FindUrlCmd extends Cmd {
       }
 
       shown++;
+
+      if (shown == 5) {
+        break;
+      }
+
       ret += shown + ") " + row.getSender() + ": ";
       ret += row.getUrl();
 /*      if (foundFromTitle) {
