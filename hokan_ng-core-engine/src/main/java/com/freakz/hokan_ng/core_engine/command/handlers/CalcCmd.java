@@ -9,6 +9,8 @@ import org.cheffo.jeplite.JEP;
 import org.cheffo.jeplite.ParseException;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_EXPRESSION;
+
 /**
  * User: petria
  * Date: 11/27/13
@@ -19,7 +21,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CalcCmd extends Cmd {
 
-  private static final String ARG_EXPRESSION = "expression";
   private final JEP jep;
 
   public CalcCmd() {

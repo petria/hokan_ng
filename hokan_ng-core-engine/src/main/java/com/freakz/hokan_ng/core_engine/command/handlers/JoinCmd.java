@@ -6,6 +6,9 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PASSWORD;
+
 /**
  * User: petria
  * Date: 11/7/13
@@ -15,9 +18,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JoinCmd extends Cmd {
-
-  private static final String ARG_CHANNEL = "channel";
-  private static final String ARG_PASSWORD = "password";
 
   public JoinCmd() {
     super();

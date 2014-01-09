@@ -12,6 +12,8 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_HORO;
+
 /**
  * User: petria
  * Date: 11/21/13
@@ -24,8 +26,6 @@ public class HoroCmd extends Cmd {
 
   @Autowired
   private UpdaterManagerService updaterManagerService;
-
-  private final static String ARG_HORO = "horo";
 
   public HoroCmd() {
     super();

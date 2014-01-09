@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_COUNT;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PLACE;
+
 /**
  * User: petria
  * Date: 11/18/13
@@ -33,9 +36,6 @@ public class WeatherCmd extends Cmd {
 
   private final static String FORMAT = "%1 %2 %3°C (%7/%8)";
   private final static String FORMAT_MINMAX = "%1 %9 %3°C (%7/%8)";
-
-  private final static String ARG_COUNT = "count";
-  private final static String ARG_PLACE = "place";
 
   public WeatherCmd() {
     super();

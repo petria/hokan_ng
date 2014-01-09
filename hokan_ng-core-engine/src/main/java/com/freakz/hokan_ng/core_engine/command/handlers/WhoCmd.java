@@ -31,14 +31,6 @@ public class WhoCmd extends Cmd {
     super();
     setHelp("Shows users logged in to the bot.");
     addToHelpGroup(HelpGroup.USERS, this);
-      
-/*
-    UnflaggedOption flg = new UnflaggedOption(ARG_WhoCmd)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
-*/
-
 
   }
 

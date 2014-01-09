@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PROGRAM;
+
 /**
  * User: petria
  * Date: 11/27/13
@@ -23,8 +25,6 @@ import java.util.List;
  */
 @Component
 public class TvFindCmd extends Cmd {
-
-  private static final String ARG_PROGRAM = "program";
 
   @Autowired
   private TelkkuService tv;

@@ -9,6 +9,10 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_AMOUNT;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_FROM;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_TO;
+
 /**
  * User: petria
  * Date: 12/12/13
@@ -19,10 +23,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ConvertCmd extends Cmd {
-
-  private static final String ARG_AMOUNT = "Amount";
-  private static final String ARG_FROM = "From";
-  private static final String ARG_TO = "To";
 
   public ConvertCmd() {
     super();

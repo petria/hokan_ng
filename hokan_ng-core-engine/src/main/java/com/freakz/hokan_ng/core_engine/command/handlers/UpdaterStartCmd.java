@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_UPDATER;
+
 /**
  * User: petria
  * Date: 11/26/13
@@ -23,7 +25,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UpdaterStartCmd extends Cmd {
 
-  private static final String ARG_UPDATER = "updater";
   @Autowired
   private UpdaterManagerService updaterManagerService;
 

@@ -10,6 +10,9 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHAN_ID;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_MESSAGE;
+
 /**
  * User: petria
  * Date: 12/5/13
@@ -22,9 +25,6 @@ public class ChanSendCmd extends Cmd {
 
   @Autowired
   private ChannelService channelService;
-
-  private static final String ARG_CHAN_ID = "chanId";
-  private static final String ARG_MESSAGE = "message";
 
 
   public ChanSendCmd() {

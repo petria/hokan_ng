@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_WORD;
+
 /**
  * User: petria
  * Date: 12/14/13
@@ -26,8 +28,6 @@ public class TranslateCmd extends Cmd {
 
   @Autowired
   private TranslateService translateService;
-
-  private static final String ARG_WORD = "Word";
 
   public TranslateCmd() {
     super();

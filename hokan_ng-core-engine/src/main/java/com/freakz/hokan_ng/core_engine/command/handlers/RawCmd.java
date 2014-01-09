@@ -8,6 +8,8 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_RAWSTRING;
+
 /**
  * User: petria
  * Date: 12/10/13
@@ -18,8 +20,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class RawCmd extends Cmd {
-
-  private static final String ARG_RAWSTRING = "RawString";
 
   public RawCmd() {
     super();

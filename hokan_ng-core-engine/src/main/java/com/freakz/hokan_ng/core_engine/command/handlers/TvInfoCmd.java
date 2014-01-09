@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_ID;
+
 /**
  * User: petria
  * Date: 11/27/13
@@ -24,7 +26,6 @@ import java.text.SimpleDateFormat;
 @Component
 public class TvInfoCmd extends Cmd {
 
-  private static final String ARG_ID = "ID";
   @Autowired
   private TelkkuService tv;
 

@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PROPERTY;
+
 /**
  * User: petria
  * Date: 12/10/13
@@ -24,7 +26,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ChanSetCmd extends Cmd {
 
-  private static final String ARG_PROPERTY = "Property";
   @Autowired
   private Properties properties;
 

@@ -28,7 +28,6 @@ public class HelpCmd extends Cmd {
   @Autowired
   private CommandHandlerService commandHandler;
 
-
   public HelpCmd() {
     super();
     setHelp("Shows command list / help about specific command.");

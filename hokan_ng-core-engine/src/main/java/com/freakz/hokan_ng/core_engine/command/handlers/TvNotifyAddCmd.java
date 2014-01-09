@@ -11,6 +11,8 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PROGRAM;
+
 /**
  * User: petria
  * Date: 12/11/13
@@ -20,8 +22,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TvNotifyAddCmd extends Cmd {
-
-  private static final String ARG_PROGRAM = "Program";
 
   @Autowired
   private TvNotifyService tvNotifyService;

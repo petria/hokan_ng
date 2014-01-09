@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_STATION;
+
 /**
  * User: petria
  * Date: 11/26/13
@@ -21,8 +23,6 @@ import java.util.List;
  */
 @Component
 public class MetarCmd extends Cmd {
-
-  private static final String ARG_STATION = "station";
 
   @Autowired
   private MetarDataService metarDataService;

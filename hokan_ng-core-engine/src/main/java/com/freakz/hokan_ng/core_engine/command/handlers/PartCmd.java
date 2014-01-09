@@ -7,6 +7,8 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.stereotype.Component;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL;
+
 /**
  * User: petria
  * Date: 11/8/13
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PartCmd extends Cmd {
 
-  private static final String ARG_CHANNEL = "channel";
 
   public PartCmd() {
     super();
