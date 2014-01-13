@@ -33,8 +33,13 @@ public class HistoryCmd extends Cmd {
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     List<CommandHistory> histories = commandPool.getCommandHistory();
+    int c = 0;
     for (CommandHistory history : histories) {
       response.addResponse("%s\n", history.toString());
+      c++;
+      if (c > 9) {
+        break;
+      }
     }
   }
 
