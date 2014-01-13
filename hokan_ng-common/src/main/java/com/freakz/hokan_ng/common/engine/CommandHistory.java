@@ -29,7 +29,7 @@ public class CommandHistory {
     if (endTime != 0) {
       runtime = String.format(" (runtime: %d ms)", (endTime - startTime));
     }
-    return String.format("%4d %15s%s", pid, runnable.getClass().getName(), runtime);
+    return String.format("%4d %25s%s", pid, runnable.getClass().getSimpleName(), runtime);
   }
 
   public long getPid() {

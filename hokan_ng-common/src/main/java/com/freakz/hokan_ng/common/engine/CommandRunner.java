@@ -43,7 +43,7 @@ public class CommandRunner implements Runnable {
 
   @Override
   public String toString() {
-    return String.format("%4d %15s", myPid, runnable.getClass().getName());
+    return String.format("%4d %25s", myPid, runnable.getClass().getSimpleName());
   }
 
 }
