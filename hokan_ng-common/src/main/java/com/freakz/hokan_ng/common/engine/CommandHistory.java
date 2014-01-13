@@ -25,7 +25,7 @@ public class CommandHistory {
   }
 
   public String toString() {
-    String runtime = "";
+    String runtime = " (still running...)";
     if (endTime != 0) {
       runtime = String.format(" (runtime: %d ms)", (endTime - startTime));
     }

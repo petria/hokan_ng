@@ -44,7 +44,7 @@ public class FileUtil {
     return extractPath(path);
   }
 
-  public String copyResourceToFile(String resource, File target, StringBuilder contents) throws IOException {
+  public String copyResourceToFile(String resource, File target, StringBuilder... contents) throws IOException {
     InputStream inputStream = this.getClass().getResourceAsStream(resource);
     if (inputStream == null) {
       log.error("Resource not found: {}", resource);
@@ -59,9 +59,9 @@ public class FileUtil {
         break;
       }
       bw.write(line + "\n");
-      if (contents != null) {
-        contents.append(line);
-        contents.append("\n");
+      if (contents != null && contents.length > 0) {
+        contents[0].append(line);
+        contents[0].append("\n");
       }
     }
     br.close();
@@ -74,13 +74,9 @@ public class FileUtil {
     return tmpResourcePath;
   }
 
-  public String copyResourceToFile(String resource, File target) throws IOException {
-    return copyResourceToFile(resource, target, null);
-  }
-
-  public String copyResourceToTmpFile(String resource) throws IOException {
+  public String copyResourceToTmpFile(String resource, StringBuilder... contents) throws IOException {
     File tmpFile = File.createTempFile(resource, "");
-    return copyResourceToFile(resource, tmpFile);
+    return copyResourceToFile(resource, tmpFile, contents);
   }
 
   public boolean deleteTmpFile(String tmpFile) {
