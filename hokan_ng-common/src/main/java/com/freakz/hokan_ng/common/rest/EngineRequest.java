@@ -22,7 +22,7 @@ public class EngineRequest implements Serializable {
     this.ircEvent = ircEvent;
   }
 
-  public IrcEvent getIrcEvent() {
+  public IrcMessageEvent getIrcEvent() {
     return ircEvent;
   }
 

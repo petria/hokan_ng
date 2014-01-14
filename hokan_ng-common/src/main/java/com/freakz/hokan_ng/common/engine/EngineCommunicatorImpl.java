@@ -2,6 +2,8 @@ package com.freakz.hokan_ng.common.engine;
 
 
 import com.freakz.hokan_ng.common.rest.EngineRequest;
+import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,7 +30,20 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   public void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler) {
 
     AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
-    sender.sendRequest(request, engineEventHandler);
+    String message = request.getIrcEvent().getMessage();
+    boolean between = StringStuff.isInBetween(message, "&&", ' ');
+    log.info("between = {}", between);
+    if (between) {
+      String[] split = message.split("\\&\\&");
+      for (String splitted : split) {
+        EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
+        String trimmed = splitted.trim();
+        splitRequest.getIrcEvent().setMessage(trimmed);
+        sender.sendRequest(splitRequest, engineEventHandler);
+      }
+    } else {
+      sender.sendRequest(request, engineEventHandler);
+    }
   }
 
 }

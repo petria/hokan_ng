@@ -65,7 +65,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
     return this.request;
   }
 
-  public IrcEvent getIrcEvent() {
+  public IrcMessageEvent getIrcEvent() {
     return request.getIrcEvent();
   }
 

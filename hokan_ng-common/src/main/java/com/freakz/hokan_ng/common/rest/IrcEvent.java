@@ -32,6 +32,15 @@ public class IrcEvent implements Serializable {
     this.mask = sender + "!" + login + "@" + hostname;
   }
 
+  public IrcEvent(IrcEvent ircEvent) {
+    this.network = ircEvent.network;
+    this.channel = ircEvent.channel;
+    this.sender = ircEvent.sender;
+    this.login = ircEvent.login;
+    this.hostname = ircEvent.hostname;
+    this.mask = ircEvent.mask;
+  }
+
   public String getNetwork() {
     return network;
   }

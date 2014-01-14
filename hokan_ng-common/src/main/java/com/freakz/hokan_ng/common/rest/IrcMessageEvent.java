@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class IrcMessageEvent extends IrcEvent implements Serializable {
+public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -24,6 +24,17 @@ public class IrcMessageEvent extends IrcEvent implements Serializable {
   public IrcMessageEvent(String network, String channel, String sender, String login, String hostname, String message) {
     super(network, channel, sender, login, hostname);
     this.message = message;
+  }
+
+  public IrcMessageEvent(IrcMessageEvent toClone) {
+    super(toClone);
+    this.message = toClone.message;
+  }
+
+  @Override
+  public Object clone() {
+    IrcMessageEvent cloned = new IrcMessageEvent(this);
+    return cloned;
   }
 
   public String getMessage() {
