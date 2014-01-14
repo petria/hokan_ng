@@ -9,6 +9,7 @@ package com.freakz.hokan_ng.common.util;
  */
 public class StaticStrings {
 
+  public static final String ARG_ALIAS = "Alias";
   public static final String ARG_AMOUNT = "Amount";
   public static final String ARG_CHANNEL = "Channel";
   public static final String ARG_CHAN_ID = "ChanId";
