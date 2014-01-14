@@ -82,9 +82,9 @@ public class FindUrlCmd extends Cmd {
 
       ret += shown + ") " + row.getSender() + ": ";
       ret += row.getUrl();
-/*      if (foundFromTitle) {
-        ret += " (t: " + row.getUrlTitle() + ")";
-      }*/
+      if (row.getUrlTitle() != null) {
+        ret += " \"t: " + row.getUrlTitle() + "\"";
+      }
       ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";
       response.addResponse(ret);
     }

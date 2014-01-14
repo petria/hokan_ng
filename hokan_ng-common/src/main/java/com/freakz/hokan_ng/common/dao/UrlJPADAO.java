@@ -30,10 +30,10 @@ public class UrlJPADAO implements UrlDAO {
 
     TypedQuery<Url> query;
     if (nicks == null || nicks.length == 0) {
-      query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url LIKE :url ORDER BY url.created DESC", Url.class);
+      query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url LIKE :url OR url.urlTitle LIKE :url ORDER BY url.created DESC", Url.class);
     } else {
       List<String> nickList = Arrays.asList(nicks);
-      query = entityManager.createQuery("SELECT url FROM Url url WHERE url.url LIKE :url AND url.sender IN (:nickList) ORDER BY url.created DESC", Url.class);
+      query = entityManager.createQuery("SELECT url FROM Url url WHERE (url.url LIKE :url OR url.urlTitle LIKE :url) AND url.sender IN (:nickList) ORDER BY url.created DESC", Url.class);
       query.setParameter("nickList", nickList);
     }
     query.setParameter("url", "%" + url + "%");
