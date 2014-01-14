@@ -15,14 +15,6 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "User")
-/*@NamedQueries({
-    @NamedQuery(name = "USER.findUser", query = "SELECT ude FROM User ude WHERE ude.nick = ?1"),
-    @NamedQuery(name = "USER.findUsersByMask", query = "SELECT ude FROM User ude WHERE ude.mask LIKE ?1"),
-    @NamedQuery(name = "USER.findUsers", query = "SELECT ude FROM User ude"),
-    @NamedQuery(name = "USER.findLoggedInUsers", query = "SELECT ude FROM User ude where ude.loggedIn > 0"),
-    @NamedQuery(name = "USER.resetLoggedInUsers", query = "UPDATE User ude SET ude.loggedIn = 0"),
-    @NamedQuery(name = "USER.resetOlpos", query = "UPDATE User ude SET ude.olpo = 0")
-})*/
 public class User implements Serializable {
 
   @Id

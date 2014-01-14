@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command;
 
+import com.freakz.hokan_ng.common.entity.Alias;
+import com.freakz.hokan_ng.common.service.AliasService;
 import com.freakz.hokan_ng.core_engine.command.handlers.Cmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +25,9 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
   @Autowired
   private ApplicationContext context;
 
+  @Autowired
+  private AliasService aliasService;
+
   private Map<String, Cmd> handlers;
 
   public CommandHandlerServiceImpl() {
@@ -35,6 +40,7 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
   @Override
   public Cmd getCommandHandler(String line) {
+    line = resolveAlias(line);
     List<Cmd> matches = new ArrayList<>();
     for (Cmd base : this.handlers.values()) {
       if (line.matches(base.getMatchPattern())) {
@@ -52,6 +58,16 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
       }
     }
     return null;
+  }
+
+  private String resolveAlias(String line) {
+    List<Alias> aliases = aliasService.findAliases();
+    for (Alias alias : aliases) {
+      if (line.equals(alias.getAlias())) {
+        return alias.getCommand();
+      }
+    }
+    return line;
   }
 
   @Override
