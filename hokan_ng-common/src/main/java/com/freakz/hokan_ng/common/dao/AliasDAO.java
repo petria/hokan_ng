@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Alias;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
 import java.util.List;
 
@@ -13,10 +14,14 @@ import java.util.List;
  */
 public interface AliasDAO {
 
-  Alias findAlias(String alias);
+  Alias createAlias(String alias, String command);
 
-  List<Alias> findAliases();
+  Alias findAlias(String alias) throws HokanDAOException;
 
-  Alias removeAlias(String alias);
+  List<Alias> findAliases() throws HokanDAOException;
+
+  int removeAlias(String alias) throws HokanDAOException;
+
+  Alias updateAlias(Alias alias) throws HokanDAOException;
 
 }
