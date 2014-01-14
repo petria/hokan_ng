@@ -18,7 +18,7 @@ import java.util.Date;
  * Time: 4:20 PM
  */
 @Entity
-@Table(name = "URL")
+@Table(name = "Url")
 @NamedQueries({
     @NamedQuery(name = "URL.findUrl", query = "SELECT url FROM Url url WHERE url.url = ?1"),
     @NamedQuery(name = "URL.findUrls", query = "SELECT url FROM Url url ORDER BY url.created DESC"),
