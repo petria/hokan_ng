@@ -6,6 +6,7 @@
 
     <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.freakz.hokan_ng.common.entity.Alias</class>
         <class>com.freakz.hokan_ng.common.entity.Channel</class>
         <class>com.freakz.hokan_ng.common.entity.ChannelProperty</class>
         <class>com.freakz.hokan_ng.common.entity.JoinedUser</class>
