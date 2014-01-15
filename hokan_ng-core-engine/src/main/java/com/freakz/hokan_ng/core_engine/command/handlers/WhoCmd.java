@@ -9,6 +9,7 @@ import com.freakz.hokan_ng.common.service.UserService;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
+@Scope("prototype")
 public class WhoCmd extends Cmd {
 
   @Autowired

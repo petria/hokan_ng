@@ -9,6 +9,7 @@ import com.freakz.hokan_ng.common.service.ChannelService;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
 public class ChannelsCmd extends Cmd {
 

@@ -60,6 +60,7 @@ public class EngineController implements DisposableBean {
     EngineResponse response = new EngineResponse(request);
     IrcMessageEvent ircMessageEvent = request.getIrcEvent();
     Cmd handler = commandHandler.getCommandHandler(ircMessageEvent.getMessage());
+    log.info("message: " + ircMessageEvent.getMessage());
     if (handler != null) {
       InternalRequest internalRequest;
       try {

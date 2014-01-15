@@ -47,17 +47,19 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
         matches.add(base);
       }
     }
+    Cmd theCmd = null;
     if (matches.size() == 1) {
-      return matches.get(0);
+      theCmd = matches.get(0);
     } else if (matches.size() > 1) {
       String firstWord = line.split(" ")[0];
       for (Cmd base : matches) {
         if (base.getMatchPattern().startsWith(firstWord)) {
-          return base;
+          theCmd = base;
         }
       }
     }
-    return null;
+    Cmd bean = context.getBean(theCmd.getClass());
+    return bean;
   }
 
   private String resolveAlias(String line) {

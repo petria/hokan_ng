@@ -10,6 +10,7 @@ import com.freakz.hokan_ng.common.updaters.horo.HoroUpdater;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_HORO;
@@ -22,6 +23,7 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_HORO;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 public class HoroCmd extends Cmd {
 
   @Autowired

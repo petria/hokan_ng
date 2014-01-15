@@ -7,6 +7,7 @@ import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_AMOUNT;
@@ -21,6 +22,7 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_TO;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
 public class ConvertCmd extends Cmd {
 

@@ -6,6 +6,7 @@ import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_RAWSTRING;
@@ -17,8 +18,9 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_RAWSTRING;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-@Slf4j
 @Component
+@Scope("prototype")
+@Slf4j
 public class RawCmd extends Cmd {
 
   public RawCmd() {

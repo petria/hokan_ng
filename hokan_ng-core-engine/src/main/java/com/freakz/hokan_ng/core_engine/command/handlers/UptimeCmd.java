@@ -9,6 +9,7 @@ import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.Uptime;
 import com.martiansoftware.jsap.JSAPResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 public class UptimeCmd extends Cmd {
 
   @Autowired

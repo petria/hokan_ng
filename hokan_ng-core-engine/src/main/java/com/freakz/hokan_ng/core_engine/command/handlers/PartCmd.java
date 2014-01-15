@@ -5,6 +5,7 @@ import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL;
@@ -17,8 +18,8 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 public class PartCmd extends Cmd {
-
 
   public PartCmd() {
     super();

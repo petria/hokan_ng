@@ -7,6 +7,7 @@ import com.freakz.hokan_ng.common.util.FileUtil;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_NIMI_OR_PVM;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
 public class NimipäiväCmd extends Cmd {
 

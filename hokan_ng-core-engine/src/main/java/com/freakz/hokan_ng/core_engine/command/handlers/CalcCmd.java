@@ -7,6 +7,7 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.cheffo.jeplite.JEP;
 import org.cheffo.jeplite.ParseException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_EXPRESSION;
@@ -19,6 +20,7 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_EXPRESSION;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 public class CalcCmd extends Cmd {
 
   private final JEP jep;

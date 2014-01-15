@@ -8,6 +8,7 @@ import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,8 +20,9 @@ import java.util.List;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-@Slf4j
 @Component
+@Scope("prototype")
+@Slf4j
 public class PsCmd extends Cmd {
 
   @Autowired

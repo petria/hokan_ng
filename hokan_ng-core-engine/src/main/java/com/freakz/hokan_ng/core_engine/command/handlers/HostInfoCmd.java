@@ -7,6 +7,7 @@ import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
 public class HostInfoCmd extends Cmd {
 

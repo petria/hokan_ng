@@ -16,6 +16,7 @@ import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_EMAIL;
@@ -36,6 +37,7 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_VERBOSE;
  */
 @Component
 @Slf4j
+@Scope("prototype")
 public class UserModCmd extends Cmd {
 
   @Autowired

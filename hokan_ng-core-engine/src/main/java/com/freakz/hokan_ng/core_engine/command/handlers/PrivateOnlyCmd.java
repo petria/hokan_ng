@@ -4,6 +4,7 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.martiansoftware.jsap.JSAPResult;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 public class PrivateOnlyCmd extends Cmd {
 
   public PrivateOnlyCmd() {
