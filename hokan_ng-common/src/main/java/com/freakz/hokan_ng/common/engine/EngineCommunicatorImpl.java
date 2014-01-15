@@ -1,13 +1,17 @@
 package com.freakz.hokan_ng.common.engine;
 
 
+import com.freakz.hokan_ng.common.entity.Alias;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
+import com.freakz.hokan_ng.common.service.AliasService;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * User: petria
@@ -23,6 +27,10 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   @Autowired
   private ApplicationContext context;
 
+  @Autowired
+  private AliasService aliasService;
+
+
   public EngineCommunicatorImpl() {
   }
 
@@ -31,9 +39,10 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
 
     AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
     String message = request.getIrcEvent().getMessage();
+    message = resolveAlias(message);
     boolean between = StringStuff.isInBetween(message, "&&", ' ');
     log.info("between = {}", between);
-    if (between) {
+    if (!message.startsWith("!alias") && between) {
       String[] split = message.split("\\&\\&");
       for (String splitted : split) {
         EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
@@ -45,5 +54,16 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
       sender.sendRequest(request, engineEventHandler);
     }
   }
+
+  private String resolveAlias(String line) {
+    List<Alias> aliases = aliasService.findAliases();
+    for (Alias alias : aliases) {
+      if (line.equals(alias.getAlias())) {
+        return alias.getCommand();
+      }
+    }
+    return line;
+  }
+
 
 }
