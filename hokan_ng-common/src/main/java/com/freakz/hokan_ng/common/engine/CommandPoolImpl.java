@@ -43,7 +43,7 @@ public class CommandPoolImpl implements CommandPool, DisposableBean {
   }
 
   @Override
-  public synchronized void startSyncRunnable(CommandRunnable runnable, Object... args) {
+  public void startSyncRunnable(CommandRunnable runnable, Object... args) {
     CommandRunner runner = new CommandRunner(pidCounter, runnable, this, args);
     activeRunners.add(runner);
     runner.run();
