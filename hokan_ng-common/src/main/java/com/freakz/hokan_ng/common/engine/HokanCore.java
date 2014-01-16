@@ -301,9 +301,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     try {
       List<User> masterUsers = accessControlService.getMasterUsers();
       String message = "Exception caught: " + e;
-      for (User user : masterUsers) {
+/*      for (User user : masterUsers) {
         sendMessage(user.getNick(), message);
-      }
+      }*/
     } catch (HokanException e1) {
       e1.printStackTrace();  //ToDO epic fail?
     }

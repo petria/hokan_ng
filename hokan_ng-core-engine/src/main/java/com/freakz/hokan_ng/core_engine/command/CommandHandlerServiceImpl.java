@@ -52,8 +52,11 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
         }
       }
     }
-    Cmd bean = context.getBean(theCmd.getClass());
-    return bean;
+    if (theCmd != null) {
+      Cmd bean = context.getBean(theCmd.getClass());
+      return bean;
+    }
+    return null;
   }
 
   @Override

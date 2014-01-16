@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -71,7 +70,7 @@ public class AsyncEngineMessageSender implements CommandRunnable {
       response = responseEnt.getBody();
       this.engineEventHandler.handleEngineResponse(response);
 
-    } catch (HttpClientErrorException e) {
+    } catch (Exception e) {
       HokanEngineException engineException = new HokanEngineException(e, getRestBaseUrl());
       response = new EngineResponse(request);
       response.setException(engineException.toString());
