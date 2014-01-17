@@ -61,7 +61,8 @@ public class AsyncEngineMessageSender implements CommandRunnable {
 
     RestTemplate restTemplate = new RestTemplate();
     HttpEntity<EngineRequest> httpEntity = new HttpEntity<>(request, getRestHeaders());
-    String restUrl = getRestBaseUrl() + "handle";
+//    String restUrl = getRestBaseUrl() + "handle";
+    String restUrl = request.getEngineAddress() + "handle";
     log.info("\nMaking request to: " + restUrl);
     EngineResponse response;
     try {

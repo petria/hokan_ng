@@ -1,9 +1,13 @@
 package com.freakz.hokan_ng.core_engine.rest;
 
+import com.freakz.hokan_ng.common.engine.AsyncCoreMessageSender;
+import com.freakz.hokan_ng.common.engine.CoreEventHandler;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.rest.CoreRequest;
+import com.freakz.hokan_ng.common.rest.CoreResponse;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
@@ -34,7 +38,7 @@ import java.util.Date;
 
 @Controller
 @Slf4j
-public class EngineController implements DisposableBean {
+public class EngineController implements DisposableBean, CoreEventHandler {
 
   @Autowired
   private ApplicationContext context;
@@ -111,4 +115,22 @@ public class EngineController implements DisposableBean {
     propertyService.saveProperty(property);
   }
 
+  private void registerEngine() {
+    AsyncCoreMessageSender sender = context.getBean(AsyncCoreMessageSender.class);
+    CoreRequest request = new CoreRequest();
+    request.setTargetChannelId(-1);
+    request.setMessage(null);
+    sender.sendRequest(request, this);
+
+  }
+
+  @Override
+  public void handleCoreResponse(CoreResponse response) {
+
+  }
+
+  @Override
+  public void handleCoreError(CoreResponse response) {
+
+  }
 }

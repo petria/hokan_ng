@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: petria
@@ -31,13 +33,14 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   private AliasService aliasService;
 
 
+  private Map<String, String> engineHandlers = new HashMap<>();
+
   public EngineCommunicatorImpl() {
   }
 
   @Override
   public void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler) {
 
-    AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
     String message = request.getIrcEvent().getMessage();
     message = resolveAlias(message);
     boolean between = StringStuff.isInBetween(message, "&&", ' ');
@@ -48,11 +51,40 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
         EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
         String trimmed = splitted.trim();
         splitRequest.getIrcEvent().setMessage(trimmed);
-        sender.sendRequest(splitRequest, engineEventHandler);
+        doSendRequest(splitRequest, engineEventHandler);
       }
     } else {
-      sender.sendRequest(request, engineEventHandler);
+      doSendRequest(request, engineEventHandler);
     }
+  }
+
+  private void doSendRequest(EngineRequest request, EngineEventHandler engineEventHandler) {
+    if (engineHandlers.size() == 0) {
+      log.error("No registered engines!!!");
+      return;
+    }
+    for (String engineAddress : engineHandlers.values()) {
+      AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
+      request.setEngineAddress(engineAddress);
+      sender.sendRequest(request, engineEventHandler);
+
+    }
+
+  }
+
+  @Override
+  public void addEngineHandler(String engineId, String engineAddress) {
+
+  }
+
+  @Override
+  public void removeEngineHandler(String engineId) {
+
+  }
+
+  @Override
+  public void clearEngineHandlers() {
+
   }
 
   private String resolveAlias(String line) {

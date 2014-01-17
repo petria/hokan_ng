@@ -13,4 +13,10 @@ public interface EngineCommunicator {
 
   void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler);
 
+  void addEngineHandler(String engineId, String engineAddress);
+
+  void removeEngineHandler(String engineId);
+
+  void clearEngineHandlers();
+
 }

@@ -13,6 +13,8 @@ public class EngineRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private IrcMessageEvent ircEvent;
+  private String engineAddress;
+
   private long myPid;
 
   public EngineRequest() {
@@ -38,4 +40,11 @@ public class EngineRequest implements Serializable {
     this.myPid = myPid;
   }
 
+  public String getEngineAddress() {
+    return engineAddress;
+  }
+
+  public void setEngineAddress(String engineAddress) {
+    this.engineAddress = engineAddress;
+  }
 }
