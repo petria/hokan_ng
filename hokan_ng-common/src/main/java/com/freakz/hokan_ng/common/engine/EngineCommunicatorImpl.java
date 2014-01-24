@@ -70,7 +70,6 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
       sender.sendRequest(request, engineEventHandler);
 
     }
-
   }
 
   @Override
@@ -97,6 +96,5 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
     }
     return line;
   }
-
 
 }

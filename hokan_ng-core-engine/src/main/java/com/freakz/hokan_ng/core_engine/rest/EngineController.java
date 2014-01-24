@@ -1,13 +1,9 @@
 package com.freakz.hokan_ng.core_engine.rest;
 
-import com.freakz.hokan_ng.common.engine.AsyncCoreMessageSender;
-import com.freakz.hokan_ng.common.engine.CoreEventHandler;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanEngineException;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.CoreRequest;
-import com.freakz.hokan_ng.common.rest.CoreResponse;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
@@ -27,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * Date: 29.5.2013
@@ -38,7 +36,7 @@ import java.util.Date;
 
 @Controller
 @Slf4j
-public class EngineController implements DisposableBean, CoreEventHandler {
+public class EngineController implements DisposableBean {
 
   @Autowired
   private ApplicationContext context;
@@ -52,6 +50,8 @@ public class EngineController implements DisposableBean, CoreEventHandler {
   @Autowired
   private UpdaterManagerService updaterManagerService;
 
+  @Resource(name = "core-engine-Properties")
+  private Properties engineProperties;
 
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
@@ -85,8 +85,12 @@ public class EngineController implements DisposableBean, CoreEventHandler {
     return response;
   }
 
+
   @PostConstruct
   public void postConstruct() throws HokanException {
+    String instanceKey = engineProperties.getProperty("INSTANCE_KEY");
+    log.info("My instanceKey = {}", instanceKey);
+
     this.updaterManagerService.start();
     propertyService.setProperty(PropertyName.PROP_SYS_CORE_ENGINE_UPTIME, "" + new Date().getTime());
   }
@@ -115,22 +119,4 @@ public class EngineController implements DisposableBean, CoreEventHandler {
     propertyService.saveProperty(property);
   }
 
-  private void registerEngine() {
-    AsyncCoreMessageSender sender = context.getBean(AsyncCoreMessageSender.class);
-    CoreRequest request = new CoreRequest();
-    request.setTargetChannelId(-1);
-    request.setMessage(null);
-    sender.sendRequest(request, this);
-
-  }
-
-  @Override
-  public void handleCoreResponse(CoreResponse response) {
-
-  }
-
-  @Override
-  public void handleCoreError(CoreResponse response) {
-
-  }
 }

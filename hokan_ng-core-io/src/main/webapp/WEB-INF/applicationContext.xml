@@ -20,6 +20,9 @@
 
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/hokan_ng-mysql"/>
 
+    <bean id="core-io-Properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:core-io.properties"/>
+    </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource"/>
