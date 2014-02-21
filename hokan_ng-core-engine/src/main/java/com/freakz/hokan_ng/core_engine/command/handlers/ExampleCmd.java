@@ -20,7 +20,7 @@ public class ExampleCmd extends Cmd {
 
   @Override
   public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    response.addResponse("example");
+    response.addResponse("example jojjooo");
   }
 
 }
