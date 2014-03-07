@@ -16,17 +16,13 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>com.arthurdo</groupId>
-            <artifactId>arthurdo</artifactId>
-            <version>1.0</version>
-        </dependency>
 
         <dependency>
-            <groupId>org.cheffo.jeplite</groupId>
-            <artifactId>jeplite</artifactId>
-            <version>0.8.7</version>
+            <groupId>com.freakz.hokan_ng</groupId>
+            <artifactId>hokan_ng-jeplite-custom</artifactId>
+            <version>1.0.0-custom</version>
         </dependency>
+
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
             <artifactId>hokan_ng-common</artifactId>

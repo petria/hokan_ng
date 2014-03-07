@@ -31,6 +31,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
   public List<User> getMasterUsers() throws HokanServiceException {
     List<User> masterUsers = new ArrayList<>();
     masterUsers.add(userService.findUser("_Pete_"));
+    masterUsers.add(userService.findUser("pairio"));
     masterUsers.add(userService.findUser("petria"));
     masterUsers.add(userService.findUser("petria_"));
     masterUsers.add(userService.findUser("cimistus"));
@@ -41,6 +42,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
   public List<User> getChannelOps(Channel channel) throws HokanServiceException {
     List<User> channelOps = new ArrayList<>();
     channelOps.add(userService.findUser("_Pete_"));
+    channelOps.add(userService.findUser("pairio"));
     channelOps.add(userService.findUser("petria"));
     channelOps.add(userService.findUser("petria_"));
     channelOps.add(userService.findUser("cimistus"));
@@ -54,7 +56,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     }
     try {
       for (User user : getChannelOps(ch)) {
-        if (user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
+        if (user != null && user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
           return true;
         }
       }
@@ -68,7 +70,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
   public boolean isMasterUser(IrcEvent ircEvent) {
     try {
       for (User user : getMasterUsers()) {
-        if (user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
+        if (user != null && user.getNick().equalsIgnoreCase(ircEvent.getSender())) {
           return true;
         }
       }

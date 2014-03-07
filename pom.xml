@@ -9,6 +9,8 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <modules>
+        <module>hokan_ng-jeplite-custom</module>
+        <module>hokan_ng-arthurdo-custom</module>
         <module>hokan_ng-pircbot-custom</module>
         <module>hokan_ng-common</module>
         <module>hokan_ng-core</module>

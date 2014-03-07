@@ -345,6 +345,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     ch.setLastWriter(sender);
 
     UserChannel userChannel = userChannelService.getUserChannel(user, ch);
+    if (userChannel == null) {
+        userChannel = new UserChannel(user, ch);
+    }
     userChannel.setLastMessage(message);
     userChannel.setLastMessageTime(new Date());
     try {

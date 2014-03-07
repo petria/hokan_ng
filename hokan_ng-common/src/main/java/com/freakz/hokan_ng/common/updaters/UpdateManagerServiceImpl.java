@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.common.updaters;
 
 import com.freakz.hokan_ng.common.engine.CommandPool;
 import com.freakz.hokan_ng.common.engine.CommandRunnable;
+import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,12 @@ public class UpdateManagerServiceImpl implements UpdaterManagerService, CommandR
   }
 
   public DataUpdater getUpdater(String updaterName) {
-    return handlers.get(updaterName);
+    for (DataUpdater updater : handlers.values()) {
+      if (StringStuff.match(updater.getUpdaterName(), updaterName, true)) {
+        return updater;
+      }
+    }
+    return null;
   }
 
   @Override
