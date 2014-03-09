@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
             <artifactId>hokan_ng-jeplite-custom</artifactId>
-            <version>1.0.0-custom</version>
+            <version>0.8.7a-custom</version>
         </dependency>
 
         <dependency>
