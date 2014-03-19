@@ -1,28 +1,11 @@
 package com.freakz.hokan_ng.common.engine;
 
-import com.freakz.hokan_ng.common.entity.Channel;
-import com.freakz.hokan_ng.common.entity.ChannelState;
-import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.entity.PropertyName;
-import com.freakz.hokan_ng.common.entity.User;
-import com.freakz.hokan_ng.common.entity.UserChannel;
+import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
-import com.freakz.hokan_ng.common.rest.EngineMethodCall;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
-import com.freakz.hokan_ng.common.rest.EngineResponse;
-import com.freakz.hokan_ng.common.rest.IrcEvent;
-import com.freakz.hokan_ng.common.rest.IrcEventFactory;
-import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
-import com.freakz.hokan_ng.common.service.AccessControlService;
-import com.freakz.hokan_ng.common.service.ChannelService;
-import com.freakz.hokan_ng.common.service.JoinedUsersService;
-import com.freakz.hokan_ng.common.service.NetworkService;
+import com.freakz.hokan_ng.common.rest.*;
+import com.freakz.hokan_ng.common.service.*;
 import com.freakz.hokan_ng.common.service.Properties;
-import com.freakz.hokan_ng.common.service.UrlLoggerService;
-import com.freakz.hokan_ng.common.service.UserChannelService;
-import com.freakz.hokan_ng.common.service.UserService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.freakz.hokan_ng.common.util.IRCUtility;
 import com.freakz.hokan_ng.common.util.StringStuff;
@@ -34,11 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Date: 3.6.2013
@@ -218,6 +197,8 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     log.info("UNKNOWN: {}", line);
     if (line.contains("Ping timeout")) {
       this.engineConnector.engineConnectorPingTimeout(this);
+    } else if (line.toLowerCase().contains("excess flood")) {
+      this.engineConnector.engineConnectorExcessFlood(this);
     }
   }
 

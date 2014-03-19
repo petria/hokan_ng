@@ -4,13 +4,7 @@ import com.freakz.hokan_ng.common.engine.AsyncConnector;
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.engine.EngineConnector;
 import com.freakz.hokan_ng.common.engine.HokanCore;
-import com.freakz.hokan_ng.common.entity.Channel;
-import com.freakz.hokan_ng.common.entity.ChannelState;
-import com.freakz.hokan_ng.common.entity.IrcServerConfig;
-import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
-import com.freakz.hokan_ng.common.entity.Network;
-import com.freakz.hokan_ng.common.entity.Property;
-import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
@@ -27,11 +21,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Date: 11/1/13
@@ -306,6 +296,18 @@ public class ConnectionManagerServiceImpl
     } catch (HokanServiceException e) {
       log.error("Couldn't re-connect after ping timeout!", e);
     }
+  }
+
+  @Override
+  public void engineConnectorExcessFlood(HokanCore hokanCore) {
+    log.info("Engine Excess Flood: {}", hokanCore);
+    try {
+      this.connectedEngines.remove(hokanCore.getIrcServerConfig().getNetwork().getName());
+      connect(hokanCore.getIrcServerConfig().getNetwork().getName());
+    } catch (HokanServiceException e) {
+      log.error("Couldn't re-connect after Excess Flood!", e);
+    }
+
   }
 
   @Scheduled(fixedDelay = 30000)
