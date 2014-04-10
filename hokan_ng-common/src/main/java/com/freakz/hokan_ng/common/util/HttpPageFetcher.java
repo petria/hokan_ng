@@ -4,11 +4,7 @@ package com.freakz.hokan_ng.common.util;
 import com.arthurdo.parser.HtmlStreamTokenizer;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -33,7 +29,7 @@ import java.net.URLConnection;
 public class HttpPageFetcher {
 
   public final static String USER_AGENT
-      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0";
+      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
 
   private static long bytesIn = 0;
 
