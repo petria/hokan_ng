@@ -23,10 +23,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "Channel")
-@NamedQueries({
-    @NamedQuery(name = "CHANNEL.findChannel", query = "SELECT ch FROM Channel ch WHERE ch.network = ?1 AND ch.channelName = ?2"),
-    @NamedQuery(name = "CHANNEL.getReportChannels", query = "SELECT ch FROM Channel ch WHERE ch.reportChannel > 0"),
-})
 public class Channel implements Serializable {
 
   @Id

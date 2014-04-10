@@ -7,6 +7,8 @@ import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,9 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_TO;
 @Scope("prototype")
 @Slf4j
 public class ConvertCmd extends Cmd {
+
+  @Autowired
+  ApplicationContext context;
 
   public ConvertCmd() {
     super();
@@ -65,7 +70,8 @@ public class ConvertCmd extends Cmd {
     String url = "http://www.google.com/finance/converter?a=" + amount + "&from=" + from + "&to=" + to;
     HttpPageFetcher page;
     try {
-      page = new HttpPageFetcher(url);
+      page = context.getBean(HttpPageFetcher.class);
+      page.fetch(url);
     } catch (Exception e) {
       return e.getMessage();
     }

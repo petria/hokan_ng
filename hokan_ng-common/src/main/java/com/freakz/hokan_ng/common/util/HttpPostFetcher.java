@@ -22,14 +22,18 @@ import java.net.URLEncoder;
 @Slf4j
 public class HttpPostFetcher {
 
+  private String USER_AGENT
+      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
+
   private StringBuilder _htmlBuffer;
   private int _bytesIn;
 
-  public HttpPostFetcher(String urlStr, String encoding, String... params) throws IOException {
+  // TODO Springify!
+  private HttpPostFetcher(String urlStr, String encoding, String... params) throws IOException {
 
     URL url = new URL(urlStr);
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestProperty("User-Agent", HttpPageFetcher.USER_AGENT);
+    connection.setRequestProperty("User-Agent", USER_AGENT);
     connection.setRequestMethod("POST");
     connection.setDoOutput(true);
 

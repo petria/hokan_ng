@@ -4,6 +4,8 @@ import com.freakz.hokan_ng.common.updaters.Updater;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ import java.util.StringTokenizer;
 @Slf4j
 public class WeatherUpdater extends Updater {
 
+  @Autowired
+  ApplicationContext context;
+
   private final static String URL =
       "http://www.tiehallinto.fi/alk/tiesaa/tiesaa_maak_";
 
@@ -45,7 +50,8 @@ public class WeatherUpdater extends Updater {
       String url = URL + xx + ".html";
       HttpPageFetcher pf;
       try {
-        pf = new HttpPageFetcher(url, "8859_1");
+        pf = context.getBean(HttpPageFetcher.class);
+        pf.fetch(url, "8859_1");
       } catch (Exception e) {
         log.info("\nINVALID URL: {} -> {}", url, e.getCause());
         continue;

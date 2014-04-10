@@ -19,14 +19,6 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "TvNotify")
-@NamedQueries({
-    @NamedQuery(name = "TVNOTIFY.getAllTvNotifies", query = "SELECT notify FROM TvNotify notify"),
-    @NamedQuery(name = "TVNOTIFY.getTvNotifiesByChannel", query = "SELECT notify FROM TvNotify notify WHERE notify.channel = ?1"),
-    @NamedQuery(name = "TVNOTIFY.findTvNotify", query = "SELECT notify FROM TvNotify notify WHERE notify.notifyPattern = ?1 AND notify.channel = ?2"),
-    @NamedQuery(name = "TVNOTIFY.deleteAll", query = "DELETE FROM TvNotify")
-//    @NamedQuery(name = "TVNOTIFY.deleteByChannel", query = "DELETE FROM TvNotify WHERE notify.channel = ?1")
-})
-
 public class TvNotify implements Serializable {
 
   @Id

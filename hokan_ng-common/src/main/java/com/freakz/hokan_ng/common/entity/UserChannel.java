@@ -19,12 +19,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "UserChannel")
-/*@NamedQueries({
-
-    @NamedQuery(name = "USER_CHANNEL.findUserChannels", query = "SELECT userChannel FROM UserChannel userChannel WHERE userChannel.user = ?1 ORDER BY userChannel.channel.network.networkName, userChannel.lastMessageTime DESC"),
-    @NamedQuery(name = "USER_CHANNEL.getUserChannel", query = "SELECT userChannel FROM UserChannel userChannel WHERE userChannel.user = ?1 AND userChannel.channel =?2")
-
-})*/
 public class UserChannel implements Serializable {
 
   @Id

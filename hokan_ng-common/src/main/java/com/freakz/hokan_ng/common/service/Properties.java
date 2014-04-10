@@ -16,6 +16,8 @@ import java.util.List;
  */
 public interface Properties {
 
+  String getPropertyAsString(PropertyName name, String def);
+
   int getPropertyAsInt(PropertyName property, int def);
 
   long getPropertyAsLong(PropertyName property, long def);

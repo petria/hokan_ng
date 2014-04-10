@@ -38,7 +38,7 @@ public class PropertyServiceImpl implements PropertyService {
     try {
       return propertyDAO.findProperty(name);
     } catch (Exception e) {
-      log.error("findProperty: " + name, e);
+      //log.error("findProperty: " + name, e);
       //
     }
     return null;

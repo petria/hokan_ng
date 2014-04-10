@@ -19,17 +19,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "Url")
-@NamedQueries({
-    @NamedQuery(name = "URL.findUrl", query = "SELECT url FROM Url url WHERE url.url = ?1"),
-    @NamedQuery(name = "URL.findUrls", query = "SELECT url FROM Url url ORDER BY url.created DESC"),
-    @NamedQuery(name = "URL.findUrlsLike", query = "SELECT url FROM Url url WHERE url.url LIKE ?1 ORDER BY url.created DESC"),
-    @NamedQuery(name = "URL.findUrlsLikeTitle", query = "SELECT url FROM Url url WHERE url.urlTitle LIKE ?1 ORDER BY url.created DESC"),
-    @NamedQuery(name = "URL.findUrlsLikeAndNick", query = "SELECT url FROM Url url WHERE url.url LIKE ?1 AND url.sender = ?2 ORDER BY url.created DESC "),
-    @NamedQuery(name = "URL.findUrlsByNick", query = "SELECT url FROM Url url WHERE url.sender = ?1 ORDER BY url.created DESC "),
-    @NamedQuery(name = "URL.findUrlsByChannel", query = "SELECT url FROM Url url WHERE url.channel = ?1 ORDER BY url.created DESC "),
-    @NamedQuery(name = "URL.findTopSenderByChannel", query = "SELECT url, count(url) FROM Url url WHERE url.channel = ?1 GROUP BY url.sender ORDER BY 2 DESC"),
-    @NamedQuery(name = "URL.findTopSender", query = "SELECT url, count(url) FROM Url url GROUP BY url.sender ORDER BY 2 DESC")
-})
 public class Url implements Serializable {
 
   @Id

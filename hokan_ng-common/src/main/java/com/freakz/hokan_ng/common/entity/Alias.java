@@ -19,10 +19,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "Alias")
-@NamedQueries({
-    @NamedQuery(name = "ALIAS.findAlias", query = "SELECT alias FROM Alias alias WHERE alias.alias= ?1"),
-    @NamedQuery(name = "ALIAS.findAliases", query = "SELECT alias FROM Alias alias ORDER BY alias.alias"),
-})
 public class Alias implements Serializable {
 
   @Id

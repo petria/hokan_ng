@@ -23,7 +23,7 @@
         <org.springframework.security.version>3.1.3.RELEASE</org.springframework.security.version>
         <org.hibernate.version>4.2.6.Final</org.hibernate.version>
         <org.codehaus.jackson.version>2.1.1</org.codehaus.jackson.version>
-        <org.projectlombok.version>0.12.0</org.projectlombok.version>
+        <org.projectlombok.version>1.12.6.</org.projectlombok.version>
         <ch.qos.logback.version>1.0.7</ch.qos.logback.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -98,7 +98,8 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>${org.projectlombok.version}</version>
+                <version>1.12.6</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -247,31 +248,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>1.9.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hsqldb</groupId>
-                <artifactId>hsqldb</artifactId>
-                <version>2.2.8</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.portlet</groupId>
-                <artifactId>portlet-api</artifactId>
-                <version>2.0</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>2.5</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
-                <version>1.2</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>

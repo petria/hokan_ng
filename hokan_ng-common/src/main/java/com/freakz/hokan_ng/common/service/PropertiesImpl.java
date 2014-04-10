@@ -56,6 +56,12 @@ public class PropertiesImpl implements Properties {
   }
 
   @Override
+  public String getPropertyAsString(PropertyName name, String def) {
+    Property property = getProperty(name, def);
+    return property.getValue();
+  }
+
+  @Override
   public int getPropertyAsInt(PropertyName name, int def) {
     Property property = getProperty(name, def);
     return Integer.parseInt(property.getValue());

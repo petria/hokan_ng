@@ -100,10 +100,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path-assert</artifactId>
             <version>0.8.1</version>
@@ -135,12 +131,7 @@
             <artifactId>commons-dbcp</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.portlet</groupId>
-            <artifactId>portlet-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
+          <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

@@ -2,11 +2,15 @@ package com.freakz.hokan_ng.common.util;
 
 
 import com.arthurdo.parser.HtmlStreamTokenizer;
+import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.service.Properties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 /**
  * This class is used to fetch www-pages from the http-servers.
@@ -26,10 +30,13 @@ import java.net.URLConnection;
  * @author Petri Airio
  */
 @Slf4j
+@Component
+@Scope("prototype")
 public class HttpPageFetcher {
 
-  public final static String USER_AGENT
-      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
+  @Autowired
+  private Properties properties;
+
 
   private static long bytesIn = 0;
 
@@ -38,44 +45,49 @@ public class HttpPageFetcher {
   private StringBuffer htmlBuffer;
   private String line = null;
   private BufferedReader lines;
-  private HtmlStreamTokenizer tok;
 
-  /**
-   * Constructs pagefetcher for given urlStr. No links are collected from the
-   * HTML code
-   * <p/>
-   *
-   * @param urlStr the URL where to fetch the page
-   * @throws Exception
-   */
-  public HttpPageFetcher(String urlStr) throws Exception {
 
-    this(urlStr, null);
-
+  public HttpPageFetcher() {
   }
 
-  /**
-   * Constructs pagefetcher for given urlStr. No links on fetched page matching linkPattern parameter will be catched.
-   * Use getCatchedUrls() method to retrieve them.
-   * <p/>
-   *
-   * @param urlStr   the URL where to fetch the page
-   * @param encoding encoding
-   * @throws Exception
-   */
-  public HttpPageFetcher(String urlStr, String encoding) throws Exception {
+  public void fetch(String urlStr) throws Exception {
+    fetch(urlStr, "UTF-8");
+  }
+
+    /**
+     * @param urlStr   the URL where to fetch the page
+     * @param encoding encoding
+     * @throws Exception
+     */
+  public void fetch(String urlStr, String encoding) throws Exception {
 
     URL url = new URL(urlStr);
-    URLConnection conn = url.openConnection();
-    conn.setRequestProperty("User-Agent", USER_AGENT);
+    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+
+    URLConnection conn;
+    if (proxyHost != null && proxyPort != -1) {
+      SocketAddress address = new
+          InetSocketAddress(proxyHost, proxyPort);
+      Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+      log.info("Using proxy: {}", proxy);
+      conn = url.openConnection(proxy);
+    } else {
+      conn = url.openConnection();
+    }
+    String userAgent = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USERAGENT, null);
+    if (userAgent != null) {
+      conn.setRequestProperty("User-Agent", userAgent);
+    } else {
+      String USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
+      conn.setRequestProperty("User-Agent", USER_AGENT);
+    }
     String headerEncoding;
     if (encoding != null) {
       headerEncoding = encoding;
     } else {
       headerEncoding = getEncodingFromHeaders(conn);
     }
-
-//    LOG.info("headerEncoding  = " + headerEncoding);
 
     InputStream in = conn.getInputStream();
     InputStreamReader isr = new InputStreamReader(in, headerEncoding);
@@ -98,7 +110,7 @@ public class HttpPageFetcher {
       }
     } while (l != null);
 
-    tok = new HtmlStreamTokenizer(new StringReader(htmlBuffer.toString()));
+    HtmlStreamTokenizer tok = new HtmlStreamTokenizer(new StringReader(htmlBuffer.toString()));
 
     textBuffer = new StringBuffer();
     while (tok.nextToken() != HtmlStreamTokenizer.TT_EOF) {

@@ -5,6 +5,8 @@ import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ import java.util.List;
 //@Scope("prototype")
 @Slf4j
 public class HoroUpdater extends Updater {
+
+  @Autowired
+  ApplicationContext context;
 
   public final static String[] HORO_NAMES =
       {"Oinas", "Härkä", "Kaksoset", "Rapu", "Leijona", "Neitsyt",
@@ -65,7 +70,8 @@ public class HoroUpdater extends Updater {
   public List<HoroHolder> updateIL() throws Exception {
     List<HoroHolder> horos = new ArrayList<HoroHolder>();
     String url = "http://www.iltalehti.fi/viihde/horoskooppi1_ho.shtml";
-    HttpPageFetcher page = new HttpPageFetcher(url, "ISO-8859-1");
+    HttpPageFetcher page = context.getBean(HttpPageFetcher.class);
+    page.fetch(url, "ISO-8859-1");
 
     String horoLine = page.findLine("Oinas 21.*", false);
 

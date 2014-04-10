@@ -10,8 +10,9 @@ import com.freakz.hokan_ng.common.entity.Url;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * User: petria
  * Date: 12/14/13
@@ -35,6 +38,9 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class UrlLoggerServiceImpl implements UrlLoggerService {
+
+  @Autowired
+  ApplicationContext context;
 
   @Autowired
   private CommandPool commandPool;
@@ -75,8 +81,8 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
             final String START_TAG = "<title>";
             final String END_TAG = "</title>";
 
-            HttpPageFetcher page;
-            page = new HttpPageFetcher(url, encoding);
+            HttpPageFetcher page = context.getBean(HttpPageFetcher.class);
+            page.fetch(url, encoding);
 
             String html = page.getHtmlBuffer().toString().replaceAll("\n|\r", "");
             html = html.replaceAll("<TITLE>", "<title>");
@@ -135,7 +141,8 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   }
 
   public String getIMDBData(String url) throws Exception {
-    HttpPageFetcher page = new HttpPageFetcher(url, "UTF-8");
+    HttpPageFetcher page = context.getBean(HttpPageFetcher.class);
+    page.fetch(url, "UTF-8");
 
     String html = page.getHtmlBuffer().toString().replaceAll("\n|\r", "");
     Pattern pattern = Pattern.compile("<span itemprop=\"ratingValue\">(.*?)</span>.*<span itemprop=\"ratingCount\">(.*?)</span> users</a>");
