@@ -19,7 +19,7 @@ public enum PropertyName {
   PROP_SYS_EXEC_USERS("sys.ExecUsers"),
   PROP_SYS_HTTP_PROXY_HOST("sys.HttpProxyHost"),
   PROP_SYS_HTTP_PROXY_PORT("sys.HttpProxyPort"),
-  PROP_SYS_HTTP_USERAGENT("sys.UserAgent"),
+  PROP_SYS_HTTP_USER_AGENT("sys.HttpUserAgent"),
   PROP_SYS_IGNORE("sys.Ignore"),
   PROP_SYS_MAX_CONNECTION_RETRY("sys.MaxConnectionRetry"),
   PROP_SYS_SUPER_USERS("sys.SuperUsers"),

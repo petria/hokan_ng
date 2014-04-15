@@ -21,4 +21,7 @@ public interface UrlLoggerService {
   List<Url> findUrls(String url, String... nick);
 
   Url findUrl(String url, String... nick);
+
+  String createShortUrl(String longUrl);
+
 }

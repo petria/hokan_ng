@@ -1,13 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,6 +24,9 @@ public class Url implements Serializable {
 
   @Column(name = "URL_TITLE", length = 1024)
   private String urlTitle;
+
+  @Column(name = "SHORT_URL", length = 1024)
+  private String shortUrl;
 
   @Column(name = "SENDER")
   private String sender;
@@ -79,6 +75,14 @@ public class Url implements Serializable {
 
   public void setSender(String sender) {
     this.sender = sender;
+  }
+
+  public String getShortUrl() {
+    return shortUrl;
+  }
+
+  public void setShortUrl(String shortUrl) {
+    this.shortUrl = shortUrl;
   }
 
   public String getChannel() {

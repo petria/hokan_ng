@@ -1,15 +1,16 @@
 package com.freakz.hokan_ng.common.util;
 
+import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.service.Properties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
+
+import static com.freakz.hokan_ng.common.util.StaticStrings.HTTP_USER_AGENT;
 
 /**
  * <br>
@@ -20,20 +21,36 @@ import java.net.URLEncoder;
  * <p/>
  */
 @Slf4j
+@Component
+@Scope("prototype")
 public class HttpPostFetcher {
 
-  private String USER_AGENT
-      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
+  @Autowired
+  private Properties properties;
 
   private StringBuilder _htmlBuffer;
-  private int _bytesIn;
 
-  // TODO Springify!
-  private HttpPostFetcher(String urlStr, String encoding, String... params) throws IOException {
+  public HttpPostFetcher() {
+  }
+
+  public void fetch(String urlStr, String encoding, String... params) throws IOException {
 
     URL url = new URL(urlStr);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestProperty("User-Agent", USER_AGENT);
+    String proxyHost = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_PROXY_HOST, null);
+    int proxyPort = properties.getPropertyAsInt(PropertyName.PROP_SYS_HTTP_PROXY_PORT, -1);
+
+    URLConnection conn;
+    if (proxyHost != null && proxyPort != -1) {
+      SocketAddress address = new
+          InetSocketAddress(proxyHost, proxyPort);
+      Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+      conn = url.openConnection(proxy);
+    } else {
+      conn = url.openConnection();
+    }
+
+    HttpURLConnection connection = (HttpURLConnection) conn;
+    connection.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
     connection.setRequestMethod("POST");
     connection.setDoOutput(true);
 
@@ -48,6 +65,7 @@ public class HttpPostFetcher {
     }
     out.println(sb.toString());
     out.close();
+
 
     String headerEncoding;
     if (encoding != null) {
@@ -66,12 +84,10 @@ public class HttpPostFetcher {
     String line;
     while ((line = br.readLine()) != null) {
       _htmlBuffer.append(line);
-//      _htmlBuffer.append("\n");
-      _bytesIn += line.length();
     }
     in.close();
 
-    log.info("HttpPost fetched: " + urlStr + " --> " + _bytesIn);
+    log.info("HttpPost fetched: " + urlStr);
 
   }
 
@@ -82,11 +98,5 @@ public class HttpPostFetcher {
     return _htmlBuffer.toString();
   }
 
-  /**
-   * @return amount of characters read from the URL
-   */
-  public int getBytesIn() {
-    return _bytesIn;
-  }
 
 }

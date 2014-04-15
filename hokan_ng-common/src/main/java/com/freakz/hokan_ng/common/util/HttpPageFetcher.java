@@ -12,22 +12,9 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.net.*;
 
+import static com.freakz.hokan_ng.common.util.StaticStrings.HTTP_USER_AGENT;
+
 /**
- * This class is used to fetch www-pages from the http-servers.
- * The class can be constructed two different ways:
- * <p/>
- * <code>HttpPageFetcher("http://example/");</code>
- * <p/>
- * This one tries to connect to the http://exmaple/ URL and fetch the page.
- * <p><p>
- * <code>HttpPageFetcher("http://example/", "http://sparc4.homeunix.net.*");</code>
- * <p/>
- * This one again tries to connect to http://exmaple/ URL. While reading the page
- * in buffer, if there's any HTTP tag <A> which HREF contains the regular expression
- * given as a second parameter to the constructor, the URL will be stored. All stored URLs
- * can later asked from the class.
- *
- * @author Petri Airio
  */
 @Slf4j
 @Component
@@ -37,14 +24,13 @@ public class HttpPageFetcher {
   @Autowired
   private Properties properties;
 
-
   private static long bytesIn = 0;
 
-  private boolean flag = true;
-  private StringBuffer textBuffer;
-  private StringBuffer htmlBuffer;
-  private String line = null;
-  private BufferedReader lines;
+  protected boolean flag = true;
+  protected StringBuffer textBuffer;
+  protected StringBuffer htmlBuffer;
+  protected String line = null;
+  protected BufferedReader lines;
 
 
   public HttpPageFetcher() {
@@ -70,18 +56,13 @@ public class HttpPageFetcher {
       SocketAddress address = new
           InetSocketAddress(proxyHost, proxyPort);
       Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-      log.info("Using proxy: {}", proxy);
+//      log.info("Using proxy: {}", proxy);
       conn = url.openConnection(proxy);
     } else {
       conn = url.openConnection();
     }
-    String userAgent = properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USERAGENT, null);
-    if (userAgent != null) {
-      conn.setRequestProperty("User-Agent", userAgent);
-    } else {
-      String USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
-      conn.setRequestProperty("User-Agent", USER_AGENT);
-    }
+    conn.setRequestProperty("User-Agent", properties.getPropertyAsString(PropertyName.PROP_SYS_HTTP_USER_AGENT, HTTP_USER_AGENT));
+
     String headerEncoding;
     if (encoding != null) {
       headerEncoding = encoding;
@@ -125,6 +106,7 @@ public class HttpPageFetcher {
     HtmlStreamTokenizer.unescape(textBuffer);
     reset();
   }
+
 
   public static String getEncodingFromHeaders(URLConnection conn) {
     String encoding = "utf-8";

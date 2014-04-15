@@ -23,6 +23,8 @@ public class StaticStrings {
   public static final String ARG_HORO = "Horo";
   public static final String ARG_ID = "ID";
   public static final String ARG_JOIN_MSG = "JoinMsg";
+  public static final String ARG_CITY_1 = "City1";
+  public static final String ARG_CITY_2 = "City2";
   public static final String ARG_MASK = "Mask";
   public static final String ARG_MESSAGE = "Message";
   public static final String ARG_NAME = "Name";
@@ -39,9 +41,13 @@ public class StaticStrings {
   public static final String ARG_STATION = "Station";
   public static final String ARG_TO = "To";
   public static final String ARG_UPDATER = "Updater";
+  public static final String ARG_URL = "Url";
   public static final String ARG_URL_PATTERN = "UrlPattern";
   public static final String ARG_VERBOSE = "Verbose";
   public static final String ARG_WORD = "Word";
 
+
+  public static final String HTTP_USER_AGENT
+      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0";
 
 }

@@ -10,7 +10,7 @@ import com.freakz.hokan_ng.common.entity.Url;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.freakz.hokan_ng.common.util.StringStuff;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,11 @@ import javax.swing.*;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: petria
@@ -75,7 +72,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
           editorPane.setPage(new URL(url));
           title = (String) editorPane.getDocument().getProperty("title");
 
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
           log.info("Reverting to old <title> finding method: " + ioe.getMessage());
           try {
             final String START_TAG = "<title>";
@@ -93,9 +90,6 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
           } catch (Exception e) {
             log.error("Urls", e);
           }
-
-        } catch (Exception e) {
-          log.error("Urls", e);
         }
 
         if (title != null) {
@@ -183,7 +177,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
    * means this should not block as then it's preventing any further command executing while doing so.</b>
    *
    * @param iEvent the incoming IrcEvent
-   * @param ch
+   * @param ch the Wanha report channel
    */
   public void catchUrls(IrcMessageEvent iEvent, Channel ch, HokanCore core) {
 
@@ -226,5 +220,30 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   @Override
   public Url findUrl(String url, String... nick) {
     return urlDAO.findUrl(url, nick);
+  }
+
+  @Override
+  public String createShortUrl(String longUrl) {
+    HttpPageFetcher pageFetcher = context.getBean(HttpPageFetcher.class);
+    String url = "http://www.shorturl.com/make_url.php?longurl=" + longUrl;
+    try {
+      pageFetcher.fetch(url, "UTF-8");
+    } catch (Exception e) {
+      log.info("Short URL creation failed", e);
+      return null;
+    }
+
+    String html = pageFetcher.getHtmlBuffer().toString().replaceAll("\n", " ");
+    Pattern p = Pattern.compile(".*value = \"(.*?)\">.*");
+    Matcher m = p.matcher(html);
+    String match;
+    if (m.matches()) {
+      match = m.group(1);
+      match = match.substring(0, match.lastIndexOf("/"));
+
+      return match;
+
+    }
+    return null;
   }
 }

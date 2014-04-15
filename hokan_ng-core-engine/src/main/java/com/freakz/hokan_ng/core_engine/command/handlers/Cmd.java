@@ -10,21 +10,12 @@ import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
-import com.martiansoftware.jsap.IDMap;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: petria
@@ -41,6 +32,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   private CommandPool commandPool;
+
+  @Autowired
+  protected ApplicationContext context;
 
   protected JSAP jsap;
 
@@ -70,7 +64,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     } catch (JSAPException e) {
       log.error("Error registering command parameter", e);
     }
+
   }
+
 
   public String getMatchPattern() {
     return String.format("!%s.*", getName().toLowerCase());
