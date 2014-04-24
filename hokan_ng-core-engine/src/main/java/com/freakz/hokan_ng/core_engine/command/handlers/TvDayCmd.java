@@ -2,7 +2,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.Properties;
@@ -44,7 +43,7 @@ public class TvDayCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     InternalRequest ir = (InternalRequest) request;
     boolean notifyInUse = properties.getChannelPropertyAsBoolean(ir.getChannel(), PropertyName.PROP_CHANNEL_DO_TVNOTIFY, false);
     if (notifyInUse == false) {

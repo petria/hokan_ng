@@ -3,7 +3,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
@@ -19,14 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_EMAIL;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_FLAGS;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_FULL_NAME;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_JOIN_MSG;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_MASK;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_NICK;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PHONE;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_VERBOSE;
+import static com.freakz.hokan_ng.common.util.StaticStrings.*;
 
 /**
  * User: petria
@@ -101,7 +93,7 @@ public class UserModCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     InternalRequest ir = (InternalRequest) request;
     String mask = results.getString(ARG_MASK);
     String target = results.getString(ARG_NICK, "me");

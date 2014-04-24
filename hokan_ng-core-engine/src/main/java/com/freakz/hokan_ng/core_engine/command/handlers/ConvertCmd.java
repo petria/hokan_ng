@@ -1,8 +1,8 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.util.HttpPageFetcher;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
@@ -12,9 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_AMOUNT;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_FROM;
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_TO;
+import static com.freakz.hokan_ng.common.util.StaticStrings.*;
 
 /**
  * User: petria
@@ -52,7 +50,7 @@ public class ConvertCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String amount = results.getString(ARG_AMOUNT);
     String from = results.getString(ARG_FROM);
     String to = results.getString(ARG_TO);

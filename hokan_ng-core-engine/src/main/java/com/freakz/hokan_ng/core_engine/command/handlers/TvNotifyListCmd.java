@@ -2,7 +2,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.TvNotify;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.TvNotifyService;
@@ -35,10 +34,9 @@ public class TvNotifyListCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest iRequest = (InternalRequest) request;
-    List<TvNotify> notifies = tvNotifyService.getTvNotifies(iRequest.getChannel());
-    response.addResponse("Keywords currently on TV notify in channel %s:", iRequest.getChannel().getChannelName());
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    List<TvNotify> notifies = tvNotifyService.getTvNotifies(request.getChannel());
+    response.addResponse("Keywords currently on TV notify in channel %s:", request.getChannel().getChannelName());
     for (TvNotify notify : notifies) {
       response.addResponse(" %d: %s", notify.getId(), notify.getNotifyPattern());
     }

@@ -2,8 +2,8 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.Uptime;
@@ -42,7 +42,7 @@ public class UptimeCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     JarScriptExecutor cmdExecutor = new JarScriptExecutor("/uptime.sh", "UTF-8");
     String[] sysUptime = cmdExecutor.executeJarScript();
     long coreIoUptime = properties.getPropertyAsLong(PropertyName.PROP_SYS_CORE_IO_UPTIME, 0);

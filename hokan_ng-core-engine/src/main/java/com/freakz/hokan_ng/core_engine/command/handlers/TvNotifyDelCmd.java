@@ -2,7 +2,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.TvNotify;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.TvNotifyService;
@@ -41,21 +40,19 @@ public class TvNotifyDelCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
     String program = results.getString(ARG_PROGRAM);
     if (program.equals("all")) {
-      int removed = tvNotifyService.delTvNotifies(ir.getChannel());
+      int removed = tvNotifyService.delTvNotifies(request.getChannel());
       response.addResponse("Removed %d TvNotifies.", removed);
-      return;
     } else {
       TvNotify notify;
       try {
         long id = Long.parseLong(program);
         notify = tvNotifyService.getTvNotifyById(id);
       } catch (NumberFormatException e) {
-        notify = tvNotifyService.getTvNotify(ir.getChannel(), program);
+        notify = tvNotifyService.getTvNotify(request.getChannel(), program);
       }
       if (notify != null) {
         tvNotifyService.delTvNotify(notify);

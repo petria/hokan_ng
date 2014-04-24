@@ -1,8 +1,8 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuService;
 import com.freakz.hokan_ng.common.util.StringStuff;
@@ -44,7 +44,7 @@ public class TvFindCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     if (!tv.isReady()) {
       response.addResponse("Telkku data not loaded yet! Try again later...");
       return;

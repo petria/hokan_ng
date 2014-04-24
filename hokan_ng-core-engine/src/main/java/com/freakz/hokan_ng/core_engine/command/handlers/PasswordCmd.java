@@ -1,7 +1,6 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.util.StringStuff;
@@ -45,13 +44,12 @@ public class PasswordCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String password1 = results.getString(ARG_NEW_PASSWORD1);
     String password2 = results.getString(ARG_NEW_PASSWORD2);
     if (password1.equals(password2)) {
-      ir.getUser().setPassword(StringStuff.md5(password1));
-      ir.updateUser();
+      request.getUser().setPassword(StringStuff.md5(password1));
+      request.updateUser();
       response.addResponse("Password changed to: %s", password1);
     } else {
       response.addResponse("New passwords mismatch!");

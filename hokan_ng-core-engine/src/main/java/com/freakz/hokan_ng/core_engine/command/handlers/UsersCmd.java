@@ -2,7 +2,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.UserService;
@@ -46,8 +45,7 @@ public class UsersCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String nick = results.getString(ARG_NICK);
     if (nick == null) {
       nick = ".*";

@@ -3,7 +3,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.Properties;
@@ -45,8 +44,7 @@ public class ChanSetCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest iRequest = (InternalRequest) request;
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String[] split = results.getString(ARG_PROPERTY).split("=");
     if (split.length != 2) {
       response.addResponse("Syntax error, usage: %s <PropertyName>=<Value>", getName());
@@ -58,7 +56,7 @@ public class ChanSetCmd extends Cmd {
       response.addResponse("Invalid property: %s", split[0]);
       return;
     }
-    ChannelProperty chanProp = new ChannelProperty(iRequest.getChannel(), propertyName, split[1], "");
+    ChannelProperty chanProp = new ChannelProperty(request.getChannel(), propertyName, split[1], "");
     chanProp = properties.saveChannelProperty(chanProp);
     response.addResponse("Property set: %s", chanProp.toString());
   }

@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.springframework.context.annotation.Scope;
@@ -45,7 +45,7 @@ public class JoinCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) {
     String channel = results.getString(ARG_CHANNEL);
     String password = results.getString(ARG_PASSWORD);
 

@@ -5,8 +5,8 @@ import com.freakz.hokan_ng.common.entity.ChannelState;
 import com.freakz.hokan_ng.common.entity.JoinedUser;
 import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.JoinedUsersService;
 import com.freakz.hokan_ng.common.service.NetworkService;
@@ -49,7 +49,7 @@ public class JoinedCmd extends Cmd {
   }
 
   @Override
-  public void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
     StringBuilder sb = new StringBuilder();
     List<Network> networks = networkService.getNetworks();

@@ -4,7 +4,6 @@ package com.freakz.hokan_ng.core_engine.command.handlers;
 import com.freakz.hokan_ng.common.engine.CommandPool;
 import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
@@ -142,8 +141,8 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return seeAlsoHelp;
   }
 
-  public void handleLine(EngineRequest request, EngineResponse response) throws Exception {
-    IrcMessageEvent ircEvent = (IrcMessageEvent) request.getIrcEvent();
+  public void handleLine(InternalRequest request, EngineResponse response) throws Exception {
+    IrcMessageEvent ircEvent = request.getIrcEvent();
     CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
     response.setCommandClass(this.getClass().toString());
@@ -180,7 +179,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   }
 
   public static class ArgsWrapper {
-    public EngineRequest request;
+    public InternalRequest request;
     public EngineResponse response;
     public JSAPResult results;
   }
@@ -191,18 +190,17 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     handleRequest(wrapper.request, wrapper.response, wrapper.results);
   }
 
-  public abstract void handleRequest(EngineRequest request, EngineResponse response, JSAPResult results) throws HokanException;
+  public abstract void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
-  private boolean checkAccess(EngineRequest request, EngineResponse response) {
-    InternalRequest ir = (InternalRequest) request;
+  private boolean checkAccess(InternalRequest request, EngineResponse response) {
 
-    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    IrcMessageEvent ircMessageEvent = request.getIrcEvent();
     isLoggedIn = false; // TODO
     isPublic = !ircMessageEvent.isPrivate();
     isPrivate = ircMessageEvent.isPrivate();
     isToBot = ircMessageEvent.isToMe();
     isMasterUser = accessControlService.isMasterUser(ircMessageEvent);
-    isChannelOp = accessControlService.isChannelOp(ircMessageEvent, ir.getChannel());
+    isChannelOp = accessControlService.isChannelOp(ircMessageEvent, request.getChannel());
 
     boolean ret = true;
 

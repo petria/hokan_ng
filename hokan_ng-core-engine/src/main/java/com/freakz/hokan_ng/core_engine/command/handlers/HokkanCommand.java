@@ -1,7 +1,7 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
+import com.freakz.hokan_ng.common.rest.InternalRequest;
 
 /**
  * User: petria
@@ -16,6 +16,6 @@ public interface HokkanCommand {
 
   String getName();
 
-  void handleLine(EngineRequest request, EngineResponse response) throws Exception;
+  void handleLine(InternalRequest request, EngineResponse response) throws Exception;
 
 }
