@@ -21,8 +21,8 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
     super();
   }
 
-  public IrcMessageEvent(String network, String channel, String sender, String login, String hostname, String message) {
-    super(network, channel, sender, login, hostname);
+  public IrcMessageEvent(String botNick, String network, String channel, String sender, String login, String hostname, String message) {
+    super(botNick, network, channel, sender, login, hostname);
     this.message = message;
   }
 

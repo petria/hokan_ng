@@ -9,12 +9,12 @@ package com.freakz.hokan_ng.common.rest;
  */
 public class IrcEventFactory {
 
-  public static IrcEvent createIrcEvent(String network, String channel, String sender, String login, String hostname) {
-    return new IrcEvent(network, channel, sender, login, hostname);
+  public static IrcEvent createIrcEvent(String botNick, String network, String channel, String sender, String login, String hostname) {
+    return new IrcEvent(botNick, network, channel, sender, login, hostname);
   }
 
-  public static IrcEvent createIrcMessageEvent(String network, String channel, String sender, String login, String hostname, String message) {
-    return new IrcMessageEvent(network, channel, sender, login, hostname, message);
+  public static IrcEvent createIrcMessageEvent(String botNick, String network, String channel, String sender, String login, String hostname, String message) {
+    return new IrcMessageEvent(botNick, network, channel, sender, login, hostname, message);
   }
 
 

@@ -28,4 +28,6 @@ public interface AccessControlService {
 
   User login(InternalRequest request, String string);
 
+  boolean isUserLoggedIn(User user);
+
 }

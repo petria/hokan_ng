@@ -97,4 +97,19 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     }
     return null;
   }
+
+  @Override
+  public boolean isUserLoggedIn(User user) {
+    try {
+      for (User loggedInUser : userService.getLoggedInUsers()) {
+        if (user.getNick().matches(loggedInUser.getNick())) {
+          return true;
+        }
+      }
+    } catch (HokanServiceException e) {
+      log.error("User error", e);
+    }
+    return false;
+  }
+
 }

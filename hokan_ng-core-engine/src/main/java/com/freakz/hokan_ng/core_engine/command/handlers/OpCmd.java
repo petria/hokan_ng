@@ -39,10 +39,9 @@ public class OpCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
     String channel = results.getString(ARG_CHANNEL);
-    response.addEngineMethodCall("op", channel, ir.getIrcEvent().getSender());
-    response.addResponse("Trying to op %s on %s", ir.getIrcEvent().getSender(), channel);
+    response.addEngineMethodCall("op", channel, request.getIrcEvent().getSender());
+    response.addResponse("Trying to op %s on %s", request.getIrcEvent().getSender(), channel);
   }
 
 }

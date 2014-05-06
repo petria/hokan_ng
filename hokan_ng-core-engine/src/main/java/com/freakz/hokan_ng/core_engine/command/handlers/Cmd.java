@@ -26,31 +26,25 @@ import java.util.*;
 @Slf4j
 public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
-  @Autowired
-  private AccessControlService accessControlService;
-
-  @Autowired
-  private CommandPool commandPool;
-
+  static protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
   @Autowired
   protected ApplicationContext context;
-
   protected JSAP jsap;
-
   protected boolean channelOpOnly;
   protected boolean loggedInOnly;
   protected boolean privateOnly;
   protected boolean masterUserOnly;
   protected boolean toBotOnly;
-
   protected boolean isChannelOp;
   protected boolean isLoggedIn;
   protected boolean isPublic;
   protected boolean isPrivate;
   protected boolean isMasterUser;
   protected boolean isToBot;
-
-  static protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
+  @Autowired
+  private AccessControlService accessControlService;
+  @Autowired
+  private CommandPool commandPool;
 
   public Cmd() {
     jsap = new JSAP();
@@ -69,10 +63,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public String getMatchPattern() {
     return String.format("!%s.*", getName().toLowerCase());
-  }
-
-  public void setHelp(String helpText) {
-    this.jsap.setHelp(helpText);
   }
 
   public void addToHelpGroup(HelpGroup helpGroup, Cmd cmd) {
@@ -178,12 +168,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
   }
 
-  public static class ArgsWrapper {
-    public InternalRequest request;
-    public EngineResponse response;
-    public JSAPResult results;
-  }
-
   @Override
   public void handleRun(long myPid, Object args) throws HokanException {
     ArgsWrapper wrapper = (ArgsWrapper) ((Object[]) args)[0];
@@ -195,7 +179,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   private boolean checkAccess(InternalRequest request, EngineResponse response) {
 
     IrcMessageEvent ircMessageEvent = request.getIrcEvent();
-    isLoggedIn = false; // TODO
+    isLoggedIn = accessControlService.isUserLoggedIn(request.getUser());
     isPublic = !ircMessageEvent.isPrivate();
     isPrivate = ircMessageEvent.isPrivate();
     isToBot = ircMessageEvent.isToMe();
@@ -203,6 +187,12 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     isChannelOp = accessControlService.isChannelOp(ircMessageEvent, request.getChannel());
 
     boolean ret = true;
+
+    if (isLoggedInOnly() && !isLoggedIn && !isMasterUser) {
+      response.setResponseMessage("LoggedIn only: " + getName());
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
+    }
 
     if (isToBotOnly() && !isToBot && !isMasterUser) {
       response.setResponseMessage("To bot only: " + getName());
@@ -230,8 +220,6 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     return ret;
   }
 
-  // ---------------------
-
   public boolean isChannelOpOnly() {
     return channelOpOnly;
   }
@@ -239,6 +227,8 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   public void setChannelOpOnly(boolean channelOpOnly) {
     this.channelOpOnly = channelOpOnly;
   }
+
+  // ---------------------
 
   public boolean isLoggedInOnly() {
     return loggedInOnly;
@@ -274,6 +264,16 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public String getHelp() {
     return this.jsap.getHelp();
+  }
+
+  public void setHelp(String helpText) {
+    this.jsap.setHelp(helpText);
+  }
+
+  public static class ArgsWrapper {
+    public InternalRequest request;
+    public EngineResponse response;
+    public JSAPResult results;
   }
 
 }

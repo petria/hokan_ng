@@ -293,12 +293,13 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     String toMe = getName() + ": ";
+    String botName = getName();
     boolean isToMe = false;
     if (message.startsWith(toMe)) {
       message = message.replaceFirst(toMe, "");
       isToMe = true;
     }
-    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), channel, sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), channel, sender, login, hostname, message);
     ircEvent.setToMe(isToMe);
 
     Network nw = getNetwork();
@@ -394,7 +395,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onPrivateMessage(String sender, String login, String hostname, String message) {
-    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getNetwork().getName(), sender, sender, login, hostname, message);
+    IrcMessageEvent ircEvent = (IrcMessageEvent) IrcEventFactory.createIrcMessageEvent(getName(), getNetwork().getName(), sender, sender, login, hostname, message);
     ircEvent.setPrivate(true);
 
     Network nw = getNetwork();
@@ -501,7 +502,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {
-    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
 
@@ -570,7 +571,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     for (String channel : fromChannels) {
       sendWhoQuery(channel);
 
-      IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sourceNick, sourceLogin, sourceHostname);
+      IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channel, sourceNick, sourceLogin, sourceHostname);
 
       UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), getChannel(ircEvent));
       userChannel.setLastPart(new Date());
@@ -587,7 +588,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Override
   protected void onPart(String channel, String sender, String login, String hostname, String message) {
-    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getNetwork().getName(), channel, sender, login, hostname);
+    IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     log.info("{} part channel: {}", sender, channel);
     if (sender.equalsIgnoreCase(getNick())) {

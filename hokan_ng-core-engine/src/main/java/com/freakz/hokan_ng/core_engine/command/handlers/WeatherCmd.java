@@ -33,11 +33,10 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PLACE;
 @Scope("prototype")
 public class WeatherCmd extends Cmd {
 
-  @Autowired
-  private UpdaterManagerService updaterManagerService;
-
   private final static String FORMAT = "%1 %2 %3°C (%7/%8)";
   private final static String FORMAT_MINMAX = "%1 %9 %3°C (%7/%8)";
+  @Autowired
+  private UpdaterManagerService updaterManagerService;
 
   public WeatherCmd() {
     super();
@@ -73,6 +72,7 @@ public class WeatherCmd extends Cmd {
       response.setResponseMessage("Weather data not ready yet!");
       return;
     }
+
     String place = results.getString(ARG_PLACE).toLowerCase();
     StringBuilder sb = new StringBuilder();
 
