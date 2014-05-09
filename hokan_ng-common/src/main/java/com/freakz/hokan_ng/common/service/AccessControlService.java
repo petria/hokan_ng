@@ -30,4 +30,8 @@ public interface AccessControlService {
 
   boolean isUserLoggedIn(User user);
 
+//  boolean isBotOp(IrcEvent ircEvent);
+
+  boolean isOp(Channel channel, User user);
+
 }

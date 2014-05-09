@@ -1,13 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * User: petria
@@ -32,6 +25,9 @@ public class JoinedUser {
   @ManyToOne
   @JoinColumn(name = "USER", referencedColumnName = "ID", nullable = false)
   private User user;
+
+  @Column(name = "IS_OP")
+  private boolean isOp;
 
   public JoinedUser() {
   }
@@ -64,4 +60,14 @@ public class JoinedUser {
   public void setUser(User user) {
     this.user = user;
   }
+
+
+  public void setOp(boolean isOp) {
+    this.isOp = isOp;
+  }
+
+  public boolean isOp() {
+    return this.isOp;
+  }
+
 }

@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.entity.Channel;
+import com.freakz.hokan_ng.common.entity.JoinedUser;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
@@ -26,6 +27,9 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private JoinedUsersService joinedUsersService;
 
   @Override
   public List<User> getMasterUsers() throws HokanServiceException {
@@ -110,6 +114,13 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
       log.error("User error", e);
     }
     return false;
+  }
+
+
+  @Override
+  public boolean isOp(Channel channel, User user) {
+    JoinedUser joinedUser = joinedUsersService.getJoinedUser(channel, user);
+    return joinedUser.isOp();
   }
 
 }

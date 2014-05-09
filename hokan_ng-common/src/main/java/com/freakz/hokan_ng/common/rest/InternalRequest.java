@@ -52,7 +52,7 @@ public class InternalRequest extends EngineRequest implements Serializable {
   }
 
   public void init(EngineRequest request) throws HokanException {
-    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    IrcMessageEvent ircMessageEvent = request.getIrcEvent();
 
     this.request = request;
     this.network = networkService.getNetwork(request.getIrcEvent().getNetwork());

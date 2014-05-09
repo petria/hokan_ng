@@ -14,6 +14,7 @@ public enum HelpGroup {
   NETWORK("Network help group"),
   PROCESS("Process help group"),
   PROPERTIES("Properties help group"),
+  SYSTEM("System help group"),
   TV("TV help group"),
   UPDATERS("Updaters help group"),
   USERS("Users help group"),

@@ -12,40 +12,36 @@ import org.springframework.stereotype.Component;
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL;
 
 /**
- * User: petria
- * Date: 12/19/13
- * Time: 7:25 PM
+ * Created by pairio on 6.5.2014.
  *
- * @author Petri Airio <petri.j.airio@gmail.com>
+ * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Component
 @Scope("prototype")
 @Slf4j
-public class OpCmd extends Cmd {
+public class WhoQueryCmd extends Cmd {
 
-  public OpCmd() {
+
+  public WhoQueryCmd() {
     super();
-    setHelp("Gives operator rights to channel.");
-    addToHelpGroup(HelpGroup.CHANNELS, this);
-    addToHelpGroup(HelpGroup.USERS, this);
-    setLoggedInOnly(true);
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_CHANNEL)
+    setHelp("Triggers WHO query on given channel. This refresh the internal user list of the channel.");
+    addToHelpGroup(HelpGroup.SYSTEM, this);
+
+    UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
         .setRequired(true)
         .setGreedy(false);
-    registerParameter(flg);
+    registerParameter(uflg);
 
-    setChannelOpOnly(true);
+    setMasterUserOnly(true);
 
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String channel = results.getString(ARG_CHANNEL);
-    response.addEngineMethodCall("op", channel, request.getIrcEvent().getSender());
-    if (request.getIrcEvent().isPrivate()) {
-      response.addResponse("Trying to op %s on %s", request.getIrcEvent().getSender(), channel);
-    }
+    String channelName = results.getString(ARG_CHANNEL);
+    response.addEngineMethodCall("sendWhoQuery", channelName);
+    response.addResponse("Sending who query to: %s", channelName);
   }
 
 }

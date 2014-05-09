@@ -66,17 +66,23 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   private EngineCommunicator engineCommunicator;
 
   private Map<String, String> serverProperties = new HashMap<>();
-  private Map<String, Method> methodMap = new HashMap<>();
+  private Map<String, Method> methodMap = null;
   private Map<String, List<String>> whoQueries = new HashMap<>();
   private OutputQueue outputQueue;
 
   public HokanCore() {
-    Class clazz = this.getClass();
-    Method[] methods = clazz.getMethods();
+    buildMethodMap();
+  }
+
+  private void buildMethodMap() {
+    Class clazz = HokanCore.class;
+    Method[] methods = clazz.getDeclaredMethods();
+    this.methodMap = new HashMap<>();
     for (Method method : methods) {
       methodMap.put(method.getName(), method);
     }
     log.info("Built method map, size {}", methodMap.size());
+
   }
 
   public void init(String botName, IrcServerConfig ircServerConfig) {
@@ -202,7 +208,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
   }
 
-  private void sendWhoQuery(String channel) {
+  public void sendWhoQuery(String channel) {
     log.info("Sending WHO query to: " + channel);
     List<String> whoReplies = new ArrayList<>();
     whoQueries.put(channel.toLowerCase(), whoReplies);
@@ -390,6 +396,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
       handleSendMessage(ircEvent.getChannel(), info);
 
+    } else if (message.equals("!methodmap")) {
+      log.info("Re-building method map!");
+      buildMethodMap();
     }
   }
 
