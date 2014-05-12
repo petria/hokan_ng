@@ -30,9 +30,9 @@ public class JoinedUsersServiceImpl implements JoinedUsersService {
   }
 
   @Override
-  public JoinedUser createJoinedUser(Channel channel, User user) throws HokanServiceException {
+  public JoinedUser createJoinedUser(Channel channel, User user, String userModes) throws HokanServiceException {
     try {
-      return dao.createJoinedUser(channel, user);
+      return dao.createJoinedUser(channel, user, userModes);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }

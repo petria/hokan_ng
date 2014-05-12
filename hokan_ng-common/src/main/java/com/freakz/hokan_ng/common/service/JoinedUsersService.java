@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface JoinedUsersService {
 
-  JoinedUser createJoinedUser(Channel channel, User user) throws HokanServiceException;
+  JoinedUser createJoinedUser(Channel channel, User user, String userModes) throws HokanServiceException;
 
   JoinedUser getJoinedUser(Channel channel, User user);
 

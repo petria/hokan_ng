@@ -227,6 +227,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       String[] split = whoLine.split(" ");
       String nick = split[5];
       String mask = split[5] + "!" + split[2] + "@" + split[3];
+      String userModes = split[6];
       String fullName = StringStuff.joinStringArray(split, 8);
       User user = this.userService.findUser(nick);
       if (user == null) {
@@ -241,7 +242,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       if (userChannel == null) {
         userChannelService.createUserChannel(user, channel);
       }
-      this.joinedUsersService.createJoinedUser(channel, user);
+      this.joinedUsersService.createJoinedUser(channel, user, userModes);
     }
   }
 
@@ -542,7 +543,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       }
 
       try {
-        this.joinedUsersService.createJoinedUser(ch, getUser(ircEvent));
+        this.joinedUsersService.createJoinedUser(ch, getUser(ircEvent), "");
       } catch (HokanServiceException e) {
         coreExceptionHandler(e);
       }

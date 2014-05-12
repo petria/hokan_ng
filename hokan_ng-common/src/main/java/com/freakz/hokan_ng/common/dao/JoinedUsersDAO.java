@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface JoinedUsersDAO {
 
-  JoinedUser createJoinedUser(Channel channel, User user) throws HokanDAOException;
+  JoinedUser createJoinedUser(Channel channel, User user, String userModes) throws HokanDAOException;
 
   JoinedUser getJoinedUser(Channel channel, User user) throws HokanDAOException;
 

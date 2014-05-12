@@ -26,10 +26,12 @@ public class JoinedUser {
   @JoinColumn(name = "USER", referencedColumnName = "ID", nullable = false)
   private User user;
 
-  @Column(name = "IS_OP")
-  private boolean isOp;
+  @Column(name = "USER_MODES")
+  private String userModes;
 
-  public JoinedUser() {
+  public JoinedUser(Channel channel, User user, String userModes) {
+    this(channel, user);
+    this.userModes = userModes;
   }
 
   public JoinedUser(Channel channel, User user) {
@@ -61,13 +63,19 @@ public class JoinedUser {
     this.user = user;
   }
 
+  public String getUserModes() {
+    return userModes;
+  }
 
-  public void setOp(boolean isOp) {
-    this.isOp = isOp;
+  public void setUserModes(String userModes) {
+    this.userModes = userModes;
   }
 
   public boolean isOp() {
-    return this.isOp;
+    if (this.userModes != null) {
+      return this.userModes.contains("@");
+    }
+    return false;
   }
 
 }

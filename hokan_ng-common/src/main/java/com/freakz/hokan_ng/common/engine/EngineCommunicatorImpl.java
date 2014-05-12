@@ -36,7 +36,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   private Map<String, String> engineHandlers = new HashMap<>();
 
   public EngineCommunicatorImpl() {
-    engineHandlers.put("test", "http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/");
+    engineHandlers.put("test", "http://localhost:8080/hokan_ng-core-engine/");
   }
 
   @Override

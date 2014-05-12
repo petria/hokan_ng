@@ -30,9 +30,9 @@ public class JoinedUsersJPADAO implements JoinedUsersDAO {
   private EntityManager entityManager;
 
   @Override
-  public JoinedUser createJoinedUser(Channel channel, User user) throws HokanDAOException {
+  public JoinedUser createJoinedUser(Channel channel, User user, String userModes) throws HokanDAOException {
     try {
-      JoinedUser joinedUser = new JoinedUser(channel, user);
+      JoinedUser joinedUser = new JoinedUser(channel, user, userModes);
       this.entityManager.persist(joinedUser);
       return joinedUser;
     } catch (Exception e) {

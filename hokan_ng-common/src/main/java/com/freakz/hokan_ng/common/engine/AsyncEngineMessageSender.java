@@ -43,8 +43,8 @@ public class AsyncEngineMessageSender implements CommandRunnable {
   }
 
   public String getRestBaseUrl() {
-//    return "http://localhost:8080/hokan_ng-core-engine/";
-    return "http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/";
+    return "http://localhost:8080/hokan_ng-core-engine/";
+//    return "http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/";
   }
 
   public HttpHeaders getRestHeaders() {
