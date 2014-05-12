@@ -17,13 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: petria
@@ -105,6 +99,9 @@ public class TelkkuServiceImpl implements TelkkuService, CoreEventHandler {
     }
     for (TelkkuProgram tp : telkkuData.getPrograms()) {
       if (StringStuff.match(tp.getProgram(), ".*" + program + ".*", true)) {
+        matches.add(tp);
+      }
+      if (StringStuff.match(tp.getDescription(), ".*" + program + ".*", true)) {
         matches.add(tp);
       }
     }
