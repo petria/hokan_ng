@@ -30,7 +30,7 @@ public class EngineResponse implements Serializable {
 
   public EngineResponse(EngineRequest request) {
     this.request = request;
-    IrcMessageEvent ircMessageEvent = (IrcMessageEvent) request.getIrcEvent();
+    IrcMessageEvent ircMessageEvent = request.getIrcEvent();
     if (ircMessageEvent.isPrivate()) {
       replyTo = ircMessageEvent.getSender();
     } else {

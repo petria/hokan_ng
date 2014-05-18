@@ -76,7 +76,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   private void buildMethodMap() {
     Class clazz = HokanCore.class;
-    Method[] methods = clazz.getDeclaredMethods();
+    Method[] methods = clazz.getMethods();
     this.methodMap = new HashMap<>();
     for (Method method : methods) {
       methodMap.put(method.getName(), method);
@@ -247,6 +247,26 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   @Override
+  protected void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
+  protected void onDeVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+    sendWhoQuery(channel);
+  }
+
+  @Override
   protected void onServerResponse(int code, String line) {
     if (code == RPL_WHOREPLY) {
       String[] split = line.split(" ");
@@ -297,10 +317,18 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     }
   }
 
+  private boolean isBotOp(Channel channel) {
+    for (JoinedUser user : joinedUsersService.findJoinedUsers(channel)) {
+      if (user.getUser().getNick().equalsIgnoreCase(getName())) {
+        return user.isOp();
+      }
+    }
+    return false;
+  }
+
   @Override
   protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     String toMe = getName() + ": ";
-    String botName = getName();
     boolean isToMe = false;
     if (message.startsWith(toMe)) {
       message = message.replaceFirst(toMe, "");
@@ -318,6 +346,8 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     Channel ch = getChannel(ircEvent);
     ch.addToLinesReceived(1);
     ch.setLastActive(new Date());
+
+    ircEvent.setBotOp(isBotOp(ch));
 
     String lastWriter = ch.getLastWriter();
     if (lastWriter != null && lastWriter.equalsIgnoreCase(sender)) {
@@ -494,7 +524,10 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   public void handleSendMessage(String channel, String message) {
-    Channel ch = getChannel(channel);
+    Channel ch = null;
+    if (channel.startsWith("#")) {
+      ch = getChannel(channel);
+    }
     Network nw = getNetwork();
     String[] lines = message.split("\n");
     for (String line : lines) {
@@ -502,11 +535,15 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       for (String l : split) {
         String raw = "PRIVMSG " + channel + " :" + l;
         this.outputQueue.addLine(raw);
-        ch.addToLinesSent(1);
+        if (ch != null) {
+          ch.addToLinesSent(1);
+        }
         nw.addToLinesSent(1);
       }
     }
-    this.channelService.updateChannel(ch);
+    if (ch != null) {
+      this.channelService.updateChannel(ch);
+    }
     this.networkService.updateNetwork(nw);
   }
 

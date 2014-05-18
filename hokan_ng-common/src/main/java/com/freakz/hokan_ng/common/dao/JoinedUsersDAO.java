@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.JoinedUser;
+import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 
@@ -20,11 +21,15 @@ public interface JoinedUsersDAO {
 
   JoinedUser getJoinedUser(Channel channel, User user) throws HokanDAOException;
 
+  JoinedUser getJoinedUser(Channel channel, String nick) throws HokanDAOException;
+
   void removeJoinedUser(Channel channel, User user) throws HokanDAOException;
 
   void removeJoinedUser(User user) throws HokanDAOException;
 
   List<JoinedUser> findJoinedUsers(Channel channel) throws HokanDAOException;
+
+  List<JoinedUser> findJoinedUsers(Network network) throws HokanDAOException;
 
   void clearJoinedUsers(Channel channel) throws HokanDAOException;
 

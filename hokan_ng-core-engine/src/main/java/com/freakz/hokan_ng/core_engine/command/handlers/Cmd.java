@@ -8,6 +8,9 @@ import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AccessControlService;
+import com.freakz.hokan_ng.common.service.ChannelService;
+import com.freakz.hokan_ng.common.service.JoinedUsersService;
+import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +44,22 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean isPrivate;
   protected boolean isMasterUser;
   protected boolean isToBot;
+
   @Autowired
-  private AccessControlService accessControlService;
+  protected AccessControlService accessControlService;
+
   @Autowired
-  private CommandPool commandPool;
+  protected ChannelService channelService;
+
+  @Autowired
+  protected CommandPool commandPool;
+
+  @Autowired
+  protected JoinedUsersService joinedUsersService;
+
+  @Autowired
+  protected NetworkService networkService;
+
 
   public Cmd() {
     jsap = new JSAP();

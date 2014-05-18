@@ -55,7 +55,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
 
   @Override
   public boolean isChannelOp(IrcEvent ircEvent, Channel ch) {
-    if (ch == null) {
+/*    if (ch == null) {
       return false;
     }
     try {
@@ -67,7 +67,8 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     } catch (HokanServiceException e) {
       log.error("User error", e);
     }
-    return false;
+    return false;*/
+    return true;
   }
 
   @Override

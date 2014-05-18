@@ -75,7 +75,8 @@ public class ChannelJPADAO implements ChannelDAO {
     try {
       return query.getSingleResult();
     } catch (Exception e) {
-      throw new HokanDAOException(e.getMessage());
+
+      throw new HokanDAOException(e.getMessage() + " --> " + network + " --> " + name);
     }
   }
 

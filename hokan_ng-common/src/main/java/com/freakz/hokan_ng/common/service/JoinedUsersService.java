@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.common.service;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.JoinedUser;
+import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
 
@@ -20,9 +21,13 @@ public interface JoinedUsersService {
 
   JoinedUser getJoinedUser(Channel channel, User user);
 
+  JoinedUser getJoinedUser(Channel channel, String nick);
+
   void removeJoinedUser(Channel channel, User user) throws HokanServiceException;
 
-  List<JoinedUser> findJoinedUsers(Channel channel) throws HokanServiceException;
+  List<JoinedUser> findJoinedUsers(Channel channel);
+
+  List<JoinedUser> findJoinedUsers(Network network) throws HokanServiceException;
 
   void clearJoinedUsers(Channel channel) throws HokanServiceException;
 

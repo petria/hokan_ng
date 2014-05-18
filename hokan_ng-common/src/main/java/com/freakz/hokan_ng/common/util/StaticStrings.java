@@ -39,6 +39,7 @@ public class StaticStrings {
   public static final String ARG_NICK = "Nick";
   public static final String ARG_RAWSTRING = "RawString";
   public static final String ARG_STATION = "Station";
+  public static final String ARG_TARGET = "Target";
   public static final String ARG_TO = "To";
   public static final String ARG_UPDATER = "Updater";
   public static final String ARG_URL = "Url";

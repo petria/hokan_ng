@@ -3,6 +3,7 @@ package com.freakz.hokan_ng.common.service;
 import com.freakz.hokan_ng.common.dao.JoinedUsersDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.JoinedUser;
+import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +51,16 @@ public class JoinedUsersServiceImpl implements JoinedUsersService {
   }
 
   @Override
+  public JoinedUser getJoinedUser(Channel channel, String nick) {
+    try {
+      return dao.getJoinedUser(channel, nick);
+    } catch (HokanDAOException e) {
+      log.error("JoinedUser error", e);
+    }
+    return null;
+  }
+
+  @Override
   public void removeJoinedUser(Channel channel, User user) throws HokanServiceException {
     try {
       dao.removeJoinedUser(channel, user);
@@ -58,9 +70,19 @@ public class JoinedUsersServiceImpl implements JoinedUsersService {
   }
 
   @Override
-  public List<JoinedUser> findJoinedUsers(Channel channel) throws HokanServiceException {
+  public List<JoinedUser> findJoinedUsers(Channel channel) {
     try {
       return dao.findJoinedUsers(channel);
+    } catch (HokanDAOException e) {
+      log.info("No joined users for channel {}", channel);
+      return new ArrayList<>();
+    }
+  }
+
+  @Override
+  public List<JoinedUser> findJoinedUsers(Network network) throws HokanServiceException {
+    try {
+      return dao.findJoinedUsers(network);
     } catch (HokanDAOException e) {
       throw new HokanServiceException(e);
     }

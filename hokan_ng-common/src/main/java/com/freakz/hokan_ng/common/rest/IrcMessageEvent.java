@@ -16,6 +16,7 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
   private String message;
   private boolean isPrivate;
   private boolean isToMe;
+  private boolean isBotOp;
 
   public IrcMessageEvent() {
     super();
@@ -59,5 +60,13 @@ public class IrcMessageEvent extends IrcEvent implements Serializable, Cloneable
 
   public void setPrivate(boolean aPrivate) {
     isPrivate = aPrivate;
+  }
+
+  public boolean isBotOp() {
+    return isBotOp;
+  }
+
+  public void setBotOp(boolean isBotOp) {
+    this.isBotOp = isBotOp;
   }
 }

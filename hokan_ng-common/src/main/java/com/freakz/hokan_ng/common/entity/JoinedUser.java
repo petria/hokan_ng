@@ -39,6 +39,9 @@ public class JoinedUser {
     this.user = user;
   }
 
+  public JoinedUser() {
+  }
+
   public long getId() {
     return id;
   }
@@ -74,6 +77,13 @@ public class JoinedUser {
   public boolean isOp() {
     if (this.userModes != null) {
       return this.userModes.contains("@");
+    }
+    return false;
+  }
+
+  public boolean hasVoice() {
+    if (this.userModes != null) {
+      return this.userModes.contains("+");
     }
     return false;
   }

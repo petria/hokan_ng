@@ -2,6 +2,7 @@ package com.freakz.hokan_ng.common.dao;
 
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.JoinedUser;
+import com.freakz.hokan_ng.common.entity.Network;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,19 @@ public class JoinedUsersJPADAO implements JoinedUsersDAO {
   }
 
   @Override
+  public JoinedUser getJoinedUser(Channel channel, String nick) throws HokanDAOException {
+    try {
+      TypedQuery<JoinedUser> query = this.entityManager.createQuery("SELECT cu FROM JoinedUser cu WHERE cu.channel = :channel AND cu.user.nick = :nick", JoinedUser.class);
+      query.setParameter("channel", channel);
+      query.setParameter("nick", nick);
+      return query.getSingleResult();
+    } catch (Exception e) {
+      throw new HokanDAOException(e);
+    }
+  }
+
+
+  @Override
   public void removeJoinedUser(Channel channel, User user) throws HokanDAOException {
     try {
       Query query = this.entityManager.createQuery("DELETE FROM JoinedUser cu WHERE cu.channel = :channel AND cu.user = :user");
@@ -82,6 +96,17 @@ public class JoinedUsersJPADAO implements JoinedUsersDAO {
     try {
       TypedQuery<JoinedUser> query = this.entityManager.createQuery("SELECT cu FROM JoinedUser cu WHERE cu.channel = :channel", JoinedUser.class);
       query.setParameter("channel", channel);
+      return query.getResultList();
+    } catch (Exception e) {
+      throw new HokanDAOException(e);
+    }
+  }
+
+  @Override
+  public List<JoinedUser> findJoinedUsers(Network network) throws HokanDAOException {
+    try {
+      TypedQuery<JoinedUser> query = this.entityManager.createQuery("SELECT cu FROM JoinedUser cu WHERE cu.channel.network = :network", JoinedUser.class);
+      query.setParameter("network", network);
       return query.getResultList();
     } catch (Exception e) {
       throw new HokanDAOException(e);
