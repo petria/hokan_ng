@@ -53,6 +53,15 @@ public class EngineController implements DisposableBean {
   @Resource(name = "core-engine-Properties")
   private Properties engineProperties;
 
+
+  @RequestMapping(value = "/ping") //, produces = JSON, consumes = JSON)
+  public
+  @ResponseBody
+  String handlePing() {
+//    log.info("Got ping!");
+    return "pong";
+  }
+
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
   @ResponseBody

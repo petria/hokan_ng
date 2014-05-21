@@ -8,7 +8,6 @@ import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +27,14 @@ public class HokanController {
 
   @Autowired
   private ConnectionManagerService connectionManager;
+
+  @RequestMapping(value = "/ping") //, produces = JSON, consumes = JSON)
+  public
+  @ResponseBody
+  String handlePing() {
+    log.info("Got ping!");
+    return "pong";
+  }
 
   @RequestMapping(value = "/control/handle") //, produces = JSON, consumes = JSON)
   public

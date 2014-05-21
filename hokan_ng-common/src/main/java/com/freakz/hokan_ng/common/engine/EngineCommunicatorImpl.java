@@ -2,15 +2,27 @@ package com.freakz.hokan_ng.common.engine;
 
 
 import com.freakz.hokan_ng.common.entity.Alias;
+import com.freakz.hokan_ng.common.entity.RestUrl;
+import com.freakz.hokan_ng.common.entity.RestUrlType;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AliasService;
+import com.freakz.hokan_ng.common.service.RestUrlService;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +35,9 @@ import java.util.Map;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
+@Scope("prototype")
 @Slf4j
-public class EngineCommunicatorImpl implements EngineCommunicator {
+public class EngineCommunicatorImpl implements EngineCommunicator, ResponseErrorHandler {
 
   @Autowired
   private ApplicationContext context;
@@ -32,12 +45,49 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   @Autowired
   private AliasService aliasService;
 
+  @Autowired
+  private RestUrlService restUrlService;
 
-  private Map<String, String> engineHandlers = new HashMap<>();
+  private Map<String, RestUrl> engineHandlers = new HashMap<>();
 
   public EngineCommunicatorImpl() {
-    engineHandlers.put("test", "http://localhost:8080/hokan_ng-core-engine/");
   }
+
+  @Scheduled(fixedDelay = 60000)
+  private void checkEngines() {
+    String instanceKey = "1234"; // TODO engineProperties.getProperty("INSTANCE_KEY");
+//    log.info("My instanceKey = {}", instanceKey);
+    List<RestUrl> restUrls = restUrlService.getRestUrls(instanceKey, RestUrlType.CORE_ENGINE);
+//    log.info("restUrls: {}", restUrls.size());
+
+    for (RestUrl restUrl : restUrls) {
+
+      if (this.engineHandlers.containsKey(restUrl.getRestUrl())) {
+        continue;
+      }
+//      log.info("Checking validity of: {}", restUrl.toString());
+      String url = restUrl.getRestUrl() + "/ping";
+      RestTemplate restTemplate = new RestTemplate() {
+      };
+      restTemplate.setErrorHandler(this);
+
+      String response;
+      try {
+        ResponseEntity<String> responseEnt
+            = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        response = responseEnt.getBody();
+        if (response.equals("pong")) {
+//          log.info("Got response from {}", url);
+          this.engineHandlers.put(restUrl.getRestUrl(), restUrl);
+        }
+
+      } catch (Exception e) {
+        this.engineHandlers.remove(restUrl.getRestUrl());
+      }
+
+    }
+  }
+
 
   @Override
   public void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler) {
@@ -60,16 +110,18 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
   }
 
   private void doSendRequest(EngineRequest request, EngineEventHandler engineEventHandler) {
+
     if (engineHandlers.size() == 0) {
-      log.error("No registered engines!!!");
+      log.warn("No registered engines!!!");
       return;
     }
-    for (String engineAddress : engineHandlers.values()) {
-      AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
-      request.setEngineAddress(engineAddress);
-      sender.sendRequest(request, engineEventHandler);
 
+    for (RestUrl restUrl : engineHandlers.values()) {
+      AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
+      request.setEngineAddress(restUrl.getRestUrl());
+      sender.sendRequest(request, engineEventHandler);
     }
+
   }
 
   @Override
@@ -97,4 +149,13 @@ public class EngineCommunicatorImpl implements EngineCommunicator {
     return line;
   }
 
+  @Override
+  public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+    return false;
+  }
+
+  @Override
+  public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+    log.info("errororororor!");
+  }
 }

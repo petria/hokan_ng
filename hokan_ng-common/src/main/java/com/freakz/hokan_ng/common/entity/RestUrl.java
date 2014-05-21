@@ -1,11 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * User: petria
@@ -15,8 +10,8 @@ import javax.persistence.Table;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Entity
-@Table(name = "EngineEndpoint")
-public class EngineEndpoint {
+@Table(name = "RestUrl")
+public class RestUrl {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,13 +21,17 @@ public class EngineEndpoint {
   @Column(name = "INSTANCE_KEY")
   private String instanceKey;
 
-  @Column(name = "ENDPOINT_ADDRESS")
-  private String endpointAddress;
+  @Column(name = "REST_URL_TYPE")
+  @Enumerated(EnumType.STRING)
+  private RestUrlType restUrlType;
+
+  @Column(name = "REST_URL")
+  private String restUrl;
 
   @Column(name = "LINE_MATCHER_REGEXP")
   private String lineMatcherRegexp;
 
-  public EngineEndpoint() {
+  public RestUrl() {
   }
 
   public long getId() {
@@ -51,12 +50,20 @@ public class EngineEndpoint {
     this.instanceKey = instanceKey;
   }
 
-  public String getEndpointAddress() {
-    return endpointAddress;
+  public RestUrlType getRestUrlType() {
+    return restUrlType;
   }
 
-  public void setEndpointAddress(String endpointAddress) {
-    this.endpointAddress = endpointAddress;
+  public void setRestUrlType(RestUrlType restUrlType) {
+    this.restUrlType = restUrlType;
+  }
+
+  public String getRestUrl() {
+    return restUrl;
+  }
+
+  public void setRestUrl(String restUrl) {
+    this.restUrl = restUrl;
   }
 
   public String getLineMatcherRegexp() {
@@ -66,4 +73,9 @@ public class EngineEndpoint {
   public void setLineMatcherRegexp(String lineMatcherRegexp) {
     this.lineMatcherRegexp = lineMatcherRegexp;
   }
+
+  public String toString() {
+    return String.format("ID %2d: - InstanceKey: %10s - RestUrl: %s", id, instanceKey, restUrl);
+  }
+
 }

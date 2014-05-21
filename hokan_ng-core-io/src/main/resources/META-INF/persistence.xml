@@ -9,7 +9,7 @@
         <class>com.freakz.hokan_ng.common.entity.Alias</class>
         <class>com.freakz.hokan_ng.common.entity.Channel</class>
         <class>com.freakz.hokan_ng.common.entity.ChannelProperty</class>
-        <class>com.freakz.hokan_ng.common.entity.EngineEndpoint</class>
+        <class>com.freakz.hokan_ng.common.entity.RestUrl</class>
         <class>com.freakz.hokan_ng.common.entity.JoinedUser</class>
         <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
         <class>com.freakz.hokan_ng.common.entity.Network</class>
