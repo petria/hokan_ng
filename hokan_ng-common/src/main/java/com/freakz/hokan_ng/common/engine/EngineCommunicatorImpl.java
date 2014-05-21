@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-@Scope("prototype")
+@Scope("singleton")
 @Slf4j
 public class EngineCommunicatorImpl implements EngineCommunicator, ResponseErrorHandler {
 
@@ -62,9 +62,9 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 
     for (RestUrl restUrl : restUrls) {
 
-      if (this.engineHandlers.containsKey(restUrl.getRestUrl())) {
+/*      if (this.engineHandlers.containsKey(restUrl.getRestUrl())) {
         continue;
-      }
+      }*/
 //      log.info("Checking validity of: {}", restUrl.toString());
       String url = restUrl.getRestUrl() + "/ping";
       RestTemplate restTemplate = new RestTemplate() {
