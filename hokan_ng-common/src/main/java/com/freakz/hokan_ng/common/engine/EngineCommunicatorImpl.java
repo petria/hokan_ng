@@ -47,19 +47,28 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 
   @Autowired
   private RestUrlService restUrlService;
+  private int counter = 0;
 
   private Map<String, RestUrl> engineHandlers = new HashMap<>();
 
   public EngineCommunicatorImpl() {
   }
 
-  @Scheduled(fixedDelay = 60000)
+  @Scheduled(fixedDelay = 1000)
   private void checkEngines() {
     String instanceKey = "1234"; // TODO engineProperties.getProperty("INSTANCE_KEY");
-//    log.info("My instanceKey = {}", instanceKey);
-    List<RestUrl> restUrls = restUrlService.getRestUrls(instanceKey, RestUrlType.CORE_ENGINE);
-//    log.info("restUrls: {}", restUrls.size());
+    counter++;
+    if (engineHandlers.size() == 0) {
+      doCheckEngines(instanceKey);
+    } else {
+      if (counter % 10 == 0) {
+        doCheckEngines(instanceKey);
+      }
+    }
+  }
 
+  private void doCheckEngines(String instanceKey) {
+    List<RestUrl> restUrls = restUrlService.getRestUrls(instanceKey, RestUrlType.CORE_ENGINE);
     for (RestUrl restUrl : restUrls) {
 
 /*      if (this.engineHandlers.containsKey(restUrl.getRestUrl())) {
@@ -86,6 +95,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
       }
 
     }
+
   }
 
 

@@ -20,6 +20,7 @@ public class EngineResponse implements Serializable {
   private String exception;
   private String replyTo;
   private String commandClass;
+  private boolean noSearchReplace;
 
   private EngineRequest request;
 
@@ -106,4 +107,11 @@ public class EngineResponse implements Serializable {
     this.commandClass = commandClass;
   }
 
+  public boolean isNoSearchReplace() {
+    return noSearchReplace;
+  }
+
+  public void setNoSearchReplace(boolean noSearchReplace) {
+    this.noSearchReplace = noSearchReplace;
+  }
 }

@@ -22,6 +22,7 @@ public class StaticStrings {
   public static final String ARG_FULL_NAME = "FullName";
   public static final String ARG_HORO = "Horo";
   public static final String ARG_ID = "ID";
+  public static final String ARG_ID_OR_SEARCH = "ID/SEARCH";
   public static final String ARG_JOIN_MSG = "JoinMsg";
   public static final String ARG_CITY_1 = "City1";
   public static final String ARG_CITY_2 = "City2";
@@ -37,7 +38,9 @@ public class StaticStrings {
   public static final String ARG_PROPERTY = "Property";
   public static final String ARG_PHONE = "Phone";
   public static final String ARG_NICK = "Nick";
+  public static final String ARG_REPLACE = "Replace";
   public static final String ARG_RAWSTRING = "RawString";
+  public static final String ARG_SEARCH = "Search";
   public static final String ARG_STATION = "Station";
   public static final String ARG_TARGET = "Target";
   public static final String ARG_TO = "To";

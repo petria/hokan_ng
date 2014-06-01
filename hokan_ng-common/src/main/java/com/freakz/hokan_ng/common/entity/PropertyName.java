@@ -28,10 +28,11 @@ public enum PropertyName {
   PROP_CHANNEL_DO_JOIN_MESSAGE("channel.DoJoinMessage"),
   PROP_CHANNEL_DO_KICK_REJOIN("channel.DoKickRejoin"),
   PROP_CHANNEL_DO_TVNOTIFY("channel.DoTvNotify"),
+  PROP_CHANNEL_DO_SEARCH_REPLACE("channel.DoSearchReplace"),
   PROP_CHANNEL_DO_STATS("channel.DoStats"),
   PROP_CHANNEL_DO_URL_TITLES("channel.DoUrlTitles"),
   PROP_CHANNEL_DO_WHOLELINE_TRICKERS("channel.DoWholeLineTrickers");
-
+  private final String text;
 
   /**
    * @param text
@@ -39,8 +40,6 @@ public enum PropertyName {
   private PropertyName(String text) {
     this.text = text;
   }
-
-  private final String text;
 
   /* (non-Javadoc)
    * @see java.lang.Enum#toString()

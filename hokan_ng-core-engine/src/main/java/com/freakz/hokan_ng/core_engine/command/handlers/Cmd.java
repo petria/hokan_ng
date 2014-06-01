@@ -7,10 +7,7 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
-import com.freakz.hokan_ng.common.service.AccessControlService;
-import com.freakz.hokan_ng.common.service.ChannelService;
-import com.freakz.hokan_ng.common.service.JoinedUsersService;
-import com.freakz.hokan_ng.common.service.NetworkService;
+import com.freakz.hokan_ng.common.service.*;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +56,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected NetworkService networkService;
+
+  @Autowired
+  protected SearchReplaceService searchReplaceService;
 
 
   public Cmd() {

@@ -31,23 +31,19 @@ import java.util.*;
 public class HokanCore extends PircBot implements EngineEventHandler {
 
   @Autowired
+  protected SearchReplaceService searchReplaceService;
+  @Autowired
   private ApplicationContext context;
-
   @Autowired
   private AccessControlService accessControlService;
-
   @Autowired
   private ChannelService channelService;
-
   @Autowired
   private JoinedUsersService joinedUsersService;
-
   @Autowired
   private Properties properties;
-
   @Autowired
   private NetworkService networkService;
-
   @Autowired
   private UrlLoggerService urlLoggerService;
 
@@ -519,8 +515,26 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null && message.trim().length() > 1) {
+      if (!response.isNoSearchReplace()) {
+        boolean doSr = false;
+        if (!response.getRequest().getIrcEvent().isPrivate()) {
+          Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
+          doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
+        }
+        if (doSr) {
+          message = handleSearchReplace(response, message);
+        }
+      }
       handleSendMessage(channel, message);
     }
+  }
+
+  private String handleSearchReplace(EngineResponse response, String message) {
+    List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
+    for (SearchReplace searchReplace : searchReplaces) {
+      message = message.replaceAll(searchReplace.getSearch(), searchReplace.getReplace());
+    }
+    return message;
   }
 
   public void handleSendMessage(String channel, String message) {
