@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHAN_ID;
+import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_CHANNEL_ID;
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_MESSAGE;
 
 /**
@@ -34,7 +34,7 @@ public class ChanSendCmd extends Cmd {
     setHelp("Sends message to specified channel.");
     addToHelpGroup(HelpGroup.CHANNELS, this);
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_CHAN_ID)
+    UnflaggedOption flg = new UnflaggedOption(ARG_CHANNEL_ID)
         .setRequired(true)
         .setGreedy(false);
     registerParameter(flg);
@@ -50,7 +50,7 @@ public class ChanSendCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String idStr = results.getString(ARG_CHAN_ID);
+    String idStr = results.getString(ARG_CHANNEL_ID);
     long id = -1;
     try {
       id = Long.parseLong(idStr);

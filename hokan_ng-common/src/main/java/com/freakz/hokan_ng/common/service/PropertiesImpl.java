@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import lombok.extern.slf4j.Slf4j;
@@ -85,7 +86,7 @@ public class PropertiesImpl implements Properties {
     return Boolean.parseBoolean(property.getValue());
   }
 
-  @Override
+  //  @Override
   public ChannelProperty saveChannelProperty(ChannelProperty property) {
     try {
       return service.saveChannelProperty(property);
@@ -96,6 +97,17 @@ public class PropertiesImpl implements Properties {
   }
 
   @Override
+  public ChannelProperty setChannelProperty(Channel channel, PropertyName property, String value) {
+
+    try {
+      return service.setChannelProperty(channel, property, value);
+    } catch (HokanDAOException e) {
+      log.error("property error", e);
+    }
+    return null;
+  }
+
+  //  @Override
   public Property saveProperty(Property property) {
     try {
       return service.saveProperty(property);

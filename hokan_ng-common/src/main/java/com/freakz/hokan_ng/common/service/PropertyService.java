@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.ChannelProperty;
 import com.freakz.hokan_ng.common.entity.Property;
 import com.freakz.hokan_ng.common.entity.PropertyName;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface PropertyService {
   List<Channel> getChannelsWithProperty(PropertyName propertyName);
 
   ChannelProperty findChannelProperty(Channel channel, PropertyName name) throws HokanException;
+
+  ChannelProperty setChannelProperty(Channel channel, PropertyName property, String value) throws HokanDAOException;
 }

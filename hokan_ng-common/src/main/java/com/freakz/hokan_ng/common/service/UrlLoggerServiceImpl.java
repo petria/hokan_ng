@@ -48,14 +48,6 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   @Autowired
   private UrlDAO urlDAO;
 
-  static class HTMLEditorKit2 extends HTMLEditorKit {
-    public Document createDefaultDocument() {
-      HTMLDocument doc = (HTMLDocument) (super.createDefaultDocument());
-      doc.setAsynchronousLoadPriority(-1); // load synchronously
-      return doc;
-    }
-  }
-
   public void getTitle(final IrcMessageEvent iEvent, final Channel ch, final String url, final String encoding, final boolean isWanha, final String wanhaAadd, final HokanCore core) {
 
     CommandRunnable cmdRunnable = new CommandRunnable() {
@@ -177,7 +169,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
    * means this should not block as then it's preventing any further command executing while doing so.</b>
    *
    * @param iEvent the incoming IrcEvent
-   * @param ch the Wanha report channel
+   * @param ch     the Wanha report channel
    */
   public void catchUrls(IrcMessageEvent iEvent, Channel ch, HokanCore core) {
 
@@ -189,7 +181,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
     while (m.find()) {
       String url = m.group();
       long isWanha = logUrl(iEvent, url);
-      String ignoreTitles = ".*(jpg|gif|jpeg|avi|iso|mkv|mp3|mp4|torrent|mpeg|mpg|mov|exe|gz|zip|bz|7z|tar|twitter.com.*)";
+      String ignoreTitles = ".*(pdf|jpg|gif|jpeg|avi|iso|mkv|mp3|mp4|torrent|mpeg|mpg|mov|exe|gz|zip|bz|7z|tar|twitter.com.*)";
 
       String wanhaAdd = "";
       for (int i = 0; i < isWanha; i++) {
@@ -245,5 +237,13 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
 
     }
     return null;
+  }
+
+  static class HTMLEditorKit2 extends HTMLEditorKit {
+    public Document createDefaultDocument() {
+      HTMLDocument doc = (HTMLDocument) (super.createDefaultDocument());
+      doc.setAsynchronousLoadPriority(-1); // load synchronously
+      return doc;
+    }
   }
 }

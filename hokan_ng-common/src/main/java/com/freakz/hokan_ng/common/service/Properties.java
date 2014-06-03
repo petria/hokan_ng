@@ -26,9 +26,10 @@ public interface Properties {
 
   boolean getChannelPropertyAsBoolean(Channel channel, PropertyName property, boolean def);
 
-  Property saveProperty(Property property);
+//  Property saveProperty(Property property);
 
-  ChannelProperty saveChannelProperty(ChannelProperty property);
+  //  ChannelProperty saveChannelProperty(ChannelProperty property);
+  ChannelProperty setChannelProperty(Channel channel, PropertyName property, String value);
 
   List<Property> getAllProperties();
 

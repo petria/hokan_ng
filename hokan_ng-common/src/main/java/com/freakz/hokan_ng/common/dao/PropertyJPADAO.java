@@ -104,9 +104,21 @@ public class PropertyJPADAO implements PropertyDAO {
   }
 
   @Override
-  public ChannelProperty setChannelProperty(Channel channel, PropertyName name, String value) throws HokanDAOException {
-    ChannelProperty property = new ChannelProperty(channel, name, value, "");
-    return entityManager.merge(property);
+  public ChannelProperty setChannelProperty(Channel channel, PropertyName name, String value) {
+    ChannelProperty property = null;
+    try {
+      property = findChannelProperty(channel, name);
+    } catch (HokanDAOException e) {
+      //
+    }
+    if (property == null) {
+      property = new ChannelProperty(channel, name, value, "");
+      entityManager.persist(property);
+      return property;
+    } else {
+      property.setValue(value);
+      return entityManager.merge(property);
+    }
   }
 
   @Override

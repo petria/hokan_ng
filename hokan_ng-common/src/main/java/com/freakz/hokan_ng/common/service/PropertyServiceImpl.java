@@ -49,9 +49,15 @@ public class PropertyServiceImpl implements PropertyService {
     return propertyDAO.setProperty(name, value);
   }
 
+
   @Override
   public Property saveProperty(Property property) throws HokanException {
     return propertyDAO.saveProperty(property);
+  }
+
+  @Override
+  public ChannelProperty setChannelProperty(Channel channel, PropertyName property, String value) throws HokanDAOException {
+    return propertyDAO.setChannelProperty(channel, property, value);
   }
 
   @Override
@@ -90,4 +96,6 @@ public class PropertyServiceImpl implements PropertyService {
     }
     return null;
   }
+
+
 }

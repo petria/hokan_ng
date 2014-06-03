@@ -12,7 +12,7 @@ public class StaticStrings {
   public static final String ARG_ALIAS = "Alias";
   public static final String ARG_AMOUNT = "Amount";
   public static final String ARG_CHANNEL = "Channel";
-  public static final String ARG_CHAN_ID = "ChanId";
+  public static final String ARG_CHANNEL_ID = "ChannelId";
   public static final String ARG_COUNT = "Count";
   public static final String ARG_COMMAND = "Command";
   public static final String ARG_EMAIL = "Email";
