@@ -426,6 +426,12 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     } else if (message.equals("!methodmap")) {
       log.info("Re-building method map!");
       buildMethodMap();
+    } else if (message.equals("!elist")) {
+      int size = engineCommunicator.getEngineHandlers().size();
+      for (RestUrl restUrl : engineCommunicator.getEngineHandlers().values()) {
+        handleSendMessage(ircEvent.getChannel(), restUrl.toString());
+      }
+
     }
   }
 

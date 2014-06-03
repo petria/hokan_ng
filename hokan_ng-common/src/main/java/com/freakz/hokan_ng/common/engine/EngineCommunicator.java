@@ -1,6 +1,9 @@
 package com.freakz.hokan_ng.common.engine;
 
+import com.freakz.hokan_ng.common.entity.RestUrl;
 import com.freakz.hokan_ng.common.rest.EngineRequest;
+
+import java.util.Map;
 
 /**
  * User: petria
@@ -18,5 +21,7 @@ public interface EngineCommunicator {
   void removeEngineHandler(String engineId);
 
   void clearEngineHandlers();
+
+  Map<String, RestUrl> getEngineHandlers();
 
 }

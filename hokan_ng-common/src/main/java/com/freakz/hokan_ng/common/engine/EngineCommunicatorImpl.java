@@ -168,4 +168,9 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
   public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
     log.info("errororororor!");
   }
+
+  @Override
+  public Map<String, RestUrl> getEngineHandlers() {
+    return this.engineHandlers;
+  }
 }
