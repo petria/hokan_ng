@@ -91,10 +91,6 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
 
           Url entity = urlDAO.findUrl(url);
 
-/*          if (entity == null) {
-            entity = new Url();
-          }*/
-
           entity.setUrlTitle(title);
           urlDAO.storeUrl(entity);
 
@@ -232,9 +228,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
     if (m.matches()) {
       match = m.group(1);
       match = match.substring(0, match.lastIndexOf("/"));
-
       return match;
-
     }
     return null;
   }

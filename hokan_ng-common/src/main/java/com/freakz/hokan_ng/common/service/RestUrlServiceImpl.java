@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by pairio on 20.5.2014.
  *
- * @author Petri Airio (petri.airio@polar.com)
+ * @author Petri Airio (petri.j.airio@gmail.com)
  */
 @Service
 @Slf4j
@@ -25,4 +25,5 @@ public class RestUrlServiceImpl implements RestUrlService {
   public List<RestUrl> getRestUrls(String instanceKey, RestUrlType restUrlType) {
     return restUrlDAO.getRestUrls(instanceKey, restUrlType);
   }
+
 }

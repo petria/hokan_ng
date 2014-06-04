@@ -32,6 +32,7 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected JSAP jsap;
   protected boolean channelOpOnly;
   protected boolean loggedInOnly;
+  protected boolean channelOnly;
   protected boolean privateOnly;
   protected boolean masterUserOnly;
   protected boolean toBotOnly;
@@ -210,13 +211,19 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     }
 
     if (isToBotOnly() && !isToBot && !isMasterUser) {
-      response.setResponseMessage("To bot only: " + getName());
+      response.setResponseMessage("Can be used via message to Bot only: " + getName());
+      response.setReplyTo(ircMessageEvent.getSender());
+      ret = false;
+    }
+
+    if (isChannelOnly() && !isPublic && !isMasterUser) {
+      response.setResponseMessage("Can be used via channel messages only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
 
     if (isPrivateOnly() && isPublic && !isMasterUser) {
-      response.setResponseMessage("Private only: " + getName());
+      response.setResponseMessage("Can be used via private messages only: " + getName());
       response.setReplyTo(ircMessageEvent.getSender());
       ret = false;
     }
@@ -251,6 +258,14 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   public void setLoggedInOnly(boolean loggedInOnly) {
     this.loggedInOnly = loggedInOnly;
+  }
+
+  public boolean isChannelOnly() {
+    return channelOnly;
+  }
+
+  public void setChannelOnly(boolean channelOnly) {
+    this.channelOnly = channelOnly;
   }
 
   public boolean isPrivateOnly() {
