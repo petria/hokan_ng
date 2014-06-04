@@ -362,7 +362,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
     UserChannel userChannel = userChannelService.getUserChannel(user, ch);
     if (userChannel == null) {
-        userChannel = new UserChannel(user, ch);
+      userChannel = new UserChannel(user, ch);
     }
     userChannel.setLastMessage(message);
     userChannel.setLastMessageTime(new Date());
@@ -428,7 +428,6 @@ public class HokanCore extends PircBot implements EngineEventHandler {
       log.info("Re-building method map!");
       buildMethodMap();
     } else if (message.equals("!elist")) {
-      int size = engineCommunicator.getEngineHandlers().size();
       for (RestUrl restUrl : engineCommunicator.getEngineHandlers().values()) {
         handleSendMessage(ircEvent.getChannel(), restUrl.toString());
       }
@@ -522,21 +521,18 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     String channel = response.getReplyTo();
     String message = response.getResponseMessage();
     if (message != null && message.trim().length() > 1) {
+      boolean doSr = false;
       if (!response.isNoSearchReplace()) {
-        boolean doSr = false;
         if (!response.getRequest().getIrcEvent().isPrivate()) {
           Channel ch = getChannel(response.getRequest().getIrcEvent().getChannel());
           doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
         }
-        if (doSr) {
-          message = handleSearchReplace(response, message);
-        }
       }
-      handleSendMessage(channel, message);
+      handleSendMessage(channel, message, doSr);
     }
   }
 
-  private String handleSearchReplace(EngineResponse response, String message) {
+  private String handleSearchReplace(String message) {
     List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
     for (SearchReplace sr : searchReplaces) {
       message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
@@ -545,6 +541,15 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   public void handleSendMessage(String channel, String message) {
+    handleSendMessage(channel, message, false);
+  }
+
+  public void handleSendMessage(String channel, String message, boolean doSr) {
+
+    if (doSr) {
+      message = handleSearchReplace(message);
+    }
+
     Channel ch = null;
     if (channel.startsWith("#")) {
       ch = getChannel(channel);

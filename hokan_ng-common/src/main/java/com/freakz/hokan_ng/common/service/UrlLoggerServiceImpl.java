@@ -197,7 +197,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   }
 
   private void processReply(IrcMessageEvent iEvent, String reply, HokanCore core) {
-    core.handleSendMessage(iEvent.getChannel(), reply);
+    core.handleSendMessage(iEvent.getChannel(), reply, true);
   }
 
   @Override
