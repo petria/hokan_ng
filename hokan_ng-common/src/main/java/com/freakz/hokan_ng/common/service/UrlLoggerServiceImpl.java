@@ -181,7 +181,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
     while (m.find()) {
       String url = m.group();
       long isWanha = logUrl(iEvent, url);
-      String ignoreTitles = ".*(pdf|jpg|gif|jpeg|avi|iso|mkv|mp3|mp4|torrent|mpeg|mpg|mov|exe|gz|zip|bz|7z|tar|twitter.com.*)";
+      String ignoreTitles = ".*(avi|bz|gz|gif|exe|iso|jpg|jpeg|mp3|mp4|mkv|mpeg|mpg|mov|pdf|png|torrent|zip|7z|tar)";
 
       String wanhaAdd = "";
       for (int i = 0; i < isWanha; i++) {
