@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Date: 3.6.2013
@@ -537,8 +538,8 @@ public class HokanCore extends PircBot implements EngineEventHandler {
 
   private String handleSearchReplace(EngineResponse response, String message) {
     List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
-    for (SearchReplace searchReplace : searchReplaces) {
-      message = message.replaceAll(searchReplace.getSearch(), searchReplace.getReplace());
+    for (SearchReplace sr : searchReplaces) {
+      message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
     }
     return message;
   }
@@ -576,6 +577,7 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     ch.setTopicSetDate(topicDate);
     ch = channelService.updateChannel(ch);
     log.info("Topic '{}' set by {}", ch.getTopic(), ch.getTopicSetBy());
+
   }
 
 
