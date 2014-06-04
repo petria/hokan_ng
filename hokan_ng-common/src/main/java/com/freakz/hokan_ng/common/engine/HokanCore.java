@@ -568,6 +568,18 @@ public class HokanCore extends PircBot implements EngineEventHandler {
   }
 
   @Override
+  protected void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
+    Date topicDate = new Date(date);
+    Channel ch = getChannel(channel);
+    ch.setTopic(topic);
+    ch.setTopicSetBy(setBy);
+    ch.setTopicSetDate(topicDate);
+    ch = channelService.updateChannel(ch);
+    log.info("Topic '{}' set by {}", ch.getTopic(), ch.getTopicSetBy());
+  }
+
+
+  @Override
   protected void onJoin(String channel, String sender, String login, String hostname) {
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);

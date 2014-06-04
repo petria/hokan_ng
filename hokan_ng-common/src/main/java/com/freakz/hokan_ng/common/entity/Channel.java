@@ -1,17 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -77,6 +66,16 @@ public class Channel implements Serializable {
 
   @Column(name = "COMMANDS_HANDLED")
   private int commandsHandled;
+
+  @Column(name = "TOPIC")
+  private String topic;
+
+  @Column(name = "TOPIC_SET_BY")
+  private String topicSetBy;
+
+  @Column(name = "TOPIC_SET_DATE")
+  private Date topicSetDate;
+
 
   public Channel(Network network, String name) {
     this.network = network;
@@ -235,4 +234,27 @@ public class Channel implements Serializable {
     this.commandsHandled += delta;
   }
 
+  public String getTopic() {
+    return topic;
+  }
+
+  public void setTopic(String topic) {
+    this.topic = topic;
+  }
+
+  public String getTopicSetBy() {
+    return topicSetBy;
+  }
+
+  public void setTopicSetBy(String topicSetBy) {
+    this.topicSetBy = topicSetBy;
+  }
+
+  public Date getTopicSetDate() {
+    return topicSetDate;
+  }
+
+  public void setTopicSetDate(Date topicSetDate) {
+    this.topicSetDate = topicSetDate;
+  }
 }
