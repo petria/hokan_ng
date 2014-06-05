@@ -591,6 +591,9 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     IrcEvent ircEvent = IrcEventFactory.createIrcEvent(getName(), getNetwork().getName(), channel, sender, login, hostname);
     Channel ch = getChannel(ircEvent);
     UserChannel userChannel = userChannelService.getUserChannel(getUser(ircEvent), ch);
+    if (userChannel == null) {
+      userChannel = userChannelService.createUserChannel(getUser(ircEvent), ch);
+    }
 
     log.info("{} joined channel: {}", sender, channel);
 

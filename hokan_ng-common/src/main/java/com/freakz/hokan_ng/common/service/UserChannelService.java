@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface UserChannelService {
 
-  UserChannel createUserChannel(User user, Channel channel) throws HokanException;
+  UserChannel createUserChannel(User user, Channel channel);
 
   UserChannel getUserChannel(User user, Channel channel);
 

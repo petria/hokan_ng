@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.dao.UserChannelDAO;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.User;
 import com.freakz.hokan_ng.common.entity.UserChannel;
+import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,13 @@ public class UserChannelServiceImpl implements UserChannelService {
   }
 
   @Override
-  public UserChannel createUserChannel(User user, Channel channel) throws HokanException {
-    return userChannelDAO.createUserChannel(user, channel);
+  public UserChannel createUserChannel(User user, Channel channel) {
+    try {
+      return userChannelDAO.createUserChannel(user, channel);
+    } catch (HokanDAOException e) {
+      //
+    }
+    return null;
   }
 
   @Override
