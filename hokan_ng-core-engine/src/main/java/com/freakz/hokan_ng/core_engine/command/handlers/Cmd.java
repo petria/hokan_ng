@@ -61,15 +61,18 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   @Autowired
   protected SearchReplaceService searchReplaceService;
 
+  @Autowired
+  protected UrlLoggerService urlLoggerService;
+
 
   public Cmd() {
     jsap = new JSAP();
     jsap.setHelp("Help not set!");
   }
 
-  protected void registerParameter(Parameter paramter) {
+  protected void registerParameter(Parameter parameter) {
     try {
-      jsap.registerParameter(paramter);
+      jsap.registerParameter(parameter);
     } catch (JSAPException e) {
       log.error("Error registering command parameter", e);
     }

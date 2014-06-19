@@ -76,10 +76,6 @@ public class OpCmd extends Cmd {
         response.addEngineMethodCall("op", request.getChannel().getChannelName(), target);
       }
     }
-/*    response.addEngineMethodCall("op", channel, request.getIrcEvent().getSender());
-    if (request.getIrcEvent().isPrivate()) {
-      response.addResponse("Trying to op %s on %s", request.getIrcEvent().getSender(), channel);
-    }*/
   }
 
 }

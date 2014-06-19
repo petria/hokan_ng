@@ -24,4 +24,8 @@ public interface UrlLoggerService {
 
   String createShortUrl(String longUrl);
 
+  List findTopSenderByChannel(String channel);
+
+  List findTopSender();
+
 }

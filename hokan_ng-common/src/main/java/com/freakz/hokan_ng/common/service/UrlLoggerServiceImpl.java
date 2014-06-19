@@ -211,6 +211,16 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   }
 
   @Override
+  public List findTopSenderByChannel(String channel) {
+    return urlDAO.findTopSenderByChannel(channel);
+  }
+
+  @Override
+  public List findTopSender() {
+    return urlDAO.findTopSender();
+  }
+
+  @Override
   public String createShortUrl(String longUrl) {
     HttpPageFetcher pageFetcher = context.getBean(HttpPageFetcher.class);
     String url = "http://www.shorturl.com/make_url.php?longurl=" + longUrl;

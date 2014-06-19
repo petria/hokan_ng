@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.Date;
@@ -64,6 +65,19 @@ public class UrlJPADAO implements UrlDAO {
     Url entity = new Url(url, sender, channel, date);
     entityManager.persist(entity);
     return entity;
+  }
+
+  @Override
+  public List findTopSenderByChannel(String channel) {
+    Query query = entityManager.createQuery("SELECT url, count(url) FROM Url url WHERE url.channel = :channel GROUP BY url.sender ORDER BY 2 DESC");
+    query.setParameter("channel", channel);
+    return query.getResultList();
+  }
+
+  @Override
+  public List findTopSender() {
+    Query query = entityManager.createQuery("SELECT url, count(url) FROM Url url GROUP BY url.sender ORDER BY 2 DESC");
+    return query.getResultList();
   }
 
 }

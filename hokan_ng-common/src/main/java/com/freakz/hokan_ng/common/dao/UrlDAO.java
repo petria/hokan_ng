@@ -22,4 +22,8 @@ public interface UrlDAO {
 
   Url createUrl(String url, String sender, String channel, Date date);
 
+  List findTopSenderByChannel(String channel);
+
+  List findTopSender();
+
 }

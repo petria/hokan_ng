@@ -43,11 +43,6 @@ public class AsyncEngineMessageSender implements CommandRunnable {
     commandPool.startRunnable(this, request);
   }
 
-  public String getRestBaseUrl() {
-//    return "http://localhost:8080/hokan_ng-core-engine/";
-    // change
-    return "http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/";
-  }
 
   public HttpHeaders getRestHeaders() {
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -77,7 +72,7 @@ public class AsyncEngineMessageSender implements CommandRunnable {
 
 
     } catch (Exception e) {
-      HokanEngineException engineException = new HokanEngineException(e, getRestBaseUrl());
+      HokanEngineException engineException = new HokanEngineException(e, restUrl);
       response = new EngineResponse(request);
       response.setException(engineException.toString());
       response.setResponseStatus(-100);

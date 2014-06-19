@@ -1,11 +1,6 @@
 package com.freakz.hokan_ng.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -25,11 +20,12 @@ public class User implements Serializable {
   @Column(name = "NICK")
   private String nick;
 
-
   @Column(name = "PASSWORD")
   private String password;
+
   @Column(name = "MASK")
   private String mask;
+
   @Column(name = "REAL_MASK")
   private String realMask;
 
@@ -38,8 +34,10 @@ public class User implements Serializable {
 
   @Column(name = "FULL_NAME")
   private String fullName;
+
   @Column(name = "PHONE")
   private String phone;
+
   @Column(name = "EMAIL")
   private String email;
 
