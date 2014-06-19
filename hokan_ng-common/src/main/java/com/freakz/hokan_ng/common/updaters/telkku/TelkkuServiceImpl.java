@@ -1,12 +1,12 @@
 package com.freakz.hokan_ng.common.updaters.telkku;
 
-import com.freakz.hokan_ng.common.engine.AsyncCoreMessageSender;
-import com.freakz.hokan_ng.common.engine.CoreEventHandler;
 import com.freakz.hokan_ng.common.entity.Channel;
 import com.freakz.hokan_ng.common.entity.PropertyName;
 import com.freakz.hokan_ng.common.entity.TvNotify;
 import com.freakz.hokan_ng.common.rest.CoreRequest;
 import com.freakz.hokan_ng.common.rest.CoreResponse;
+import com.freakz.hokan_ng.common.rest.messages.AsyncCoreMessageSender;
+import com.freakz.hokan_ng.common.rest.messages.CoreEventHandler;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.service.TvNotifyService;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;

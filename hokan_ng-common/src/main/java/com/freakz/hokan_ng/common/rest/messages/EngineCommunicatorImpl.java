@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.common.engine;
+package com.freakz.hokan_ng.common.rest.messages;
 
 
 import com.freakz.hokan_ng.common.entity.Alias;
@@ -131,21 +131,6 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
       request.setEngineAddress(restUrl.getRestUrl());
       sender.sendRequest(request, engineEventHandler);
     }
-
-  }
-
-  @Override
-  public void addEngineHandler(String engineId, String engineAddress) {
-
-  }
-
-  @Override
-  public void removeEngineHandler(String engineId) {
-
-  }
-
-  @Override
-  public void clearEngineHandlers() {
 
   }
 

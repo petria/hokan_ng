@@ -1,5 +1,7 @@
-package com.freakz.hokan_ng.common.engine;
+package com.freakz.hokan_ng.common.rest.messages;
 
+import com.freakz.hokan_ng.common.engine.CommandPool;
+import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.rest.CoreRequest;
 import com.freakz.hokan_ng.common.rest.CoreResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,7 @@ public class AsyncCoreMessageSender implements CommandRunnable {
 
   public String getRestBaseUrl() {
 //    return "http://localhost:8080/hokan_ng-core-engine/";
-    return "http://localhost:8080/hokan_ng-core-io-0.0.1-SNAPSHOT/";
+    return "http://localhost:8080//hokanng-core-io";
   }
 
   public HttpHeaders getRestHeaders() {
