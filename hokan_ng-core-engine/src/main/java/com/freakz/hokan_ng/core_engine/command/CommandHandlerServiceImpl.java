@@ -30,7 +30,6 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
   @PostConstruct
   public void refreshHandlers() {
-    Map foo = context.getBeansWithAnnotation(Test.class);
     handlers = context.getBeansOfType(Cmd.class);
   }
 
