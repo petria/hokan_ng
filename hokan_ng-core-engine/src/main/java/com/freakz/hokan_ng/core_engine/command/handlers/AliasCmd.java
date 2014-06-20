@@ -5,7 +5,6 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.service.AliasService;
-import com.freakz.hokan_ng.core_engine.command.Test;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,6 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_COMMAND;
 @Component
 @Scope("prototype")
 @Slf4j
-@Test
 public class AliasCmd extends Cmd {
 
   @Autowired
