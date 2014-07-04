@@ -51,6 +51,9 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 
   private Map<String, RestUrl> engineHandlers = new HashMap<>();
 
+  private Map<String, RestUrl> engineHandlersCycle = new HashMap<>();
+
+
   public EngineCommunicatorImpl() {
   }
 
@@ -87,17 +90,27 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
         response = responseEnt.getBody();
         if (response.equals("pong")) {
 //          log.info("Got response from {}", url);
-          this.engineHandlers.put(restUrl.getRestUrl(), restUrl);
+
+          addToCycleList(restUrl);
         }
 
       } catch (Exception e) {
-        this.engineHandlers.remove(restUrl.getRestUrl());
+        removeFromCycleList(restUrl);
       }
 
     }
 
   }
 
+  private synchronized void addToCycleList(RestUrl restUrl) {
+    this.engineHandlers.put(restUrl.getRestUrl(), restUrl);
+    this.engineHandlersCycle.put(restUrl.getRestUrl(), restUrl);
+  }
+
+  private synchronized void removeFromCycleList(RestUrl restUrl) {
+    this.engineHandlers.remove(restUrl.getRestUrl());
+    this.engineHandlersCycle.remove(restUrl.getRestUrl());
+  }
 
   @Override
   public void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler) {
@@ -112,14 +125,16 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
         EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
         String trimmed = splitted.trim();
         splitRequest.getIrcEvent().setMessage(trimmed);
-        doSendRequest(splitRequest, engineEventHandler);
+//        doSendRequest(splitRequest, engineEventHandler);
+        doSendRequestCycle(splitRequest, engineEventHandler);
       }
     } else {
-      doSendRequest(request, engineEventHandler);
+//      doSendRequest(request, engineEventHandler);
+      doSendRequestCycle(request, engineEventHandler);
     }
   }
 
-  private void doSendRequest(EngineRequest request, EngineEventHandler engineEventHandler) {
+  private synchronized void doSendRequest(EngineRequest request, EngineEventHandler engineEventHandler) {
 
     if (engineHandlers.size() == 0) {
       log.warn("No registered engines!!!");
@@ -133,6 +148,33 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
     }
 
   }
+
+  private synchronized void doSendRequestCycle(EngineRequest request, EngineEventHandler engineEventHandler) {
+
+    if (engineHandlersCycle.size() == 0) {
+      log.warn("No registered engines!!!");
+      return;
+    }
+
+    RestUrl restUrl;
+    boolean reCycle = false;
+    if (engineHandlersCycle.size() > 1) {
+      restUrl = engineHandlersCycle.remove(0);
+      reCycle = true;
+    } else {
+      restUrl = engineHandlersCycle.get(0);
+    }
+
+    AsyncEngineMessageSender sender = context.getBean(AsyncEngineMessageSender.class);
+    request.setEngineAddress(restUrl.getRestUrl());
+    sender.sendRequest(request, engineEventHandler);
+
+    if (reCycle) {
+      engineHandlersCycle.add(restUrl);
+    }
+
+  }
+
 
   private String resolveAlias(String line) {
     List<Alias> aliases = aliasService.findAliases();
