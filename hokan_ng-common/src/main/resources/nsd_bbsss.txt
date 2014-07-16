@@ -7949,7 +7949,7 @@
 70;248;----;Farewell / Intermediate Field;;United States;4;63-30N;153-53W;;;468;458;
 70;249;PAPT;Puntilla;AK;United States;4;62-06N;152-45W;;;560;;
 70;251;PATK;TALKEETNA AIRPORT;AK;United States;4;62-19N;150-06W;;;109;109;
-70;255;PASW;Skwentna;AK;United States;4;61-58N;151-11W;;;45;;
+70;255;PASW;Skwentna;AK;United States;4;61-58-38N;151-13-02W;;;46;;
 70;259;PAEN;KENAI MUNICIPAL AIRPORT;AK;United States;4;60-35N;151-14W;60-34-25N;151-14-13W;28;25;
 70;260;PANN;NENANA MUNICIPAL AIRPORT;AK;United States;4;64-33N;149-04W;;;110;;
 70;261;PAFA;Fairbanks, Fairbanks International Airport;AK;United States;4;64-48-14N;147-52-34W;64-49-11N;147-51-29W;132;140;P
@@ -9004,7 +9004,7 @@
 74;750;----;Palestine, Tx.;;United States;4;31-47N;095-43W;;;119;;
 74;752;----;Dequeen, Ar.;;United States;4;34-07N;094-17W;;;195;;
 74;753;----;Winnfield, La.;;United States;4;31-54N;092-47W;;;93;141;
-74;754;KAEX;ALEXANDRIA INTERNATIONAL  AIRPORT;LA;United States;4;31-33N;092-56W;31-19-26N;092-32-37W;27;27;
+74;754;KAEX;ALEXANDRIA INTERNATIONAL AIRPORT;LA;United States;4;31-33N;092-56W;31-19-26N;092-32-37W;27;27;
 74;755;K01R;Claiborne Range, Airways Facilities Sector ;LA;United States;4;31-08N;092-34W;31-11N;092-38W;67;67;
 74;769;----;Okolona, Ms.;;United States;4;34-05N;088-52W;;;125;;
 74;775;KPAM;Tyndall Air Force Base;FL;United States;4;30-04N;085-35W;30-04N;085-35W;5;13;
@@ -9203,7 +9203,7 @@
 78;409;MTCH;Cap-Haitien;;Haiti;4;19-45N;072-11W;;;2;3;
 78;435;----;Jeremie;;Haiti;4;18-37N;074-05W;;;;;
 78;437;----;Port-Au-Prince Damien ;;Haiti;4;18-36N;072-17W;;;14;15;
-78;439;MTPP;Port-Au-Prince / Aeroport International;;Haiti;4;18-34N;072-18W;18-33N;072-21W;31;34;
+78;439;KQHA;FOB Mandrian;;Haiti;4;19-40N;072-62W;;;17;;
 78;447;----;Les Cayes;;Haiti;4;18-11N;073-44W;;;1;2;
 78;449;----;Jacmel;;Haiti;4;18-14N;072-32W;;;;;
 78;451;----;Monte Cristi;;Dominican Republic;4;19-53N;071-39W;;;;2;
