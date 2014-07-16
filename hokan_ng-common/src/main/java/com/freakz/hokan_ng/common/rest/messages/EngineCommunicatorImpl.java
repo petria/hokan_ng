@@ -125,12 +125,12 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
         EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
         String trimmed = splitted.trim();
         splitRequest.getIrcEvent().setMessage(trimmed);
-//        doSendRequest(splitRequest, engineEventHandler);
-        doSendRequestCycle(splitRequest, engineEventHandler);
+        doSendRequest(splitRequest, engineEventHandler);
+//        doSendRequestCycle(splitRequest, engineEventHandler);
       }
     } else {
-//      doSendRequest(request, engineEventHandler);
-      doSendRequestCycle(request, engineEventHandler);
+      doSendRequest(request, engineEventHandler);
+//      doSendRequestCycle(request, engineEventHandler);
     }
   }
 
@@ -170,7 +170,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
     sender.sendRequest(request, engineEventHandler);
 
     if (reCycle) {
-      engineHandlersCycle.add(restUrl);
+      //engineHandlersCycle.add(restUrl); TODO fix
     }
 
   }
