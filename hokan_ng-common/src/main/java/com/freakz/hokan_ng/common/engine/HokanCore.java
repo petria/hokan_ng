@@ -530,23 +530,28 @@ public class HokanCore extends PircBot implements EngineEventHandler {
           doSr = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_SEARCH_REPLACE, false);
         }
       }
-      handleSendMessage(channel, message, doSr);
+      handleSendMessage(channel, message, doSr, response.getRequest().getOutputPrefix(), response.getRequest().getOutputPostfix());
     }
   }
 
   private String handleSearchReplace(String message) {
     List<SearchReplace> searchReplaces = searchReplaceService.getSearchReplaces();
     for (SearchReplace sr : searchReplaces) {
-      message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
+      try {
+        message = Pattern.compile(sr.getSearch(), Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(sr.getReplace());
+      } catch (Exception e) {
+        message += " || SR error: " + sr.getId() + " || ";
+        break;
+      }
     }
     return message;
   }
 
   public void handleSendMessage(String channel, String message) {
-    handleSendMessage(channel, message, false);
+    handleSendMessage(channel, message, false, null, null);
   }
 
-  public void handleSendMessage(String channel, String message, boolean doSr) {
+  public void handleSendMessage(String channel, String message, boolean doSr, String prefix, String postfix) {
 
     if (doSr) {
       message = handleSearchReplace(message);
@@ -556,12 +561,18 @@ public class HokanCore extends PircBot implements EngineEventHandler {
     if (channel.startsWith("#")) {
       ch = getChannel(channel);
     }
+    if (prefix == null) {
+      prefix = "";
+    }
+    if (postfix == null) {
+      postfix = "";
+    }
     Network nw = getNetwork();
     String[] lines = message.split("\n");
     for (String line : lines) {
       String[] split = IRCUtility.breakUpMessageByIRCLineLength(channel, line);
       for (String l : split) {
-        String raw = "PRIVMSG " + channel + " :" + l;
+        String raw = "PRIVMSG " + channel + " :" + prefix + l + postfix;
         this.outputQueue.addLine(raw);
         if (ch != null) {
           ch.addToLinesSent(1);

@@ -124,6 +124,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
       for (String splitted : split) {
         EngineRequest splitRequest = new EngineRequest((IrcMessageEvent) request.getIrcEvent().clone());
         String trimmed = splitted.trim();
+        splitRequest.setOutputPrefix(trimmed + " :: ");
         splitRequest.getIrcEvent().setMessage(trimmed);
         doSendRequest(splitRequest, engineEventHandler);
 //        doSendRequestCycle(splitRequest, engineEventHandler);
