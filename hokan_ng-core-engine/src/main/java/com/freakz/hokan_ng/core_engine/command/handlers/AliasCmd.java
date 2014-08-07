@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_ALIAS;
@@ -66,6 +67,8 @@ public class AliasCmd extends Cmd {
       Alias a = aliasService.findAlias(alias);
       if (a == null) {
         a = new Alias();
+        a.setCreatedBy(request.getUser().getNick());
+        a.setCreated(new Date());
         a.setAlias(alias);
       }
       a.setCommand(command);

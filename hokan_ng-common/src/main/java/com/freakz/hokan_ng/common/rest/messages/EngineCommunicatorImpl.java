@@ -112,11 +112,25 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
     this.engineHandlersCycle.remove(restUrl.getRestUrl());
   }
 
+  private boolean resolveAlias(EngineRequest request) {
+    String line = request.getIrcEvent().getMessage();
+    List<Alias> aliases = aliasService.findAliases();
+    for (Alias alias : aliases) {
+      if (line.equals(alias.getAlias())) {
+        request.getIrcEvent().setMessage(alias.getCommand());
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   @Override
   public void sendEngineMessage(EngineRequest request, EngineEventHandler engineEventHandler) {
 
+    boolean aliased = resolveAlias(request);
     String message = request.getIrcEvent().getMessage();
-    message = resolveAlias(message);
+
     boolean between = StringStuff.isInBetween(message, "&&", ' ');
     log.info("between = {}", between);
     if (!message.startsWith("!alias") && between) {
@@ -130,7 +144,9 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 //        doSendRequestCycle(splitRequest, engineEventHandler);
       }
     } else {
-      request.getIrcEvent().setMessage(message);
+      if (aliased) {
+        request.setOutputPrefix(request.getIrcEvent().getMessage() + " :: ");
+      }
       doSendRequest(request, engineEventHandler);
 //      doSendRequestCycle(request, engineEventHandler);
     }
