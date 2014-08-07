@@ -130,6 +130,7 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 //        doSendRequestCycle(splitRequest, engineEventHandler);
       }
     } else {
+      request.getIrcEvent().setMessage(message);
       doSendRequest(request, engineEventHandler);
 //      doSendRequestCycle(request, engineEventHandler);
     }
