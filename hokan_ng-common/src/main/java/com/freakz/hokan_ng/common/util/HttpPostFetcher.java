@@ -14,11 +14,11 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.HTTP_USER_AGENT;
 
 /**
  * <br>
- * <p/>
+ * <p>
  * User: petria<br>
  * Date: 29-Jun-2007<br>
  * Time: 12:53:37<br>
- * <p/>
+ * <p>
  */
 @Slf4j
 @Component

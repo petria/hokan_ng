@@ -160,7 +160,7 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
   /**
    * Catches URLs from incoming IrcEvent message line. All URLs are stored. If URL found from the
    * message was already stored it is announced to the source channel with " | wanha".
-   * <p/>
+   * <p>
    * <b>Note: This method is called before IrcEvent is proceeded by actual CmdHandler mechanism which
    * means this should not block as then it's preventing any further command executing while doing so.</b>
    *

@@ -40,11 +40,11 @@ public class HttpPageFetcher {
     fetch(urlStr, "UTF-8");
   }
 
-    /**
-     * @param urlStr   the URL where to fetch the page
-     * @param encoding encoding
-     * @throws Exception
-     */
+  /**
+   * @param urlStr   the URL where to fetch the page
+   * @param encoding encoding
+   * @throws Exception
+   */
   public void fetch(String urlStr, String encoding) throws Exception {
 
     URL url = new URL(urlStr);
@@ -216,10 +216,10 @@ public class HttpPageFetcher {
 
   /**
    * Removes lines from the buffer according to their length.
-   * <p/>
+   * <p>
    * HttpPageFetcher pf = new HttpPageFetcher("http://my.url/");<br>
    * pf.trimLines(0); // removes all lines from the buffer that has no characters<br>
-   * <p/>
+   * <p>
    *
    * @param minLength the number of characters on row must have so it it's not removed from the buffer.
    */
@@ -239,7 +239,7 @@ public class HttpPageFetcher {
   /**
    * HttpPageFetcher class keeps count how much data has been fetched from the net. This
    * method can be used to get the data count.
-   * <p/>
+   * <p>
    *
    * @return the amount of total bytes fetched by all instances created.
    */

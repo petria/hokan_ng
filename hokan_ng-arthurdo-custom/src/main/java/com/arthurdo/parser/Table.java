@@ -27,31 +27,31 @@ import java.util.Vector;
 
 /**
  * <p><i>Null Cells and Phantom Rows</i>
- * <p/>
+ * <p>
  * <p>elementAt() can return null if
  * there is no cell at the requested coordinate due to spans
  * across areas where there are no cells, for example,
- * <p/>
+ * <p>
  * <p><blockquote>
  * &lt;table&gt;<br>
  * &lt;tr&gt;&lt;td rowspan=2&gt;abc&lt;td&gt;def<br>
  * &lt;/table&gt;
  * </blockquote>
- * <p/>
+ * <p>
  * <p>In this case, calling elementAt(1, 1) would return
  * null. Similarly, getRowTag() could return null if
  * the requested index is a phantom row (a row that doesn't
  * have any real cells). In the example above, the table
  * has two rows due to the rowspan but row 1 is a phantom
  * row and does not have a &lt;tr&gt; tag.
- * <p/>
+ * <p>
  * <p><i>Implementation Note:</i> the table parser is very
  * strict, that is, &lt;TABLE&gt;
  * can only contain &lt;TR&gt;. &lt;TR&gt; can only contain
  * &lt;TD&gt;. Any deviation from this nesting is considered
  * bad data and will be thrown away by the parser. In a future
  * release, we hope to be more forgiving.
- * <p/>
+ * <p>
  * <p><ul>
  * <li> 02/09/98 Dr. Jaron Collis, added support for <TH> and
  * introduced a parseTable(Reader) convenience function.
@@ -66,10 +66,10 @@ public class Table {
   }
 
   /**
+   * @param data input stream
    * @deprecated use parseTable(Reader) instead.
    * This version of the constructor can lead to 10x slower code
    * because of the InputStreamReader wrapper.
-   * @param  data input stream
    */
   public void parseTable(InputStream in)
       throws HtmlException, IOException {
@@ -77,7 +77,7 @@ public class Table {
   }
 
   /**
-   * @param  data input stream
+   * @param data input stream
    */
   public void parseTable(Reader in)
       throws HtmlException, IOException {
@@ -143,7 +143,7 @@ public class Table {
   }
 
   /**
-   * @param  row the row to get
+   * @param row the row to get
    * @return the original &lt;TR&gt; tag for this row or null
    * if this is a phantom row, i.e. a row that doesn't
    * have any real cells.
@@ -169,8 +169,8 @@ public class Table {
   }
 
   /**
-   * @param  row row to get
-   * @param  col column to get
+   * @param row row to get
+   * @param col column to get
    * @return the cell located at the specified location in the table
    * or null if there is no cell due to uneven spans.
    */

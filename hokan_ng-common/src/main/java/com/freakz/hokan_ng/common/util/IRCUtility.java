@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * Splits an IRC line up that would be too long otherwise.
- * <p/>
+ * <p>
  * License: Creative Commons Share Alike Attribution (CC-BY-SA)
  * http://creativecommons.org/licenses/by-sa/3.0/
  * Attribution: List A.McBain as original author.

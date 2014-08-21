@@ -28,16 +28,16 @@ import java.util.Vector;
  * contains the location of the actual cell. Pseudo cells
  * have no elements, i.e. size() returns zero. An example
  * of a pseudo cell would be:
- * <p/>
+ * <p>
  * <p><blockquote>
  * &lt;table&gt;<br>
  * &lt;tr&gt;&lt;td colspan=2&gt;abc<br>
  * &lt;/table&gt;
  * </blockquote>
- * <p/>
+ * <p>
  * <p>In this case, the cell at coordinate [0,0] is a real cell
  * while [0,1] is a pseudo cell.
- * <p/>
+ * <p>
  * <p><ul>
  * <li> 02/09/98 Dr. Jaron Collis, added getCharacterData() which
  * returns only the cell's character data, without any markup.
@@ -108,14 +108,14 @@ public class TableCell {
   }
 
   /**
-   * @param  obj element to add
+   * @param obj element to add
    */
   public void addElement(Object obj) {
     m_content.addElement(obj);
   }
 
   /**
-   * @param  index index of element
+   * @param index index of element
    * @return a cell element, normally this will be either
    * a String, HtmlTag, or HtmlTable object (comments are thrown
    * away) but new object types could be added in the

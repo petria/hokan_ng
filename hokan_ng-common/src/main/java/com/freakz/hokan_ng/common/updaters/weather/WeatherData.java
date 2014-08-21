@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * WeatherData
- * <p/>
+ * <p>
  *
  * @author Petri Airio
  */

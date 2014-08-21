@@ -2,12 +2,7 @@
 package org.cheffo.jeplite;
 
 import org.cheffo.jeplite.function.PostfixMathCommand;
-import org.cheffo.jeplite.function.PostfixMathCommand.Comparative;
-import org.cheffo.jeplite.function.PostfixMathCommand.Logical;
-import org.cheffo.jeplite.function.PostfixMathCommand.Modulus;
-import org.cheffo.jeplite.function.PostfixMathCommand.Not;
-import org.cheffo.jeplite.function.PostfixMathCommand.Power;
-import org.cheffo.jeplite.function.PostfixMathCommand.Subtract;
+import org.cheffo.jeplite.function.PostfixMathCommand.*;
 
 import java.util.Enumeration;
 import java.util.HashMap;

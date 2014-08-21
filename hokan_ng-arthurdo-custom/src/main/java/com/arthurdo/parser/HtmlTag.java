@@ -48,8 +48,8 @@ public class HtmlTag {
   /**
    * Sets the tag name.
    *
+   * @param tag name of tag, e.g. "img"
    * @throws HtmlException if malformed tag.
-   * @param  tag name of tag, e.g. "img"
    */
   public void setTag(String tag)
       throws HtmlException {
@@ -88,7 +88,7 @@ public class HtmlTag {
    * Looks up a tag param name and returns the associated
    * value, if any. Try to use the predefined <b>P_</b> constants.
    *
-   * @param  name name of param
+   * @param name name of param
    * @return the value associated with the name, or null.
    */
   public String getParam(String name) {
@@ -102,7 +102,7 @@ public class HtmlTag {
   /**
    * Looks up a tag param name (by position)
    *
-   * @param  i The index of the param in the list (starting at 0).
+   * @param i The index of the param in the list (starting at 0).
    * @return The name of the indexed param
    */
   public String getParamName(int i) {
@@ -112,7 +112,7 @@ public class HtmlTag {
   /**
    * Looks up a tag param value (by position)
    *
-   * @param  i The index of the param in the list (starting at 0).
+   * @param i The index of the param in the list (starting at 0).
    * @return The value of the indexed param
    */
   public String getParamValue(int i) {
@@ -123,9 +123,9 @@ public class HtmlTag {
    * Looks up a tag param name and returns the associated
    * value, if any. Try to use the predefined <b>P_</b> constants.
    *
-   * @throws NumberFormatException if value is not a number.
-   * @param  name name of param, must be lowercase
+   * @param name name of param, must be lowercase
    * @return the integer value associated with the name.
+   * @throws NumberFormatException if value is not a number.
    */
   public int getIntParam(String name)
       throws NumberFormatException {
@@ -135,7 +135,7 @@ public class HtmlTag {
   /**
    * Determines if tag has a particular parameter.
    *
-   * @param  name name of param, must be lowercase
+   * @param name name of param, must be lowercase
    * @return true if tag contains parameter, false otherwise.
    */
   public boolean hasParam(String name) {
@@ -145,8 +145,8 @@ public class HtmlTag {
   /**
    * Associates a param name with a value.
    *
-   * @param  name name of param
-   * @param  value value associated with name
+   * @param name  name of param
+   * @param value value associated with name
    */
   public void setParam(String name, String value) {
     m_names.addElement(name);
@@ -159,7 +159,7 @@ public class HtmlTag {
   /**
    * Remove association of a param name with a value.
    *
-   * @param  name name of param to remove
+   * @param name name of param to remove
    */
   public void removeParam(String name) {
     final int idx = indexOfName(name);

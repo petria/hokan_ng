@@ -17,7 +17,7 @@ package org.jibble.pircbot;
  * This class is used to represent a user on an IRC server.
  * Instances of this class are returned by the getUsers method
  * in the PircBot class.
- * <p/>
+ * <p>
  * Note that this class no longer implements the Comparable interface
  * for Java 1.1 compatibility reasons.
  *
@@ -48,7 +48,7 @@ public class User {
    * status in that channel.
    *
    * @return The prefix of the user. If there is no prefix, then an empty
-   *         String is returned.
+   * String is returned.
    */
   public String getPrefix() {
     return _prefix;

@@ -17,7 +17,7 @@ package org.jibble.pircbot;
 /**
  * This interface contains the values of all numeric replies specified
  * in section 6 of RFC 1459.  Refer to RFC 1459 for further information.
- * <p/>
+ * <p>
  * If you override the onServerResponse method in the PircBot class,
  * you may find these constants useful when comparing the numeric
  * value of a given code.

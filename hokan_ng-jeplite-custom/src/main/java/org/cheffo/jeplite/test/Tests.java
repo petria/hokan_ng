@@ -5,11 +5,7 @@ import org.cheffo.jeplite.SimpleNode;
 import org.cheffo.jeplite.optimizer.ExpressionOptimizer;
 import org.cheffo.jeplite.util.DoubleStack;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 

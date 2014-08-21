@@ -9,13 +9,7 @@ package org.cheffo.jeplite.optimizer;
  * @version 1.0
  */
 
-import org.cheffo.jeplite.ASTConstant;
-import org.cheffo.jeplite.ASTFunNode;
-import org.cheffo.jeplite.ASTVarNode;
-import org.cheffo.jeplite.ParseException;
-import org.cheffo.jeplite.ParserTreeConstants;
-import org.cheffo.jeplite.ParserVisitor;
-import org.cheffo.jeplite.SimpleNode;
+import org.cheffo.jeplite.*;
 import org.cheffo.jeplite.function.PostfixMathCommand;
 import org.cheffo.jeplite.util.DoubleStack;
 

@@ -23,7 +23,7 @@ import java.util.Vector;
  * This class is thread safe for multiple producers and a single
  * consumer.  The next() method will block until there is data in
  * the queue.
- * <p/>
+ * <p>
  * This has now been modified so that it is compatible with
  * the earlier JDK1.1 in order to be suitable for running on
  * mobile appliances.  This means replacing the LinkedList with

@@ -19,11 +19,7 @@
 
 package com.arthurdo.parser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.Hashtable;
 
 /**
@@ -31,7 +27,7 @@ import java.util.Hashtable;
  * to the StreamTokenizer class but is specialized for
  * HTML streams. This class is useful when you need to
  * parse the structure of an HTML document.</p>
- * <p/>
+ * <p>
  * <pre>
  * import com.arthurdo.parser.*;
  *
@@ -53,12 +49,12 @@ import java.util.Hashtable;
  *  }
  * }
  * </pre>
- * <p/>
+ * <p>
  * <p>One of the motivations for designing <i>parseTag()</i> to take
  * an HtmlTag argument rather than having <i>parseTag()</i> return
  * a newly created HtmlTag is so you can create your own tag class
  * derived from HtmlTag.
- * <p/>
+ * <p>
  * <ul>
  * <li> 02/09/98 Thomas Horster-Moller, fixed bug with counting
  * newlines twice on character pushback.
@@ -101,17 +97,17 @@ public class HtmlStreamTokenizer {
   public static final int TT_ENTITYREFERENCE = -6;
 
   /**
+   * @param in input stream
    * @deprecated use HtmlStreamTokenizer(Reader) instead.
    * This version of the constructor can lead to 10x slower code
    * because of the InputStreamReader wrapper.
-   * @param  in input stream
    */
   public HtmlStreamTokenizer(InputStream in) {
     this(new BufferedReader(new InputStreamReader(in)));
   }
 
   /**
-   * @param  in Reader. The input is assumed to be buffered as needed.
+   * @param in Reader. The input is assumed to be buffered as needed.
    */
   public HtmlStreamTokenizer(Reader in) {
     m_in = in;
@@ -151,9 +147,9 @@ public class HtmlStreamTokenizer {
   }
 
   /**
+   * @return any white space accumulated since last call to nextToken
    * @deprecated white space is now returned as TT_TEXT. This buffer is always
    * empty.
-   * @return any white space accumulated since last call to nextToken
    */
   public final StringBuffer getWhiteSpace() {
     return m_whitespace;
@@ -170,7 +166,7 @@ public class HtmlStreamTokenizer {
   /**
    * @param char[]  exitString CDATA mode will terminate when it encounters this string
    * @param boolean pushbackExitString whether to parse the exit string again or not
-   *                <p/>
+   *                <p>
    *                it'd be an error to call enterCDATAMode(exitString, true); getToken()==TT_CDATA; enterCDATAMode(differentExitString, true); 'cause the next getToken() call will parse differentExitString instead of exitString
    */
   public void enterCDATAMode(char[] exitString, boolean pushbackExitString) {
@@ -184,8 +180,8 @@ public class HtmlStreamTokenizer {
   }
 
   /**
-   * @throws IOException if error reading input stream.
    * @return the next token
+   * @throws IOException if error reading input stream.
    */
   public int nextToken()
       throws IOException {
@@ -271,7 +267,7 @@ public class HtmlStreamTokenizer {
             }
           }
           /*
-					else if (isSpace(c))
+          else if (isSpace(c))
 					{
 						m_pushback = c;
 						m_state = STATE_WS;
@@ -392,9 +388,9 @@ public class HtmlStreamTokenizer {
    * a newly created HtmlTag object is so that you can create your own
    * tag class derived from HtmlTag if desired.
    *
+   * @param sbuf text buffer to parse
+   * @param tag  parse the text buffer and store the result in this object
    * @throws HtmlException if malformed tag.
-   * @param  sbuf text buffer to parse
-   * @param  tag parse the text buffer and store the result in this object
    */
   public void parseTag(StringBuffer sbuf, HtmlTag tag)
       throws HtmlException {
@@ -435,7 +431,7 @@ public class HtmlStreamTokenizer {
    * Replaces HTML escape sequences with its character equivalent, e.g.
    * <b>&amp;amp;copy;</b> becomes <b>&amp;copy;</b>.
    *
-   * @param  buf text buffer to unescape
+   * @param buf text buffer to unescape
    * @return a string with all HTML escape sequences removed
    */
   public static String unescape(String buf) {
@@ -453,7 +449,7 @@ public class HtmlStreamTokenizer {
    * Replaces HTML escape sequences with its character equivalent, e.g.
    * <b>&amp;copy;</b> becomes <b>&copy;</b>.
    *
-   * @param  buf will remove all HTML escape sequences from this buffer
+   * @param buf will remove all HTML escape sequences from this buffer
    */
   public static void unescape(StringBuffer buf) {
     int len = buf.length();

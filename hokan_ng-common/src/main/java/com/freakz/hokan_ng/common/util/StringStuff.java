@@ -11,14 +11,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -26,7 +19,7 @@ import java.util.regex.PatternSyntaxException;
 
 /**
  * String manipulation methods.
- * <p/>
+ * <p>
  * Date: 11/6/13
  * Time: 6:52 PM
  *
@@ -570,9 +563,9 @@ public class StringStuff {
 
   /**
    * This method ensures that the output String has only valid XML unicode characters as specified by the
-   * <p/>
+   * <p>
    * XML 1.0 standard. For reference, please see the
-   * <p/>
+   * <p>
    * standard. This method will return an empty String if the input is null or empty.
    * Author Donoiu Cristian, GPL
    *
