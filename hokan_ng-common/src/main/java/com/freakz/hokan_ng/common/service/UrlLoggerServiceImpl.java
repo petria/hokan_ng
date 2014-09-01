@@ -104,17 +104,22 @@ public class UrlLoggerServiceImpl implements UrlLoggerService {
               e.printStackTrace();
             }
           }
-        } else {
-          title = url;
-        }
 
-        if (isWanha) {
-          title = title + " | wanha" + wanhaAadd;
+          if (isWanha) {
+            title = title + " | wanha" + wanhaAadd;
+          }
+          boolean titles = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
+          if (titles) {
+            processReply(iEvent, title, core);
+          }
+
+        } else {
+          log.info("Could not find title for url: " + url);
         }
-        boolean titles = properties.getChannelPropertyAsBoolean(ch, PropertyName.PROP_CHANNEL_DO_URL_TITLES, false);
-        if (titles) {
-          processReply(iEvent, title, core);
-        }
+//        } else {
+//          title = url;
+//        }
+
 
       }
     };
