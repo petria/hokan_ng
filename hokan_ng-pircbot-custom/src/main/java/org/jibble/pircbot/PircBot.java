@@ -186,12 +186,13 @@ public abstract class PircBot implements ReplyConstants {
     }
     String nick = this.getName();
     OutputThread.sendRawLine(this, bwriter, "NICK " + nick);
-    OutputThread.sendRawLine(this, bwriter, "USER " + this.getLogin() + " 8 * :" + this.getVersion());
+    String user = "USER " + this.getLogin() + " 0 * :" + this.getVersion();
+    OutputThread.sendRawLine(this, bwriter, user);
 
     _inputThread = new InputThread(this, socket, breader, bwriter);
 
     // Read stuff back from the server to see if we connected.
-    String line = null;
+    String line;
     int tries = 1;
     while ((line = breader.readLine()) != null) {
 
