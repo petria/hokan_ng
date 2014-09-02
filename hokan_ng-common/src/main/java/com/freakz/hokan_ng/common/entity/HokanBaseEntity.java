@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ *
  * Created by AirioP on 21.8.2014.
  */
 @MappedSuperclass

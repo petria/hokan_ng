@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 /**
  * Created by AirioP on 21.8.2014.
+ *
  */
 @Entity
 @Table(name = "Explain")

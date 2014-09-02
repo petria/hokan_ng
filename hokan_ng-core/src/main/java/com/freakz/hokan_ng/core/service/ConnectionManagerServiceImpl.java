@@ -249,6 +249,11 @@ public class ConnectionManagerServiceImpl
   }
 
   @Override
+  public void engineConnectorTooManyConnections(Connector connector, IrcServerConfig configuredServer) {
+    log.info("Too many connections:" + connector);
+  }
+
+  @Override
   public void engineConnectorGotOnline(Connector connector, HokanCore engine) throws HokanException {
 
     IrcServerConfig config = engine.getIrcServerConfig();

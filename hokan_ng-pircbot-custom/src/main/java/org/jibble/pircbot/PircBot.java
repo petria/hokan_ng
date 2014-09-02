@@ -107,8 +107,22 @@ public abstract class PircBot implements ReplyConstants {
    * @throws IrcException              if the server would not let us join it.
    * @throws NickAlreadyInUseException if our nick is already in use on the server.
    */
-  public final synchronized void connect(String hostname, int port) throws IOException, IrcException, NickAlreadyInUseException {
-    this.connect(hostname, port, null);
+  public final synchronized void connect(String hostname, int port) throws IOException, IrcException {
+    this.connect(hostname, port, null, null);
+  }
+
+  /**
+   * Attempt to connect to the specified IRC server and port number.
+   * The onConnect method is called upon success.
+   *
+   * @param hostname The hostname of the server to connect to.
+   * @param port     The port number to connect to on the server.
+   * @throws IOException               if it was not possible to connect to the server.
+   * @throws IrcException              if the server would not let us join it.
+   * @throws NickAlreadyInUseException if our nick is already in use on the server.
+   */
+  public final synchronized void connect(String hostname, int port, InetAddress localAddress) throws IOException, IrcException {
+    this.connect(hostname, port, null, localAddress);
   }
 
 
@@ -124,7 +138,7 @@ public abstract class PircBot implements ReplyConstants {
    * @throws IrcException              if the server would not let us join it.
    * @throws NickAlreadyInUseException if our nick is already in use on the server.
    */
-  public final synchronized void connect(String hostname, int port, String password) throws IOException, IrcException, NickAlreadyInUseException {
+  public final synchronized void connect(String hostname, int port, String password, InetAddress localAddress) throws IOException, IrcException {
 
     _server = hostname;
     _port = port;
@@ -140,13 +154,19 @@ public abstract class PircBot implements ReplyConstants {
     this.removeAllChannels();
 
     // Connect to the server.
-    Socket socket = new Socket(hostname, port);
+    Socket socket;
+    if (localAddress != null) {
+      this.log(">>> Connecting using local address: " + localAddress);
+      socket = new Socket(hostname, port, localAddress, 0);
+    } else {
+      socket = new Socket(hostname, port);
+    }
     this.log("*** Connected to server.");
 
     _inetAddress = socket.getLocalAddress();
 
-    InputStreamReader inputStreamReader = null;
-    OutputStreamWriter outputStreamWriter = null;
+    InputStreamReader inputStreamReader;
+    OutputStreamWriter outputStreamWriter;
     if (getEncoding() != null) {
       // Assume the specified encoding is valid for this JVM.
       inputStreamReader = new InputStreamReader(socket.getInputStream(), getEncoding());
@@ -243,7 +263,7 @@ public abstract class PircBot implements ReplyConstants {
     if (getServer() == null) {
       throw new IrcException("Cannot reconnect to an IRC server because we were never connected to one previously!");
     }
-    connect(getServer(), getPort(), getPassword());
+    connect(getServer(), getPort(), getPassword(), _inetAddress);
   }
 
 

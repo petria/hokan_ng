@@ -30,6 +30,9 @@ public class IrcServerConfig {
   @Column(name = "SERVER_PORT")
   private int port;
 
+  @Column(name = "LOCAL_ADDRESS")
+  private String localAddress;
+
   @Column(name = "USE_THROTTLE")
   private int useThrottle;
 
@@ -71,6 +74,14 @@ public class IrcServerConfig {
 
   public void setPort(int port) {
     this.port = port;
+  }
+
+  public String getLocalAddress() {
+    return localAddress;
+  }
+
+  public void setLocalAddress(String localAddress) {
+    this.localAddress = localAddress;
   }
 
   public int getUseThrottle() {

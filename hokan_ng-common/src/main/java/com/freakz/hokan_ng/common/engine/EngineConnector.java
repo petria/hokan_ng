@@ -17,9 +17,13 @@ public interface EngineConnector {
 
   void engineConnectorTooManyConnectAttempts(Connector connector, IrcServerConfig configuredServer);
 
+  void engineConnectorTooManyConnections(Connector connector, IrcServerConfig configuredServer);
+
   void engineConnectorDisconnected(HokanCore engine);
 
   void engineConnectorPingTimeout(HokanCore hokanCore);
 
   void engineConnectorExcessFlood(HokanCore hokanCore);
+
+
 }

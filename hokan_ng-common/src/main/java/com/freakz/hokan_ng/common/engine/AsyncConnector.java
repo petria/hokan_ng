@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
+
 /**
  * Date: 11/1/13
  * Time: 12:56 PM
@@ -58,27 +60,33 @@ public class AsyncConnector implements Connector, CommandRunnable {
     String server = this.configuredServer.getServer();
     int serverPort = this.configuredServer.getPort();
     String serverPassword = this.configuredServer.getServerPassword();
+    String localAddress = this.configuredServer.getLocalAddress();
 
     boolean connectOk = false;
     int connectAttemps = 0;
     HokanCore engine;
+    InetAddress inetAddress = null;
     while (tryCount > 0 && !aborted) {
       connectAttemps++;
       engine = context.getBean(HokanCore.class);
+
       try {
+
+        if (localAddress != null) {
+          inetAddress = InetAddress.getByName(localAddress);
+        }
+
         engine.init(this.botNick, this.configuredServer);
 
         if (serverPassword == null || serverPassword.length() == 0) {
-          engine.connect(server, serverPort);
+          engine.connect(server, serverPort, inetAddress);
         } else {
-          engine.connect(server, serverPort, serverPassword);
+          engine.connect(server, serverPort, serverPassword, inetAddress);
         }
         connectOk = true;
 
       } catch (NickAlreadyInUseException e) {
         engine.disconnect();
-//        this.engineConnector.engineConnectorNickAlreadyInUse(this, this.configuredServer, this.botNick);
-//        aborted = true;
         this.botNick = String.format("_%s_", botNick);
 
       } catch (Exception e) {
