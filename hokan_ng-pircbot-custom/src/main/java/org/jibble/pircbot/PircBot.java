@@ -92,7 +92,7 @@ public abstract class PircBot implements ReplyConstants {
    * @throws IrcException              if the server would not let us join it.
    * @throws NickAlreadyInUseException if our nick is already in use on the server.
    */
-  public final synchronized void connect(String hostname) throws IOException, IrcException, NickAlreadyInUseException {
+  public final synchronized void connect(String hostname) throws IOException, IrcException {
     this.connect(hostname, 6667, null);
   }
 
@@ -216,8 +216,6 @@ public abstract class PircBot implements ReplyConstants {
             _inputThread = null;
             throw new NickAlreadyInUseException(line);
           }
-        } else if (code.equals("439")) {
-          // No action required.
         } else if (code.startsWith("5") || code.startsWith("4")) {
           socket.close();
           _inputThread = null;
@@ -260,7 +258,7 @@ public abstract class PircBot implements ReplyConstants {
    * @throws NickAlreadyInUseException if our nick is already in use on the server.
    * @since PircBot 0.9.9
    */
-  public final synchronized void reconnect() throws IOException, IrcException, NickAlreadyInUseException {
+  public final synchronized void reconnect() throws IOException, IrcException {
     if (getServer() == null) {
       throw new IrcException("Cannot reconnect to an IRC server because we were never connected to one previously!");
     }
@@ -789,9 +787,9 @@ public abstract class PircBot implements ReplyConstants {
         // Use any free port.
         ss = new ServerSocket(0);
       } else {
-        for (int i = 0; i < ports.length; i++) {
+        for (int port : ports) {
           try {
-            ss = new ServerSocket(ports[i]);
+            ss = new ServerSocket(port);
             // Found a port number we could use.
             break;
           } catch (Exception e) {
