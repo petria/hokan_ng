@@ -4,7 +4,6 @@ package com.freakz.hokan_ng.common.rest.messages;
 import com.freakz.hokan_ng.common.entity.Alias;
 import com.freakz.hokan_ng.common.entity.RestUrl;
 import com.freakz.hokan_ng.common.entity.RestUrlType;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.service.AliasService;
 import com.freakz.hokan_ng.common.service.RestUrlService;

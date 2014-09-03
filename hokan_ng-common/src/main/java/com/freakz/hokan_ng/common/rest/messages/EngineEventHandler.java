@@ -1,7 +1,5 @@
 package com.freakz.hokan_ng.common.rest.messages;
 
-import com.freakz.hokan_ng.common.rest.EngineResponse;
-
 /**
  * User: petria
  * Date: 11/6/13

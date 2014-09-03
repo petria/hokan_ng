@@ -1,4 +1,6 @@
-package com.freakz.hokan_ng.common.rest;
+package com.freakz.hokan_ng.common.rest.messages;
+
+import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 
 import java.io.Serializable;
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class EngineRequest implements Serializable {
+public class EngineRequest extends RestRequestResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private IrcMessageEvent ircEvent;

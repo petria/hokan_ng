@@ -2,8 +2,8 @@ package com.freakz.hokan_ng.core_http.rest;
 
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.CoreRequest;
-import com.freakz.hokan_ng.common.rest.CoreResponse;
+import com.freakz.hokan_ng.common.rest.messages.CoreRequest;
+import com.freakz.hokan_ng.common.rest.messages.CoreResponse;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.freakz.hokan_ng.core.service.ConnectionManagerService;

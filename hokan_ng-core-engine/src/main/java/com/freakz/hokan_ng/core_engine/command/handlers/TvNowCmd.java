@@ -1,8 +1,8 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.rest.EngineResponse;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
+import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuProgram;
 import com.freakz.hokan_ng.common.updaters.telkku.TelkkuService;
 import com.freakz.hokan_ng.common.util.StringStuff;

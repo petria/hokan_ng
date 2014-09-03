@@ -3,8 +3,6 @@ package com.freakz.hokan_ng.common.rest.messages;
 import com.freakz.hokan_ng.common.engine.CommandPool;
 import com.freakz.hokan_ng.common.engine.CommandRunnable;
 import com.freakz.hokan_ng.common.exception.HokanEngineException;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
-import com.freakz.hokan_ng.common.rest.EngineResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

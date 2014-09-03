@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.common.rest;
+package com.freakz.hokan_ng.common.rest.messages;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class CoreRequest implements Serializable {
+public class CoreRequest extends RestRequestResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

@@ -8,7 +8,7 @@ import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
-import com.freakz.hokan_ng.common.rest.CoreRequest;
+import com.freakz.hokan_ng.common.rest.messages.CoreRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;

@@ -1,7 +1,6 @@
 package com.freakz.hokan_ng.common.rest.messages;
 
 import com.freakz.hokan_ng.common.entity.RestUrl;
-import com.freakz.hokan_ng.common.rest.EngineRequest;
 
 import java.util.Map;
 
