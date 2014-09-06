@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.rest.messages;
 
+import com.freakz.hokan_ng.common.rest.messages.router.RestMessageData;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class CoreResponse extends RestRequestResponse implements Serializable {
+public class CoreResponse extends RestMessageData implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
