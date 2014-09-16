@@ -19,10 +19,11 @@ public class FileUtil {
   private static final int COPY_BUF_SIZE = 1024;
 
   public FileUtil() {
+
   }
 
   public String extractPath(String filename) {
-    int idx = filename.lastIndexOf("/");
+    int idx = filename.lastIndexOf(File.separatorChar);
     String dir = filename.substring(0, idx + 1);
     return dir;
 
