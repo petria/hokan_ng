@@ -30,7 +30,7 @@ public class FileUtilTest {
     String directory = fileUtil.getTmpDirectory();
     log.info("tmp directory: {}", directory);
     Assert.assertNotNull("Directory not null", directory);
-    Assert.assertTrue("Ends with /", directory.endsWith("/"));
+    Assert.assertTrue("Ends with " + File.separator, directory.endsWith(File.separator));
   }
 
   @Test
