@@ -1,0 +1,129 @@
+USE hokan_ng_dev;
+
+--
+-- Table structure for table `Network`
+--
+
+DROP TABLE IF EXISTS `Network`;
+
+CREATE TABLE `Network` (
+  `NETWORK_NAME` varchar(255) NOT NULL,
+  `CHANNELS_JOINED` int(11) DEFAULT NULL,
+  `CONNECT_COUNT` int(11) DEFAULT NULL,
+  `FIRST_CONNECTED` datetime DEFAULT NULL,
+  `LINES_RECEIVED` int(11) DEFAULT NULL,
+  `LINES_SENT` int(11) DEFAULT NULL,
+  PRIMARY KEY (`NETWORK_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Network`
+--
+
+LOCK TABLES `Network` WRITE;
+INSERT INTO `Network` VALUES ('DevNET',0,0,'2013-11-07 16:38:09',0,0),('IrcNET',0,0,'2013-11-07 16:55:28',0,0);
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `Channel`;
+CREATE TABLE `Channel` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CHANNEL_NAME` varchar(255) DEFAULT NULL,
+  `CHANNEL_STATE` varchar(255) NOT NULL,
+  `COMMANDS_HANDLED` int(11) DEFAULT NULL,
+  `FIRST_JOINED` datetime DEFAULT NULL,
+  `LAST_ACTIVE` datetime DEFAULT NULL,
+  `LAST_WRITER` varchar(255) DEFAULT NULL,
+  `LAST_WRITER_SPREE` int(11) DEFAULT NULL,
+  `LINES_RECEIVED` int(11) DEFAULT NULL,
+  `LINES_SENT` int(11) DEFAULT NULL,
+  `MAX_USER_COUNT` int(11) DEFAULT NULL,
+  `MAX_USER_COUNT_DATE` datetime DEFAULT NULL,
+  `REPORT_CHANNEL` int(11) DEFAULT NULL,
+  `WRITER_SPREE_OWNER` varchar(255) DEFAULT NULL,
+  `WRITER_SPREE_RECORD` int(11) DEFAULT NULL,
+  `NETWORK_NAME_FK` varchar(255) DEFAULT NULL,
+  `TOPIC` varchar(255) DEFAULT NULL,
+  `TOPIC_SET_BY` varchar(255) DEFAULT NULL,
+  `TOPIC_SET_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_a9a8s1lqco62y17x2l6mfbjnu` (`NETWORK_NAME_FK`),
+  CONSTRAINT `FK_a9a8s1lqco62y17x2l6mfbjnu` FOREIGN KEY (`NETWORK_NAME_FK`) REFERENCES `Network` (`NETWORK_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+LOCK TABLES `Channel` WRITE;
+INSERT INTO `Channel` VALUES (1,'#HokanDEV','JOINED',496,'2013-11-18 09:50:12','2014-10-23 14:30:30','_Pete_',343,1272,59184,3,'2014-01-11 21:19:49',0,'_Pete_',343,'IrcNET','test | test','_Hokan_!~hokan@107.170.79.180','2014-06-04 13:19:31');
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `IrcServerConfig`
+--
+
+DROP TABLE IF EXISTS `IrcServerConfig`;
+CREATE TABLE `IrcServerConfig` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `STATE` varchar(255) NOT NULL,
+  `SERVER_PORT` int(11) DEFAULT NULL,
+  `SERVER` varchar(255) DEFAULT NULL,
+  `SERVER_PASSWORD` varchar(255) DEFAULT NULL,
+  `LOCAL_ADDRESS` varchar(255) DEFAULT NULL,
+  `USE_THROTTLE` int(11) DEFAULT NULL,
+  `NETWORK_NAME_FK` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_89pq9lloqi015u7tc1rnwkobv` (`NETWORK_NAME_FK`),
+  CONSTRAINT `FK_89pq9lloqi015u7tc1rnwkobv` FOREIGN KEY (`NETWORK_NAME_FK`) REFERENCES `Network` (`NETWORK_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `IrcServerConfig`
+--
+
+LOCK TABLES `IrcServerConfig` WRITE;
+INSERT INTO `IrcServerConfig` VALUES (1,'CONNECTED',6669,'localhost','1111',NULL,0,'DevNET'),(2,'DISCONNECTED',6669,'irc.stealth.net',NULL,NULL,1,'IrcNET');
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Properties`
+--
+DROP TABLE IF EXISTS `Properties`;
+CREATE TABLE `Properties` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `FLAGS` varchar(255) DEFAULT NULL,
+  `PROPERTY` varchar(255) DEFAULT NULL,
+  `VALUE` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Properties`
+--
+
+LOCK TABLES `Properties` WRITE;
+INSERT INTO `Properties` VALUES (1,'','PROP_SYS_BOT_NICK','hokan_dev');
+UNLOCK TABLES;
+
+--
+-- Table structure for table `RestUrl`
+--
+
+DROP TABLE IF EXISTS `RestUrl`;
+
+CREATE TABLE `RestUrl` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `INSTANCE_KEY` varchar(255) DEFAULT NULL,
+  `LINE_MATCHER_REGEXP` varchar(255) DEFAULT NULL,
+  `REST_URL` varchar(255) DEFAULT NULL,
+  `REST_URL_TYPE` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `RestUrl`
+--
+
+LOCK TABLES `RestUrl` WRITE;
+INSERT INTO `RestUrl` VALUES (1,'1234','','http://localhost:8080/hokan_ng-core-engine-0.0.1-SNAPSHOT/','CORE_ENGINE');
+UNLOCK TABLES;
+
