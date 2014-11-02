@@ -1,5 +1,7 @@
 package com.freakz.hokan_ng.common.rest;
 
+import com.freakz.hokan_ng.common.rest.messages.router.RestMessageData;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-public class IrcEvent implements Serializable {
+public class IrcEvent extends RestMessageData implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -23,9 +25,11 @@ public class IrcEvent implements Serializable {
   private String mask;
 
   public IrcEvent() {
+    super();
   }
 
   public IrcEvent(String botNick, String network, String channel, String sender, String login, String hostname) {
+    super();
     this.botNick = botNick;
     this.network = network;
     this.channel = channel;

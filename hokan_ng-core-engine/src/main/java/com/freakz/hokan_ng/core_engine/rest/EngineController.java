@@ -8,6 +8,8 @@ import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.messages.EngineRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
+import com.freakz.hokan_ng.common.rest.messages.router.RestMessage;
+import com.freakz.hokan_ng.common.rest.messages.router.RestMessageDataType;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.core_engine.command.CommandHandlerService;
@@ -61,6 +63,23 @@ public class EngineController implements DisposableBean {
 //    log.info("Got ping!");
     return "pong";
   }
+
+  @RequestMapping(value = "/handleRestMessage") //, produces = JSON, consumes = JSON)
+  public
+  @ResponseBody
+  RestMessage handleRestMessageRequest(
+      @RequestBody RestMessage request
+  ) {
+//    RestMessage request = new RestMessage(null);
+    log.info("Got RestMessage: {}", request);
+
+    EngineResponse response = new EngineResponse();
+    response.addResponse("ffufufufu");
+    request.setMessageData(RestMessageDataType.ENGINE_RESPONSE, response);
+
+    return request;
+  }
+
 
   @RequestMapping(value = "/handle") //, produces = JSON, consumes = JSON)
   public
