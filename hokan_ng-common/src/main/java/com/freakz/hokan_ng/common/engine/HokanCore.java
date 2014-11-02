@@ -11,7 +11,9 @@ import com.freakz.hokan_ng.common.rest.messages.EngineCommunicator;
 import com.freakz.hokan_ng.common.rest.messages.EngineEventHandler;
 import com.freakz.hokan_ng.common.rest.messages.EngineRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
-import com.freakz.hokan_ng.common.rest.messages.router.*;
+import com.freakz.hokan_ng.common.rest.messages.router.RestCommunicator;
+import com.freakz.hokan_ng.common.rest.messages.router.RestMessage;
+import com.freakz.hokan_ng.common.rest.messages.router.RestResponseHandler;
 import com.freakz.hokan_ng.common.service.*;
 import com.freakz.hokan_ng.common.service.Properties;
 import com.freakz.hokan_ng.common.util.CommandArgs;
@@ -398,14 +400,14 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
 
-    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
+/*    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
     RestMessage restMessage = new RestMessage(address);
     RestMessageIrcEvent restMessageIrcEvent = new RestMessageIrcEvent();
     restMessageIrcEvent.test = "ffufufuf";
     restMessage.setMessageData("FffufufKey", "Bbabababrr");
     restMessage.setMessageData("FfsdfddsfffufufKey", ircEvent);
     restMessage.test = ircEvent;
-    this.restCommunicator.sendRestMessage(restMessage, this);
+    this.restCommunicator.sendRestMessage(restMessage, this);*/
 
     this.channelService.updateChannel(ch);
   }
