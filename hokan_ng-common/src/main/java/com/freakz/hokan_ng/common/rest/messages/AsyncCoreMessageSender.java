@@ -47,7 +47,8 @@ public class AsyncCoreMessageSender implements CommandRunnable {
 //    return "http://localhost:8080//hokanng-core-io";
     // foo
     // bar
-    return "http://hokanio:8080/hokan_ng-core-io-0.0.1-SNAPSHOT/";
+//    return "http://hokanio:8080/hokan_ng-core-io-0.0.1-SNAPSHOT/";
+    return "http://localhost:8080/hokan_ng-core-io-0.0.1-SNAPSHOT/";
   }
 
   public HttpHeaders getRestHeaders() {
