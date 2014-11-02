@@ -1,5 +1,6 @@
 hokan_ng
 ========
 
-The IRC bot   cdfd
+The IRC bot
+
 
