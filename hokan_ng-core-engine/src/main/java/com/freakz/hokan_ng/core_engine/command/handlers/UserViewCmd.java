@@ -53,11 +53,10 @@ public class UserViewCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest ir = (InternalRequest) request;
     String nick = results.getString(ARG_NICK);
     User hUser;
     if (nick == null) {
-      hUser = ir.getUser();
+      hUser = request.getUser();
     } else {
       hUser = userService.findUser(nick);
       if (hUser == null) {
@@ -74,7 +73,7 @@ public class UserViewCmd extends Cmd {
     if (accessControlService.isMasterUser(request.getIrcEvent())) {
       ret += "[MasterUser] ";
     }
-    if (accessControlService.isChannelOp(request.getIrcEvent(), ir.getChannel())) {
+    if (accessControlService.isChannelOp(request.getIrcEvent(), request.getChannel())) {
       ret += "[ChannelOp] ";
     }
     ret += "=-\n";
