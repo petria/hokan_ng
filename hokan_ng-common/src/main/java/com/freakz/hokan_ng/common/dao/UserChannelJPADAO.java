@@ -57,7 +57,7 @@ public class UserChannelJPADAO implements UserChannelDAO {
   public List<UserChannel> findUserChannels(User user) throws HokanDAOException {
     try {
       TypedQuery<UserChannel> query
-          = entityManager.createQuery("SELECT userChannel FROM UserChannel userChannel WHERE userChannel.user = :user", UserChannel.class);
+          = entityManager.createQuery("SELECT userChannel FROM UserChannel userChannel WHERE userChannel.user = :user ORDER BY userChannel.lastMessageTime DESC", UserChannel.class  );
       query.setParameter("user", user);
       return query.getResultList();
     } catch (Exception e) {
