@@ -115,8 +115,11 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
     String line = request.getIrcEvent().getMessage();
     List<Alias> aliases = aliasService.findAliases();
     for (Alias alias : aliases) {
-      if (line.equals(alias.getAlias())) {
-        request.getIrcEvent().setMessage(alias.getCommand());
+//      if (line.equals(alias.getAlias())) {
+      if (line.startsWith(alias.getAlias())) {
+        String message = request.getIrcEvent().getMessage();
+        String aliasMessage = message.replaceFirst(alias.getAlias(), alias.getCommand());
+        request.getIrcEvent().setMessage(aliasMessage);
         return true;
       }
     }
@@ -143,9 +146,9 @@ public class EngineCommunicatorImpl implements EngineCommunicator, ResponseError
 //        doSendRequestCycle(splitRequest, engineEventHandler);
       }
     } else {
-      if (aliased) {
-        request.setOutputPrefix(request.getIrcEvent().getMessage() + " :: ");
-      }
+//      if (aliased) {
+//        request.setOutputPrefix(request.getIrcEvent().getMessage() + " :: ");
+//      }
       doSendRequest(request, engineEventHandler);
 //      doSendRequestCycle(request, engineEventHandler);
     }
