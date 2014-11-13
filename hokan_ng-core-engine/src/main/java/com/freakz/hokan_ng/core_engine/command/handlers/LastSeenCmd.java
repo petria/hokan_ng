@@ -62,8 +62,8 @@ public class LastSeenCmd extends Cmd  {
         }
 
         List<UserChannel> userChannels = userChannelService.findUserChannels(hUser);
-        UserChannel channel = userChannels.get(0);
-        if (channel != null) {
+        if (userChannels.size() > 0) {
+            UserChannel channel = userChannels.get(0);
             String ret = hUser.getNick() + " was last time seen on ";
             ret += channel.getChannel().getChannelName();
             ret += " - " + channel.getLastMessageTime() + "\n";
