@@ -61,13 +61,17 @@ public class LastSeenCmd extends Cmd  {
             }
         }
 
-        String ret = hUser.getNick() + " was last time seen on ";
         List<UserChannel> userChannels = userChannelService.findUserChannels(hUser);
         UserChannel channel = userChannels.get(0);
-        ret += channel.getChannel().getChannelName();
-        ret += " - " + channel.getLastMessageTime() + "\n";
+        if (channel != null) {
+            String ret = hUser.getNick() + " was last time seen on ";
+            ret += channel.getChannel().getChannelName();
+            ret += " - " + channel.getLastMessageTime() + "\n";
 
-        response.addResponse(ret);
+            response.addResponse(ret);
+        } else {
+            response.addResponse("%s not seen on any known channel!", nick);
+        }
 
     }
 
