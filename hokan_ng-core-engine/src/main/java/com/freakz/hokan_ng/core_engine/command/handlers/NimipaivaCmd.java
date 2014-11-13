@@ -27,13 +27,13 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_NIMI_OR_PVM;
 @Component
 @Scope("prototype")
 @Slf4j
-public class NimipäiväCmd extends Cmd {
+public class NimipaivaCmd extends Cmd {
 
-  private static final String NIMIPÄIVÄT_TXT = "/Nimipäivät.txt";
+  private static final String NIMIPAIVAT_TXT = "/Nimipäivät.txt";
 
   private List<String> nimiPvmList = new ArrayList<>();
 
-  public NimipäiväCmd() {
+  public NimipaivaCmd() {
     super();
     setHelp("Nimipäivät");
 
@@ -52,7 +52,7 @@ public class NimipäiväCmd extends Cmd {
       FileUtil fileUtil = new FileUtil();
       StringBuilder contents = new StringBuilder();
       try {
-        fileUtil.copyResourceToTmpFile(NIMIPÄIVÄT_TXT, contents);
+        fileUtil.copyResourceToTmpFile(NIMIPAIVAT_TXT, contents);
         this.nimiPvmList = Arrays.asList(contents.toString().split("\n"));
       } catch (IOException e) {
         throw new HokanException("Nimipäivät.txt", e);
