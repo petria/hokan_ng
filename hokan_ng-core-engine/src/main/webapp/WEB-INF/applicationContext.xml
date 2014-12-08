@@ -33,5 +33,40 @@
 
     <tx:annotation-driven/>
 
+    <bean id="hornetConnectionFactory" class="org.hornetq.jms.client.HornetQJMSConnectionFactory">
+        <constructor-arg name="ha" value="false" />
+        <constructor-arg>
+            <bean class="org.hornetq.api.core.TransportConfiguration">
+                <constructor-arg
+                        value="org.hornetq.core.remoting.impl.netty.NettyConnectorFactory" />
+                <constructor-arg>
+                    <map key-type="java.lang.String" value-type="java.lang.Object">
+                        <!-- HornetQ standalone instance details -->
+                        <entry key="host" value="localhost"></entry>
+                        <entry key="port" value="5445"></entry>
+                    </map>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!-- ConnectionFactory Definition -->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <constructor-arg ref="hornetConnectionFactory" />
+    </bean>
+
+    <!-- Definition of the JMS queue -->
+    <bean id="defaultDestination" class="org.hornetq.jms.client.HornetQQueue">
+        <constructor-arg index="0" value="DemoQueue"/>
+    </bean>
+
+    <bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="defaultDestination" />
+    </bean>
+
+    <bean id="messageSender" class="com.freakz.hokan_ng.core_engine.quetest.JMSProducer">
+        <property name="jmsTemplate" ref="producerTemplate" />
+    </bean>
 
 </beans>

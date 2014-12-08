@@ -27,8 +27,7 @@ import java.util.*;
 public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   static protected Map<HelpGroup, List<Cmd>> helpGroups = new HashMap<>();
-  @Autowired
-  protected ApplicationContext context;
+
   protected JSAP jsap;
   protected boolean channelOpOnly;
   protected boolean loggedInOnly;
@@ -42,6 +41,9 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean isPrivate;
   protected boolean isMasterUser;
   protected boolean isToBot;
+
+  @Autowired
+  protected ApplicationContext context;
 
   @Autowired
   protected AccessControlService accessControlService;
