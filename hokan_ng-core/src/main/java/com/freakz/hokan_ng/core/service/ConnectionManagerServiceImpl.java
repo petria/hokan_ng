@@ -342,4 +342,9 @@ public class ConnectionManagerServiceImpl
       log.error("CoreRequest error!", e);
     }
   }
+
+  @Override
+  public void handleJMSMessage(Object message) {
+    log.info("Got message: {}", message);
+  }
 }

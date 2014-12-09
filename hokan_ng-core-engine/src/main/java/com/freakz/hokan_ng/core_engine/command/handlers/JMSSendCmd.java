@@ -4,6 +4,7 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
 import com.freakz.hokan_ng.core_engine.quetest.JMSProducer;
+import com.freakz.hokan_ng.core_engine.quetest.TestProducer;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +20,21 @@ import javax.jms.JMSException;
 @Component
 @Slf4j
 @Scope("prototype")
-public class Hornet1Cmd extends Cmd {
+public class JMSSendCmd extends Cmd {
 
   @Autowired
-  private JMSProducer jms;
+  private TestProducer testProducer;
 
-  public Hornet1Cmd() {
+  public JMSSendCmd() {
     super();
     setHelp("test.");
   }
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-      log.info("-- Receiving message from: " + jms);
-      try {
-        String receive = jms.receiveMessages();
-        response.addResponse("Got msg: %s", receive);
-      } catch (JMSException e) {
-        e.printStackTrace();
-      }
+
+    testProducer.produce(request.getIrcEvent().getMessage(), "bar");
+    response.addResponse("Sent!");
+
   }
 }

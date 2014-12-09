@@ -28,4 +28,5 @@ public interface ConnectionManagerService {
 
   void handleCoreRequest(CoreRequest request);
 
+  void handleJMSMessage(Object message);
 }
