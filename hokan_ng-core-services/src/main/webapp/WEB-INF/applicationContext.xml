@@ -30,7 +30,7 @@
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/hokan_ng-mysql"/>
 
     <bean id="core-engine-Properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="classpath:core-engine.properties"/>
+        <property name="location" value="classpath:core-services.properties"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -51,18 +51,25 @@
     <bean id="queueOne" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="QUEUE.ONE"/>
     </bean>
-    <bean name="testProducer" class="com.freakz.hokan_ng.core_engine.jms.TestProducer">
+
+<!--    <bean name="testProducer" class="com.freakz.hokan_ng.core_engine.jms.TestProducer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="queue" ref="queueOne"/>
-    </bean>
+    </bean> -->
+    <!--    <bean name="topicPublisher" class="com.freakz.hokan_ng.core_engine.jms.EngineTopicPublisher">
+            <property name="connectionFactory" ref="connectionFactory" />
+            <property name="topic" ref="topicOne" />
+        </bean> -->
 
     <bean id="topicOne" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="TOPIC.HOKAN" />
     </bean>
 
-    <bean name="topicPublisher" class="com.freakz.hokan_ng.core_engine.jms.EngineTopicPublisher">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="topic" ref="topicOne" />
-    </bean>
+    <bean name="topicListener" class="com.freakz.hokan_ng.core_services.jms.CoreServicesTopicListener"/>
+
+    <jms:listener-container connection-factory="connectionFactory" cache="none" destination-type="topic">
+        <jms:listener destination="HOKAN.ONE" ref="topicListener" />
+    </jms:listener-container>
+
 
 </beans>

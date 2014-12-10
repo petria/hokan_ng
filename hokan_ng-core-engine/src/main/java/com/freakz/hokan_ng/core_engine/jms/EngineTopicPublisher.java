@@ -1,12 +1,20 @@
 package com.freakz.hokan_ng.core_engine.jms;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.Topic;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
-import javax.jms.*;
+import java.io.Serializable;
 
 /**
  *
@@ -14,21 +22,19 @@ import javax.jms.*;
  */
 @Slf4j
 @Component
-public class TestProducer {
+public class EngineTopicPublisher {
+
   private JmsTemplate jmsTemplate;
-  private Queue queue;
+  private Topic topic;
 
-  public void produce(final String foo, final String bar) {
-
-    this.jmsTemplate.send(this.queue, new MessageCreator() {
+  public void produce(final Serializable object) {
+    this.jmsTemplate.send(this.topic, new MessageCreator() {
       public Message createMessage(Session session) throws JMSException {
-        MapMessage mm = session.createMapMessage();
-        mm.setString("foo", foo);
-        mm.setString("bar", bar);
+        ObjectMessage mm = session.createObjectMessage();
+        mm.setObject(object);
         return mm;
       }
     });
-    log.info("Message sent to message broker");
   }
 
   @Required
@@ -37,7 +43,8 @@ public class TestProducer {
   }
 
   @Required
-  public void setQueue(Queue queue) {
-    this.queue = queue;
+  public void setTopic(Topic topic) {
+    this.topic = topic;
   }
+
 }

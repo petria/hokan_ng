@@ -1,22 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans.xsd
-   http://www.springframework.org/schema/tx
-   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-   http://www.springframework.org/schema/jee
-   http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-   http://www.springframework.org/schema/context
-   http://www.springframework.org/schema/context/spring-context-3.0.xsd
-   http://www.springframework.org/schema/task
-   http://www.springframework.org/schema/task/spring-task.xsd">
--->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -75,9 +57,12 @@
     <jms:listener-container connection-factory="connectionFactory" cache="none">
         <jms:listener destination="QUEUE.ONE" ref="fooListener"/>
     </jms:listener-container>
-    <!--    <bean name="testProducer" class="com.freakz.hokan_ng.core_engine.jms.TestProducer">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="queue" ref="queueOne" />
-    </bean> -->
+
+    <bean name="topicListener" class="com.freakz.hokan_ng.core.http.jms.CoreIOTopicListener"/>
+
+    <jms:listener-container connection-factory="connectionFactory" cache="none" destination-type="topic">
+        <jms:listener destination="HOKAN.ONE" ref="topicListener" />
+    </jms:listener-container>
+
 
 </beans>

@@ -1,0 +1,35 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="HokanNG" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.freakz.hokan_ng.common.entity.Alias</class>
+        <class>com.freakz.hokan_ng.common.entity.Channel</class>
+        <class>com.freakz.hokan_ng.common.entity.ChannelProperty</class>
+        <class>com.freakz.hokan_ng.common.entity.RestUrl</class>
+        <class>com.freakz.hokan_ng.common.entity.JoinedUser</class>
+        <class>com.freakz.hokan_ng.common.entity.IrcServerConfig</class>
+        <class>com.freakz.hokan_ng.common.entity.Network</class>
+        <class>com.freakz.hokan_ng.common.entity.Property</class>
+        <class>com.freakz.hokan_ng.common.entity.User</class>
+        <class>com.freakz.hokan_ng.common.entity.UserChannel</class>
+        <class>com.freakz.hokan_ng.common.entity.SearchReplace</class>
+        <class>com.freakz.hokan_ng.common.entity.TvNotify</class>
+        <class>com.freakz.hokan_ng.common.entity.Url</class>
+
+        <!--        <exclude-unlisted-classes>true</exclude-unlisted-classes> -->
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/hokan_ng-mysql"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

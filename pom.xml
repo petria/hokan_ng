@@ -16,6 +16,7 @@
         <module>hokan_ng-core</module>
         <module>hokan_ng-core-io</module>
         <module>hokan_ng-core-engine</module>
+        <module>hokan_ng-core-services</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
