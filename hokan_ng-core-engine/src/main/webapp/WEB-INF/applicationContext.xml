@@ -3,7 +3,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans.xsd
    http://www.springframework.org/schema/tx
@@ -17,6 +19,7 @@
     <context:component-scan base-package="com.freakz"/>
     <context:annotation-config/>
     <task:annotation-driven/>
+    <tx:annotation-driven/>
 
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/hokan_ng-mysql"/>
 
@@ -31,7 +34,20 @@
         <property name="persistenceUnitName" value="HokanNG"/>
     </bean>
 
-    <tx:annotation-driven/>
-
+    <!-- JMS -->
+    <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+        <property name="connectionFactory">
+            <bean id="connectionFactory"
+                  class="org.apache.activemq.ActiveMQConnectionFactory"
+                  p:brokerURL="tcp://localhost:61616"/>
+        </property>
+    </bean>
+    <bean id="queueOne" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="QUEUE.ONE"/>
+    </bean>
+    <bean name="testProducer" class="com.freakz.hokan_ng.core_engine.jms.TestProducer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="queue" ref="queueOne"/>
+    </bean>
 
 </beans>
