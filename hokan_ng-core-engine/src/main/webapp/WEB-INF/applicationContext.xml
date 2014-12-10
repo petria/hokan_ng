@@ -60,8 +60,8 @@
         <constructor-arg value="TOPIC.HOKAN" />
     </bean>
 
-    <bean name="topicPublisher" class="com.freakz.hokan_ng.core_engine.jms.EngineTopicPublisher">
-        <property name="connectionFactory" ref="connectionFactory" />
+    <bean name="engineTopicPublisher" class="com.freakz.hokan_ng.core_engine.jms.EngineTopicPublisher">
+    <property name="connectionFactory" ref="connectionFactory" />
         <property name="topic" ref="topicOne" />
     </bean>
 

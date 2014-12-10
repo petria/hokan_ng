@@ -19,6 +19,7 @@ public class CoreIOTopicListener implements MessageListener {
         log.info("ObjectMessage: {}", message);
         ObjectMessage mapMessage = (ObjectMessage) message;
         Object obj = mapMessage.getObject();
+        int foo = 0;
         //... do something with the data here
       }
     } catch (Exception e) {

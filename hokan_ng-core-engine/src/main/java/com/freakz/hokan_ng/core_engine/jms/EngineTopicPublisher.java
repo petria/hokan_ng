@@ -37,12 +37,12 @@ public class EngineTopicPublisher {
     });
   }
 
-  @Required
+  //  @Required
   public void setConnectionFactory(ConnectionFactory connectionFactory) {
     this.jmsTemplate = new JmsTemplate(connectionFactory);
   }
 
-  @Required
+  //  @Required
   public void setTopic(Topic topic) {
     this.topic = topic;
   }

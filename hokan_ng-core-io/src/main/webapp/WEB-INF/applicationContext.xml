@@ -58,10 +58,10 @@
         <jms:listener destination="QUEUE.ONE" ref="fooListener"/>
     </jms:listener-container>
 
-    <bean name="topicListener" class="com.freakz.hokan_ng.core.http.jms.CoreIOTopicListener"/>
+    <bean name="coreIOTopicListener" class="com.freakz.hokan_ng.core.http.jms.CoreIOTopicListener"/>
 
     <jms:listener-container connection-factory="connectionFactory" cache="none" destination-type="topic">
-        <jms:listener destination="HOKAN.ONE" ref="topicListener" />
+        <jms:listener destination="TOPIC.HOKAN" ref="coreIOTopicListener"/>
     </jms:listener-container>
 
 
