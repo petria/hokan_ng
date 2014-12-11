@@ -3,7 +3,7 @@ package com.freakz.hokan_ng.common.engine;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.exception.HokanException;
-import com.freakz.hokan_ng.common.jms.TopicPublisher;
+import com.freakz.hokan_ng.common.jms.HokanTopicPublisher;
 
 /**
  * User: petria
@@ -25,7 +25,5 @@ public interface EngineConnector {
   void engineConnectorPingTimeout(HokanCore hokanCore);
 
   void engineConnectorExcessFlood(HokanCore hokanCore);
-
-  TopicPublisher getTopicPublisher();
 
 }

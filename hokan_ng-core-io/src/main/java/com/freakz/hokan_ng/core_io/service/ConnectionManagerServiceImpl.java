@@ -8,12 +8,13 @@ import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
-import com.freakz.hokan_ng.common.jms.TopicPublisher;
+import com.freakz.hokan_ng.common.jms.HokanTopicPublisher;
 import com.freakz.hokan_ng.common.rest.messages.CoreRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.common.service.UserService;
+import com.freakz.hokan_ng.core_io.jms.CoreIOTopicListener;
 import com.freakz.hokan_ng.core_io.jms.CoreIOTopicPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -272,6 +273,11 @@ public class ConnectionManagerServiceImpl
     }
     network.addToConnectCount(1);
 
+    CoreIOTopicListener topicListener = context.getBean(CoreIOTopicListener.class);
+    topicListener.setEngineEventHandler(engine);
+    engine.setTopicListener(topicListener);
+    engine.setTopicPublisher(this.topicPublisher);
+
     engine.startOutputQueue();
 
     this.connectors.remove(network.getName());
@@ -348,8 +354,4 @@ public class ConnectionManagerServiceImpl
     }
   }
 
-  @Override
-  public TopicPublisher getTopicPublisher() {
-    return this.topicPublisher;
-  }
 }

@@ -33,7 +33,7 @@ public class JMSSendCmd extends Cmd {
 //    testProducer.produce(request.getIrcEvent().getMessage(), "bar");
     RestMessage restMessage = new RestMessage();
     restMessage.setMessageData("message", request.getIrcEvent().getMessage());
-    engineTopicPublisher.produce(restMessage);
+    engineTopicPublisher.publish(restMessage, ".*");
     response.addResponse("Sent!");
   }
 }

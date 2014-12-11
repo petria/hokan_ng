@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * Created by petria on 11.12.2014.
  */
-public interface TopicPublisher {
+public interface HokanTopicPublisher {
 
-  void produce(final Serializable object);
+  void publish(final Serializable object, String jmsType);
 
 }

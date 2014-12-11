@@ -3,6 +3,10 @@ package com.freakz.hokan_ng.common.engine;
 import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.jms.HokanTopicListener;
+import com.freakz.hokan_ng.common.jms.HokanTopicMessageObject;
+import com.freakz.hokan_ng.common.jms.HokanTopicPublisher;
+import com.freakz.hokan_ng.common.jms.HokanTopicTypes;
 import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.rest.IrcEventFactory;
@@ -65,6 +69,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
 
 
   //--------
+  private HokanTopicListener topicListener;
+  private HokanTopicPublisher topicPublisher;
 
   private IrcServerConfig ircServerConfig;
 
@@ -119,6 +125,14 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
       return matches.get(0);
     }
     return null;
+  }
+
+  public void setTopicListener(HokanTopicListener topicListener) {
+    this.topicListener = topicListener;
+  }
+
+  public void setTopicPublisher(HokanTopicPublisher topicPublisher) {
+    this.topicPublisher = topicPublisher;
   }
 
   @Autowired
@@ -394,19 +408,13 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
     }
 
 
-    EngineRequest request = new EngineRequest(ircEvent);
+/*
     this.engineCommunicator.sendEngineMessage(request, this);
-
-    this.engineConnector.getTopicPublisher().produce(request);
-
-/*    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
-    RestMessage restMessage = new RestMessage(address);
-    RestMessageIrcEvent restMessageIrcEvent = new RestMessageIrcEvent();
-    restMessageIrcEvent.test = "ffufufuf";
-    restMessage.setMessageData("FffufufKey", "Bbabababrr");
-    restMessage.setMessageData("FfsdfddsfffufufKey", ircEvent);
-    restMessage.test = ircEvent;
-    this.restCommunicator.sendRestMessage(restMessage, this);*/
+*/
+    EngineRequest request = new EngineRequest(ircEvent);
+    HokanTopicMessageObject messageObject = new HokanTopicMessageObject();
+    messageObject.setData("engineRequest", request);
+    this.topicPublisher.publish(messageObject, HokanTopicTypes.TO_ENGINE);
 
     this.channelService.updateChannel(ch);
   }
