@@ -2,8 +2,8 @@ package com.freakz.hokan_ng.core_io.controller;
 
 import com.freakz.hokan_ng.common.entity.IrcServerConfig;
 import com.freakz.hokan_ng.common.entity.IrcServerConfigState;
-import com.freakz.hokan_ng.core.service.ConnectionManagerService;
-import com.freakz.hokan_ng.core.service.IrcServerConfigService;
+import com.freakz.hokan_ng.core_io.service.ConnectionManagerService;
+import com.freakz.hokan_ng.core_io.service.IrcServerConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -11,7 +11,6 @@ import com.freakz.hokan_ng.common.rest.messages.EngineCommunicator;
 import com.freakz.hokan_ng.common.rest.messages.EngineEventHandler;
 import com.freakz.hokan_ng.common.rest.messages.EngineRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
-import com.freakz.hokan_ng.common.rest.messages.router.RestCommunicator;
 import com.freakz.hokan_ng.common.rest.messages.router.RestMessage;
 import com.freakz.hokan_ng.common.rest.messages.router.RestResponseHandler;
 import com.freakz.hokan_ng.common.service.*;
@@ -64,8 +63,6 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
   @Autowired
   private UserService userService;
 
-  @Autowired
-  private RestCommunicator restCommunicator;
 
   //--------
 
@@ -399,6 +396,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
 
     EngineRequest request = new EngineRequest(ircEvent);
     this.engineCommunicator.sendEngineMessage(request, this);
+
+    this.engineConnector.getTopicPublisher().produce(request);
 
 /*    RestMessageAddress address = new RestMessageAddress(RestUrlType.CORE_ENGINE, 1234);
     RestMessage restMessage = new RestMessage(address);

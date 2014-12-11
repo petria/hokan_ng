@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core.service;
+package com.freakz.hokan_ng.core_io.service;
 
 import com.freakz.hokan_ng.common.engine.Connector;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;

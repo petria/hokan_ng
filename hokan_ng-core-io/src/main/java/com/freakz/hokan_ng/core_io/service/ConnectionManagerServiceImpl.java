@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core.service;
+package com.freakz.hokan_ng.core_io.service;
 
 import com.freakz.hokan_ng.common.engine.AsyncConnector;
 import com.freakz.hokan_ng.common.engine.Connector;
@@ -8,11 +8,13 @@ import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanDAOException;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
+import com.freakz.hokan_ng.common.jms.TopicPublisher;
 import com.freakz.hokan_ng.common.rest.messages.CoreRequest;
 import com.freakz.hokan_ng.common.service.ChannelService;
 import com.freakz.hokan_ng.common.service.NetworkService;
 import com.freakz.hokan_ng.common.service.PropertyService;
 import com.freakz.hokan_ng.common.service.UserService;
+import com.freakz.hokan_ng.core_io.jms.CoreIOTopicPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,9 @@ public class ConnectionManagerServiceImpl
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private CoreIOTopicPublisher topicPublisher;
 
   //----------
 
@@ -341,5 +346,10 @@ public class ConnectionManagerServiceImpl
     } catch (HokanDAOException e) {
       log.error("CoreRequest error!", e);
     }
+  }
+
+  @Override
+  public TopicPublisher getTopicPublisher() {
+    return this.topicPublisher;
   }
 }

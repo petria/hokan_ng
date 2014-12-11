@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Slf4j
 @Component
-public class CoreIOTopicPublisher {
+public class CoreIOTopicPublisher implements com.freakz.hokan_ng.common.jms.TopicPublisher {
 
   private JmsTemplate jmsTemplate;
   private Topic topic;

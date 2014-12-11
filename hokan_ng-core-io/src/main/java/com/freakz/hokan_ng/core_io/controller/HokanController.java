@@ -6,7 +6,7 @@ import com.freakz.hokan_ng.common.rest.messages.CoreRequest;
 import com.freakz.hokan_ng.common.rest.messages.CoreResponse;
 import com.freakz.hokan_ng.common.util.JarScriptExecutor;
 import com.freakz.hokan_ng.common.util.StringStuff;
-import com.freakz.hokan_ng.core.service.ConnectionManagerService;
+import com.freakz.hokan_ng.core_io.service.ConnectionManagerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
