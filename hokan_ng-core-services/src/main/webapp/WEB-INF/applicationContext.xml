@@ -48,21 +48,14 @@
                   p:brokerURL="tcp://localhost:61616"/>
         </property>
     </bean>
-    <bean id="queueOne" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="QUEUE.ONE"/>
+
+    <bean id="topicHokan" class="org.apache.activemq.command.ActiveMQTopic">
+    <constructor-arg value="TOPIC.HOKAN" />
     </bean>
 
-<!--    <bean name="testProducer" class="com.freakz.hokan_ng.core_engine.jms.TestProducer">
+    <bean name="coreServicesTopicPublisher" class="com.freakz.hokan_ng.core_services.jms.CoreServicesTopicPublisher">
         <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="queue" ref="queueOne"/>
-    </bean> -->
-    <!--    <bean name="topicPublisher" class="com.freakz.hokan_ng.core_engine.jms.EngineTopicPublisher">
-            <property name="connectionFactory" ref="connectionFactory" />
-            <property name="topic" ref="topicOne" />
-        </bean> -->
-
-    <bean id="topicOne" class="org.apache.activemq.command.ActiveMQTopic">
-        <constructor-arg value="TOPIC.HOKAN" />
+        <property name="topic" ref="topicHokan"/>
     </bean>
 
     <bean name="coreServicesTopicListener" class="com.freakz.hokan_ng.core_services.jms.CoreServicesTopicListener"/>
@@ -70,6 +63,5 @@
     <jms:listener-container connection-factory="connectionFactory" cache="none" destination-type="topic">
         <jms:listener destination="TOPIC.HOKAN" ref="coreServicesTopicListener"/>
     </jms:listener-container>
-
 
 </beans>

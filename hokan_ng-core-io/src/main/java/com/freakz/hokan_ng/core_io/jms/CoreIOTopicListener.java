@@ -1,4 +1,5 @@
-package com.freakz.hokan_ng.core.http.jms;
+package com.freakz.hokan_ng.core_io.jms;
+
 import lombok.extern.slf4j.Slf4j;
 
 import javax.jms.Message;
@@ -14,9 +15,9 @@ public class CoreIOTopicListener implements MessageListener {
 
   @Override
   public void onMessage(Message message) {
+    log.info("Message: {}", message);
     try {
       if (message instanceof ObjectMessage) {
-        log.info("ObjectMessage: {}", message);
         ObjectMessage mapMessage = (ObjectMessage) message;
         Object obj = mapMessage.getObject();
         int foo = 0;

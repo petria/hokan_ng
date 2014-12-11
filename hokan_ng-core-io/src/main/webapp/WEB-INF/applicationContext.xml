@@ -20,15 +20,15 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-    <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="com.freakz"/>
     <context:annotation-config/>
     <task:annotation-driven/>
+    <tx:annotation-driven/>
 
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/hokan_ng-mysql"/>
 
-    <bean id="core-io-Properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="classpath:core-io.properties"/>
+    <bean id="core-engine-Properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="location" value="classpath:core-io.properties"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -38,8 +38,6 @@
         <property name="persistenceUnitName" value="HokanNG"/>
     </bean>
 
-    <tx:annotation-driven/>
-
     <!-- JMS -->
     <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">
@@ -48,21 +46,20 @@
                   p:brokerURL="tcp://localhost:61616"/>
         </property>
     </bean>
-    <bean id="queueOne" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="QUEUE.ONE"/>
+
+    <bean id="topicHokan" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="TOPIC.HOKAN"/>
     </bean>
 
-    <bean name="fooListener" class="com.freakz.hokan_ng.core.http.jms.CoreListener"/>
+    <bean name="coreIOTopicPublisher" class="com.freakz.hokan_ng.core_io.jms.CoreIOTopicPublisher">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="topic" ref="topicHokan"/>
+    </bean>
 
-    <jms:listener-container connection-factory="connectionFactory" cache="none">
-        <jms:listener destination="QUEUE.ONE" ref="fooListener"/>
-    </jms:listener-container>
-
-    <bean name="coreIOTopicListener" class="com.freakz.hokan_ng.core.http.jms.CoreIOTopicListener"/>
+    <bean name="coreIOTopicListener" class="com.freakz.hokan_ng.core_io.jms.CoreIOTopicListener"/>
 
     <jms:listener-container connection-factory="connectionFactory" cache="none" destination-type="topic">
         <jms:listener destination="TOPIC.HOKAN" ref="coreIOTopicListener"/>
     </jms:listener-container>
-
 
 </beans>

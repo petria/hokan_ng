@@ -39,6 +39,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     masterUsers.add(userService.findUser("petria"));
     masterUsers.add(userService.findUser("petria_"));
     masterUsers.add(userService.findUser("cimistus"));
+    masterUsers.add(userService.findUser("bzr"));
     return masterUsers;
   }
 
@@ -50,6 +51,7 @@ public class AccessControlServiceServiceImpl implements AccessControlService {
     channelOps.add(userService.findUser("petria"));
     channelOps.add(userService.findUser("petria_"));
     channelOps.add(userService.findUser("cimistus"));
+    channelOps.add(userService.findUser("bzr"));
     return channelOps;
   }
 

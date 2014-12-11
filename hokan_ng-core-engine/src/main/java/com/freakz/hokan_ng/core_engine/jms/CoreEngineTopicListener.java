@@ -1,4 +1,4 @@
-package com.freakz.hokan_ng.core_services.jms;
+package com.freakz.hokan_ng.core_engine.jms;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -7,11 +7,10 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
 /**
- *
  * Created by petria on 10.12.2014.
  */
 @Slf4j
-public class CoreServicesTopicListener implements MessageListener {
+public class CoreEngineTopicListener implements MessageListener {
 
   @Override
   public void onMessage(Message message) {
