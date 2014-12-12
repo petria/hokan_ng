@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * Created by petria on 12.12.2014.
  */
 @Slf4j
@@ -28,13 +29,12 @@ public class HokanTopicListenerImpl implements MessageListener, HokanTopicListen
   @Override
   public void onMessage(Message message) {
     try {
+//      log.info("Message: {}", message);
       if (message instanceof ObjectMessage) {
-        if (message.getJMSType().equals(HokanTopicTypes.TO_IO)) {
-          ObjectMessage mapMessage = (ObjectMessage) message;
-          HokanMessageObject messageObject = (HokanMessageObject) mapMessage.getObject();
-          for (HokanTopicFollower follower : this.followers) {
-            follower.onMessage(messageObject);
-          }
+        ObjectMessage mapMessage = (ObjectMessage) message;
+        HokanMessageObject messageObject = (HokanMessageObject) mapMessage.getObject();
+        for (HokanTopicFollower follower : this.followers) {
+          follower.onMessage(messageObject);
         }
       }
     } catch (Exception e) {

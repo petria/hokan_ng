@@ -10,7 +10,7 @@ public class HokanJMSMessageHandler implements HokanTopicFollower {
 
   private HokanMessageObject reply;
 
-  public HokanMessageObject createQuery(HokanTopicListener replyListener, HokanTopicPublisher querySender) {
+  public synchronized HokanMessageObject createQuery(HokanTopicListener replyListener, HokanTopicPublisher querySender) {
 
     String jmsCorrelationID = "1234";
     HokanMessageObject query = new HokanMessageObject();
@@ -20,6 +20,7 @@ public class HokanJMSMessageHandler implements HokanTopicFollower {
     while (reply == null) {
       try {
         wait();
+
       } catch (InterruptedException e) {
         // ignore
       }
@@ -29,7 +30,12 @@ public class HokanJMSMessageHandler implements HokanTopicFollower {
   }
 
   @Override
-  public void onMessage(HokanMessageObject message) {
+  public String getAcceptedJMSType() {
+    return ".*";
+  }
+
+  @Override
+  public synchronized void onMessage(HokanMessageObject message) {
     this.reply = message;
     notifyAll();
   }

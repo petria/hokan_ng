@@ -33,6 +33,9 @@ public class CoreEngineTopicListener extends HokanTopicListenerImpl implements H
   @Autowired
   private CoreEngineTopicPublisher topicPublisher;
 
+  public CoreEngineTopicListener() {
+    followTopic(this);
+  }
 
   private void handleEngineRequest(EngineRequest request) {
     log.info("Got request: " + request);
@@ -63,7 +66,16 @@ public class CoreEngineTopicListener extends HokanTopicListenerImpl implements H
   }
 
   @Override
+  public String getAcceptedJMSType() {
+    return HokanTopicTypes.TO_ENGINE;
+  }
+
+  @Override
   public void onMessage(HokanMessageObject message) {
-    handleEngineRequest((EngineRequest) message.getData("engineRequest"));
+    log.info("message!!!");
+    EngineRequest request = (EngineRequest) message.getData("engineRequest");
+    if (request != null) {
+      handleEngineRequest(request);
+    }
   }
 }
