@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by petria on 11.12.2014.
  */
-public class HokanTopicMessageObject implements Serializable {
+public class HokanMessageObject implements Serializable {
 
   private Map<String, Object> payload = new HashMap<>();
 

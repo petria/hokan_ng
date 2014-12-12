@@ -9,6 +9,8 @@ import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
 import com.freakz.hokan_ng.common.service.*;
 import com.freakz.hokan_ng.common.util.CommandArgs;
+import com.freakz.hokan_ng.core_engine.jms.CoreEngineTopicListener;
+import com.freakz.hokan_ng.core_engine.jms.CoreEngineTopicPublisher;
 import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,12 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
   protected boolean isPrivate;
   protected boolean isMasterUser;
   protected boolean isToBot;
+
+  @Autowired
+  protected CoreEngineTopicPublisher topicPublisher;
+
+  @Autowired
+  protected CoreEngineTopicListener topicListener;
 
   @Autowired
   protected AccessControlService accessControlService;

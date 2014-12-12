@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public interface HokanTopicPublisher {
 
-  void publish(final Serializable object, String jmsType);
+  void publish(final Serializable object, final String jmsType, final String jmsCorrelationID);
 
 }
