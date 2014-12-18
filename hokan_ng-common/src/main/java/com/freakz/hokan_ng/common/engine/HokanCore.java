@@ -3,10 +3,10 @@ package com.freakz.hokan_ng.common.engine;
 import com.freakz.hokan_ng.common.entity.*;
 import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.exception.HokanServiceException;
-import com.freakz.hokan_ng.common.jms.HokanMessageObject;
-import com.freakz.hokan_ng.common.jms.HokanTopicListener;
+import com.freakz.hokan_ng.common.jms.HokanTopicFollower;
 import com.freakz.hokan_ng.common.jms.HokanTopicPublisher;
 import com.freakz.hokan_ng.common.jms.HokanTopicTypes;
+import com.freakz.hokan_ng.common.jms.messages.HokanEngineRequest;
 import com.freakz.hokan_ng.common.rest.EngineMethodCall;
 import com.freakz.hokan_ng.common.rest.IrcEvent;
 import com.freakz.hokan_ng.common.rest.IrcEventFactory;
@@ -67,9 +67,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
   @Autowired
   private UserService userService;
 
-
   //--------
-  private HokanTopicListener topicListener;
+  private HokanTopicFollower topicFollower;
   private HokanTopicPublisher topicPublisher;
 
   private IrcServerConfig ircServerConfig;
@@ -127,8 +126,8 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
     return null;
   }
 
-  public void setTopicListener(HokanTopicListener topicListener) {
-    this.topicListener = topicListener;
+  public void setTopicListener(HokanTopicFollower topicFollower) {
+    this.topicFollower = topicFollower;
   }
 
   public void setTopicPublisher(HokanTopicPublisher topicPublisher) {
@@ -412,7 +411,7 @@ public class HokanCore extends PircBot implements EngineEventHandler, RestRespon
     this.engineCommunicator.sendEngineMessage(request, this);
 */
     EngineRequest request = new EngineRequest(ircEvent);
-    HokanMessageObject messageObject = new HokanMessageObject();
+    HokanEngineRequest messageObject = new HokanEngineRequest();
     messageObject.setData("engineRequest", request);
     this.topicPublisher.publish(messageObject, HokanTopicTypes.TO_ENGINE, "1234");
 

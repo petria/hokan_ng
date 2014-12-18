@@ -1,5 +1,6 @@
 package com.freakz.hokan_ng.core_services.jms;
 
+import com.freakz.hokan_ng.common.jms.HokanTopicPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -13,15 +14,17 @@ import java.io.Serializable;
  */
 @Slf4j
 @Component
-public class CoreServicesTopicPublisher {
+public class CoreServicesTopicPublisher implements HokanTopicPublisher {
 
   private JmsTemplate jmsTemplate;
   private Topic topic;
 
-  public void produce(final Serializable object) {
+  public void publish(final Serializable object, final String jmsType, final String jmsCorrelationID) {
     this.jmsTemplate.send(this.topic, new MessageCreator() {
       public Message createMessage(Session session) throws JMSException {
         ObjectMessage mm = session.createObjectMessage();
+        mm.setJMSType(jmsType);
+        mm.setJMSCorrelationID(jmsCorrelationID);
         mm.setObject(object);
         return mm;
       }

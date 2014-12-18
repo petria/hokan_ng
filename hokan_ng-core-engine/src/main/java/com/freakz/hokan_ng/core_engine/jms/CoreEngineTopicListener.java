@@ -1,10 +1,10 @@
 package com.freakz.hokan_ng.core_engine.jms;
 
 import com.freakz.hokan_ng.common.exception.HokanEngineException;
-import com.freakz.hokan_ng.common.jms.HokanMessageObject;
 import com.freakz.hokan_ng.common.jms.HokanTopicFollower;
-import com.freakz.hokan_ng.common.jms.HokanTopicListenerImpl;
+import com.freakz.hokan_ng.common.jms.HokanTopicListenerBase;
 import com.freakz.hokan_ng.common.jms.HokanTopicTypes;
+import com.freakz.hokan_ng.common.jms.messages.HokanMessageObject;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.messages.EngineRequest;
@@ -22,7 +22,7 @@ import java.util.Date;
  * Created by petria on 10.12.2014.
  */
 @Slf4j
-public class CoreEngineTopicListener extends HokanTopicListenerImpl implements HokanTopicFollower {
+public class CoreEngineTopicListener extends HokanTopicListenerBase implements HokanTopicFollower {
 
   @Autowired
   private ApplicationContext context;
@@ -32,10 +32,6 @@ public class CoreEngineTopicListener extends HokanTopicListenerImpl implements H
 
   @Autowired
   private CoreEngineTopicPublisher topicPublisher;
-
-  public CoreEngineTopicListener() {
-    followTopic(this);
-  }
 
   private void handleEngineRequest(EngineRequest request) {
     log.info("Got request: " + request);
@@ -71,10 +67,10 @@ public class CoreEngineTopicListener extends HokanTopicListenerImpl implements H
   }
 
   @Override
-  public void onMessage(HokanMessageObject message) {
-    log.info("message!!!");
+  public void onTopicMessage(HokanMessageObject message) {
     EngineRequest request = (EngineRequest) message.getData("engineRequest");
     if (request != null) {
+      log.info("message!: {}", message);
       handleEngineRequest(request);
     }
   }

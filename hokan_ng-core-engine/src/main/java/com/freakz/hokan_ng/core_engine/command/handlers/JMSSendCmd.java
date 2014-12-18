@@ -1,9 +1,9 @@
 package com.freakz.hokan_ng.core_engine.command.handlers;
 
 import com.freakz.hokan_ng.common.exception.HokanException;
+import com.freakz.hokan_ng.common.jms.messages.HokanMessageObject;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
-import com.freakz.hokan_ng.common.rest.messages.router.RestMessage;
 import com.martiansoftware.jsap.JSAPResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
@@ -26,10 +26,9 @@ public class JMSSendCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-//    testProducer.produce(request.getIrcEvent().getMessage(), "bar");
-    RestMessage restMessage = new RestMessage();
-    restMessage.setMessageData("message", request.getIrcEvent().getMessage());
-    topicPublisher.publish(restMessage, ".*", "1234");
+    HokanMessageObject messageObject = new HokanMessageObject();
+    messageObject.setData("message", request.getIrcEvent().getMessage());
+    topicPublisher.publish(messageObject, ".*", "1234");
     response.addResponse("Sent!");
   }
 }
