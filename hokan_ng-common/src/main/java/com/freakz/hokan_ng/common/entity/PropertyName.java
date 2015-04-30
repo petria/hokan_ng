@@ -15,6 +15,7 @@ public enum PropertyName {
   PROP_SYS_CORE_ENGINE_RUNTIME("sys.CoreEngineRuntime"),
   PROP_SYS_CORE_IO_UPTIME("sys.CoreIoUptime"),
   PROP_SYS_CORE_IO_RUNTIME("sys.CoreIoRuntime"),
+  PROP_SYS_GOOGLE_API_KEY("sys.GoogleApiKey"),
   PROP_SYS_EXEC("sys.Exec"),
   PROP_SYS_EXEC_USERS("sys.ExecUsers"),
   PROP_SYS_HTTP_PROXY_HOST("sys.HttpProxyHost"),
