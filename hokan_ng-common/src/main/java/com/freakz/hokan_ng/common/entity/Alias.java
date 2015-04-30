@@ -22,6 +22,10 @@ public class Alias implements Serializable {
   @Column(name = "ALIAS")
   private String alias;
 
+  @Column(name = "ALIAS_TYPE")
+  @Enumerated(EnumType.STRING)
+  private AliasType aliasType;
+
   @Column(name = "COMMAND")
   private String command;
 
@@ -31,8 +35,8 @@ public class Alias implements Serializable {
   @Column(name = "CREATED")
   private Date created;
 
-  public Alias() {
 
+  public Alias() {
   }
 
   public long getAliasId() {
@@ -75,4 +79,11 @@ public class Alias implements Serializable {
     this.created = created;
   }
 
+  public AliasType getAliasType() {
+    return aliasType;
+  }
+
+  public void setAliasType(AliasType aliasType) {
+    this.aliasType = aliasType;
+  }
 }

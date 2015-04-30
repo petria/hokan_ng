@@ -27,6 +27,7 @@
     </build>
     <dependencies>
 
+
         <dependency>
             <groupId>com.freakz.hokan_ng</groupId>
             <artifactId>hokan_ng-arthurdo-custom</artifactId>

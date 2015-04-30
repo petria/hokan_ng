@@ -43,6 +43,7 @@ public class StaticStrings {
   public static final String ARG_SEARCH = "Search";
   public static final String ARG_STATION = "Station";
   public static final String ARG_TARGET = "Target";
+  public static final String ARG_TEXT = "Text";
   public static final String ARG_TO = "To";
   public static final String ARG_TOPIC = "Topic";
   public static final String ARG_UPDATER = "Updater";
