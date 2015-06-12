@@ -26,7 +26,7 @@ public class WeatherUpdater extends Updater {
   ApplicationContext context;
 
   private final static String URL =
-      "http://www.tiehallinto.fi/alk/tiesaa/tiesaa_maak_";
+      "http://alk.tiehallinto.fi/alk/tiesaa/tiesaa_maak_";
 
   private List<WeatherData> data;
 
