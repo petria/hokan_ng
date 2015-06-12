@@ -35,11 +35,11 @@ public class WeatherCmd extends Cmd {
 
   private final static String FORMAT = "%1 %2 %3°C (%7/%8)";
   private final static String FORMAT_MINMAX = "%1 %9 %3°C (%7/%8)";
-  @Autowired
-  private UpdaterManagerService updaterManagerService;
 
   public WeatherCmd() {
     super();
+    setHelp("Shows weather information from tielaitos pages.");
+    addToHelpGroup(HelpGroup.UPDATERS, this);
 
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
         .setStringParser(JSAP.INTEGER_PARSER)
