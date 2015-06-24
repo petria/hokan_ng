@@ -314,4 +314,8 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     public JSAPResult results;
   }
 
+  public JSAP getJsap() {
+    return jsap;
+  }
+
 }
