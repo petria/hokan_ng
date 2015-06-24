@@ -8,6 +8,7 @@ import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.IrcMessageEvent;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
 import com.freakz.hokan_ng.common.service.*;
+import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
 import com.freakz.hokan_ng.common.util.CommandArgs;
 import com.martiansoftware.jsap.*;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,10 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
 
   @Autowired
   protected UrlLoggerService urlLoggerService;
+
+  @Autowired
+  protected UpdaterManagerService updaterManagerService;
+
 
 
   public Cmd() {
@@ -307,6 +312,10 @@ public abstract class Cmd implements HokkanCommand, CommandRunnable {
     public InternalRequest request;
     public EngineResponse response;
     public JSAPResult results;
+  }
+
+  public JSAP getJsap() {
+    return jsap;
   }
 
 }
