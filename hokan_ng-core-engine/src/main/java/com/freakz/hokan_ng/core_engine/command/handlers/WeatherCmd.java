@@ -4,15 +4,13 @@ import com.freakz.hokan_ng.common.exception.HokanException;
 import com.freakz.hokan_ng.common.rest.InternalRequest;
 import com.freakz.hokan_ng.common.rest.messages.EngineResponse;
 import com.freakz.hokan_ng.common.updaters.DataUpdater;
+import com.freakz.hokan_ng.common.updaters.KelikameratWeatherData;
 import com.freakz.hokan_ng.common.updaters.UpdaterData;
-import com.freakz.hokan_ng.common.updaters.UpdaterManagerService;
-import com.freakz.hokan_ng.common.updaters.weather.WeatherData;
 import com.freakz.hokan_ng.common.util.StringStuff;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,12 +31,9 @@ import static com.freakz.hokan_ng.common.util.StaticStrings.ARG_PLACE;
 @Scope("prototype")
 public class WeatherCmd extends Cmd {
 
-  private final static String FORMAT = "%1 %2 %3°C (%7/%8)";
-  private final static String FORMAT_MINMAX = "%1 %9 %3°C (%7/%8)";
-
   public WeatherCmd() {
     super();
-    setHelp("Shows weather information from tielaitos pages.");
+    setHelp("Shows weather information from http://www.kelikamerat.info/.");
     addToHelpGroup(HelpGroup.UPDATERS, this);
 
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
@@ -49,7 +44,6 @@ public class WeatherCmd extends Cmd {
     registerParameter(flg);
 
     UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-        .setDefault("Jyväskylä")
         .setRequired(true)
         .setGreedy(false);
     registerParameter(opt);
@@ -58,16 +52,21 @@ public class WeatherCmd extends Cmd {
 
   @Override
   public String getMatchPattern() {
-    return "!_saa.*";
+    return "!saa.*|!weather.*";
   }
 
+  private String formatWeather(KelikameratWeatherData d) {
+    return String.format("%s: ilma %2.1f°C tie %2.1f°C maa %2.1f°C",
+            d.getPlaceFromUrl(), d.getAir(), d.getRoad(), d.getGround());
+  }
   @Override
   @SuppressWarnings("unchecked")
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    DataUpdater weatherUpdater = updaterManagerService.getUpdater("weatherUpdater");
+    DataUpdater weatherUpdater = updaterManagerService.getUpdater("kelikameratUpdater");
     UpdaterData updaterData = new UpdaterData();
     weatherUpdater.getData(updaterData);
-    List<WeatherData> datas = (List<WeatherData>) updaterData.getData();
+
+    List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
     if (datas.size() == 0) {
       response.setResponseMessage("Weather data not ready yet!");
       return;
@@ -78,23 +77,27 @@ public class WeatherCmd extends Cmd {
 
     if (place.equals("minmax")) {
 
-      WeatherData max = datas.get(0);
-      WeatherData min = datas.get(datas.size() - 1);
+      KelikameratWeatherData max = datas.get(0);
+      KelikameratWeatherData min = datas.get(datas.size() - 1);
 
       sb.append("Min: ");
-      sb.append(StringStuff.fillTemplate(FORMAT_MINMAX, min.getData()));
+      sb.append(formatWeather(min));
       sb.append(" Max: ");
-      sb.append(StringStuff.fillTemplate(FORMAT_MINMAX, max.getData()));
+      sb.append(formatWeather(max));
 
     } else {
 
       int xx = 0;
-      for (WeatherData wd : datas) {
-        if (StringStuff.match(wd.getCity(), ".*" + place + ".*")) {
+      String regexp = ".*" + place + ".*";
+      for (KelikameratWeatherData wd : datas) {
+        if (StringStuff.match(wd.getPlaceFromUrl(), regexp) || StringStuff.match(wd.getUrl().getStationUrl(), regexp)) {
+          if (wd.getAir() == null) {
+            continue;
+          }
           if (xx != 0) {
             sb.append(", ");
           }
-          sb.append(StringStuff.fillTemplate(FORMAT, wd.getData()));
+          sb.append(formatWeather(wd));
           xx++;
           if (xx > results.getInt(ARG_COUNT)) {
             break;
@@ -106,7 +109,7 @@ public class WeatherCmd extends Cmd {
         sb.append(String.format("%s %s 26.7°C, hellettä pukkaa!", hhmmss, place));
       }
     }
-
     response.setResponseMessage(sb.toString());
   }
+
 }
