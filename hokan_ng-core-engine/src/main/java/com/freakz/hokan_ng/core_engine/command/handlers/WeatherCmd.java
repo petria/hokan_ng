@@ -63,7 +63,7 @@ public class WeatherCmd extends Cmd {
     weatherUpdater.getData(updaterData);
 
     List<KelikameratWeatherData> datas = (List<KelikameratWeatherData>) updaterData.getData();
-    if (datas.size() == 0) {
+    if (datas == null || datas.size() == 0) {
       response.setResponseMessage("Weather data not ready yet!");
       return;
     }
