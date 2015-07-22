@@ -55,10 +55,6 @@ public class WeatherCmd extends Cmd {
     return "!saa.*|!weather.*";
   }
 
-  private String formatWeather(KelikameratWeatherData d) {
-    return String.format("%s: ilma %2.1f°C tie %2.1f°C maa %2.1f°C",
-            d.getPlaceFromUrl(), d.getAir(), d.getRoad(), d.getGround());
-  }
   @Override
   @SuppressWarnings("unchecked")
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
@@ -81,9 +77,9 @@ public class WeatherCmd extends Cmd {
       KelikameratWeatherData min = datas.get(datas.size() - 1);
 
       sb.append("Min: ");
-      sb.append(formatWeather(min));
+      sb.append(StringStuff.formatWeather(min));
       sb.append(" Max: ");
-      sb.append(formatWeather(max));
+      sb.append(StringStuff.formatWeather(max));
 
     } else {
 
@@ -97,7 +93,7 @@ public class WeatherCmd extends Cmd {
           if (xx != 0) {
             sb.append(", ");
           }
-          sb.append(formatWeather(wd));
+          sb.append(StringStuff.formatWeather(wd));
           xx++;
           if (xx > results.getInt(ARG_COUNT)) {
             break;

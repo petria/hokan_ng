@@ -1,6 +1,7 @@
 package com.freakz.hokan_ng.common.util;
 
 import com.arthurdo.parser.HtmlStreamTokenizer;
+import com.freakz.hokan_ng.common.updaters.KelikameratWeatherData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -395,10 +396,15 @@ public class StringStuff {
 
   private final static String[] entityTable = {
       "&Auml;", "Ä",
+      "%C3%84", "Ä",
+
       "&auml;", "ä",
+      "%C3%A4", "ä",
+
 
       "&Ouml;", "Ö",
       "&ouml;", "ö",
+      "%C3%B6", "ö",
 
       "&Aring;", "Å",
       "&aring;", "å",
@@ -659,6 +665,16 @@ public class StringStuff {
       sb.append(obj);
     }
     return sb.toString();
+  }
+
+  public static String formatWeather(KelikameratWeatherData d) {
+    String template1 = "%s: %2.1f°C tie %2.1f°C maa %2.1f°C";
+    String template2 = "%s: %2.1f°C";
+    String placeFromUrl = d.getPlaceFromUrl();
+    placeFromUrl = placeFromUrl.substring(placeFromUrl.indexOf("_") + 1).replaceAll("_", " ");
+
+    return String.format(template2, placeFromUrl
+            , d.getAir(), d.getRoad(), d.getGround());
   }
 
 }
